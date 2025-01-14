@@ -1,0 +1,38 @@
+.pc-menu-container{
+    height: 3rem;
+    width: auto;
+    /* border: 1px solid #fff; */
+    margin: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.pc-menu-items{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.pc-menu-items-btn{
+    background-color: transparent;
+    color: #fff;
+    margin:0px 0.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.pc-menu-connect-bnt{
+    background: rgb(178,161,252) !important;
+    background: linear-gradient(270deg, rgba(178,161,252,1) 0%, rgba(171,189,254,1) 91%) !important;
+    text-transform: none !important;
+    color: #fff !important;
+}
+
