@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+div.Marketplace {
+    font-size: 12px;        
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+
+    .marketplaceContent {
+        width: 90%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+
+
+        .header {
+            height: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: .5rem 0;
+            padding: 0 .5rem;
+            
+            h1 {
+                font-family: "DM Sans";
+                font-weight: 400;
+                font-size: 1.5rem;
+            }
+        }
+
+        .inputContainer {
+            height: auto;
+            position: relative;
+            width: 100%;
+          
+            input {
+                font-family: "Inter";
+                width: 100%;
+                padding: 0 60px;
+                box-sizing: border-box;
+                height: 60px;
+                background-color: transparent;
+                border: 1px solid rgba(213, 213, 213, .5);
+                color: rgba(255, 255, 255, .8);
+                border-radius: 5rem;
+
+
+            }
+          
+            button {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                height: 80%;
+                padding: 0 2rem;
+                border: 1px solid rgba(171, 189, 254, .5);
+                border-radius: 5rem;
+                color: #ABBDFE;
+                text-transform: none;
+
+                svg {
+                color: #ABBDFE;
+                }
+            }
+        }
+
+        .inputFilters {
+            height: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+            max-height: 0;
+            height: auto;
+            overflow: hidden;
+            transition: all .5s ease-in-out;
+
+            &.show {
+                max-height: 200px;
+                overflow: auto;
+            }
+
+            .filter {
+                margin: 0;
+                border: 1px solid rgba(white, .05);
+                padding: .5rem;
+                border-radius: .3rem;
+                background: #161A25;
+
+                span {
+                    opacity: .9;
+                }
+            }
+        }
+    }
+
+    .agentsGridContainer {
+        height: 22vw;
+        padding-bottom: 1rem;
+        overflow: scroll;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-corner {
+            background: rgba(0,0,0,0);
+        }
+
+        .agentsGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1rem;
+        }
+    
+    }
+    
+    .bottomPagination {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: #111521;
+        border-top: 1px solid rgba(197, 197, 197, .1);
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: max-content;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(to right,  rgba(white, .03), rgba(white, .1));
+            border: 1.5px solid rgba(white, .6);
+            border-radius: 1.2rem;
+
+            button {
+                background: transparent;
+                border: 1px solid transparent;
+                color: #ABBDFE;
+                border-radius: 50%;
+                margin: 0 .5rem;
+                height: 30px;
+                width: 30px;
+                cursor: pointer;
+
+                &.active {
+                    background-color: #B2A1FC;
+                    color: black;
+                }
+
+                &.leftArrow, &.rightArrow {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: transparent;
+                    border: none;
+                }
+            }
+        }
+    }   
+}
+
+
+@media screen and (max-width: 800px) {
+
+    .marketplaceContent {
+
+        .header {
+            h1 {
+                font-size: 1.2rem !important;
+            }
+
+            button {
+                font-size: .7rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+
+                svg {
+                    size: 18px;
+                }
+            }
+        }
+
+        .agentsGridContainer {
+            height: 50vw !important;
+        }
+    }
+
+    
+    .bottomPagination {
+        scale: .7;
+        padding: 0 !important;
+        padding-bottom: 1rem !important;
+    }
+}

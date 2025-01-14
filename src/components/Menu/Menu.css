@@ -1,23 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
 .pc-menu-container{
     height: 3rem;
     width: auto;
-    /* border: 1px solid #fff; */
-    margin: 2rem;
+    border-bottom: 1px solid rgba(197, 197, 197, .6);
+    padding: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
 }
 
-.pc-menu-items{
+.pc-menu-container a {
+    font-family: "Inter" !important;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.pc-menu-items {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    
+    transform: translate(-50%, -50%);   
+}
+
+.pc-menu-items a {
+    font-family: "Inter" !important;
+    font-weight: 400;
+    font-size: 1rem;
+    text-decoration: none;
+    color: white;
+}
+
+.pc-menu-items a.active {
+    background-image: linear-gradient(to left, #ABBDFE, #B2A1FC);
+    color: transparent;
+    background-clip: text;
 }
 
 .pc-menu-items-btn{
@@ -29,10 +54,15 @@
     cursor: pointer;
 }
 
-.pc-menu-connect-bnt{
+.pc-menu-connect-btn{
+    font-family: "Inter";
+    font-size: 1.4rem;
+    border-radius: 4px !important;
+    padding: .5rem 1.4rem !important;
     background: rgb(178,161,252) !important;
     background: linear-gradient(270deg, rgba(178,161,252,1) 0%, rgba(171,189,254,1) 91%) !important;
     text-transform: none !important;
-    color: #fff !important;
+    border: none;
+    color: #000 !important;
 }
 
