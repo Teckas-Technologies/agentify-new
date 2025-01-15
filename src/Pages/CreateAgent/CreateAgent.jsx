@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Menu from '../../components/Menu/Menu'
+import FullscreenOverlay from '../../components/FullscreenOverlay/FullscreenOverlay';
+import PopupModal from '../../components/PopupModal/PopupModal';
 
 import { Button, TextField } from '@mui/material';
 import { FiUpload } from "react-icons/fi";
@@ -8,9 +10,22 @@ import "./CreateAgent.scss"
 
 const CreateAgent = () => {
 
+    const [showPopup, setShowPopup] = useState(false);
+
     return (
         <div className='CreateAgent'>
             <Menu />
+            
+            <FullscreenOverlay show={showPopup} close={() => setShowPopup(false)}>
+                <PopupModal
+                    title={"Agentify"}
+                    message={"Your Agent (Customer Support Chatbot) has been created successfully"}
+                    buttons={[
+                        { text: "Home", variant: "outlined", onClick: () => console.log("Going to home") },
+                        { text: "Test Agent", variant: "filled", onClick: () => console.log("Testing Agent") },
+                    ]}
+                />
+            </FullscreenOverlay>
 
             <form className="createAgentContent" onSubmit={() => {}}>
                 
@@ -86,7 +101,13 @@ const CreateAgent = () => {
                         <Button className='discard' variant='outlined'>
                             Discard
                         </Button>
-                        <Button className='create' variant='filled'>
+                        <Button
+                            className='create' 
+                            variant='filled'
+                            onClick={() => {
+                                setShowPopup(!showPopup)
+                            }}
+                        >
                             Create Agent
                         </Button>
                     </div>
