@@ -36,7 +36,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -50,7 +50,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -64,7 +64,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -78,7 +78,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -92,7 +92,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -106,7 +106,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -120,7 +120,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -134,7 +134,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -148,7 +148,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -162,7 +162,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -176,7 +176,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -190,7 +190,7 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
         {
@@ -204,10 +204,12 @@ const Marketplace = () => {
                 { number: 24, text: "Available Functions" }
             ],
             buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
             ]
         },
     ])
+
+    const [filteredCards, setFilteredCards] = useState(cards);
 
     const pageInput = useRef();
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -234,6 +236,11 @@ const Marketplace = () => {
         }
     };
 
+    const search = (searchText) => {
+        let filteredCards = cards.filter((card) => card.title.toLowerCase().includes(searchText.toLowerCase()));
+        setFilteredCards(filteredCards);
+    }
+
     return (
         <div className='Marketplace'>
             <Menu />
@@ -241,15 +248,15 @@ const Marketplace = () => {
             <div className='marketplaceContent'>
                 <div className='header'>
                     <h1>Agent Marketplace</h1>
-                    <Button className='pc-menu-connect-btn' variant="outlined" endIcon={<ControlPointRoundedIcon />}>
+                    <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />}>
                         Create new Agent
                     </Button>
                 </div>
 
                 <div className="inputContainer">
-                    <input type="text" placeholder='Search any agent or keyword' />
+                    <input type="text" placeholder='Search any agent or keyword' onChange={(e) => search(e.target.value)} />
                     <Button 
-                        variant='outlined' 
+                        variant='filled' 
                         startIcon={ <CiFilter/> }
                         onClick={() => setShowFilters(!showFilters)}
                     >
@@ -279,7 +286,7 @@ const Marketplace = () => {
                 <div className="agentsGridContainer">
                     <div className="agentsGrid">
                         {
-                            cards.slice(startIndex, stopIndex).map((card, index) => {
+                            filteredCards.slice(startIndex, stopIndex).map((card, index) => {
                                 return (
                                     <Card
                                         key={index}

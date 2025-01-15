@@ -30,6 +30,7 @@ div.Marketplace {
 
 
         .header {
+            width: 100%;
             height: auto;
             display: flex;
             justify-content: space-between;
@@ -183,7 +184,6 @@ div.Marketplace {
 
             button {
                 font-size: .7rem;
-                font-weight: 700;
                 letter-spacing: 1px;
 
                 svg {
