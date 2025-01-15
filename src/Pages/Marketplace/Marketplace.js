@@ -25,92 +25,194 @@ const Marketplace = () => {
     const [showFilters, setShowFilters] = useState(false);
 
     const [cards] = useState([
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
-        "Card 1",
-        "Card 2",
-        "Card 3",
-        "Card 4",
-        "Card 5",
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Agent Bit",
+            category: "DeFi",
+            verified: true,
+            creator: "Satoshi Nakamoto",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: "21 million", text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Agent Bit",
+            category: "DeFi",
+            verified: true,
+            creator: "Satoshi Nakamoto",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: "21 million", text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Agent Bit",
+            category: "DeFi",
+            verified: true,
+            creator: "Satoshi Nakamoto",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: "21 million", text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+            ]
+        },
+        {
+            title: "Decentramized",
+            category: "Memes",
+            verified: true,
+            creator: "Samuel John",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: 3452, text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Run Agent", onClick: () => console.log("Publish Now"), variant: "filled" }
+            ]
+        },
+        {
+            title: "Agent Bit",
+            category: "DeFi",
+            verified: true,
+            creator: "Satoshi Nakamoto",
+            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
+            status: [
+                { number: "21 million", text: "Interactions" },
+                { number: 24, text: "Available Functions" }
+            ],
+            buttons: [
+                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" }
+            ]
+        },
     ])
 
     const pageInput = useRef();
+    const [itemsPerPage, setItemsPerPage] = useState(6);
     const [startIndex, setStartIndex] = useState(0);
-    const [stopIndex, setStopIndex] = useState(10);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [stopIndex, setStopIndex] = useState(itemsPerPage);
 
     const goToPage = (index) => {
         index++
@@ -176,40 +278,22 @@ const Marketplace = () => {
 
                 <div className="agentsGridContainer">
                     <div className="agentsGrid">
-                            <Card
-                                title="Decentramind"
-                                category="Memes"
-                                verified={true}
-                                creator="Samuel John"
-                                description="Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions"
-                                stats={[
-                                    { number: 3452, text: "Interactions" },
-                                    { number: 24, text: "Available Functions" },
-                                ]}
-                                buttons={[
-                                    { text: "Run agent", onClick: () => console.log("Run agent") }
-                                ]}
-                            />
-                            <Card
-                                title="Agent Bit"
-                                category="DeFi"
-                                verified={true}
-                                creator="Satoshi Nakamoto"
-                                description="Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions"
-                                stats={[
-                                    { number: "21 million", text: "Interactions" },
-                                    { number: 24, text: "Available Functions" },
-                                ]}
-                                buttons={[
-                                    { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                                ]}
-                            />
-                            <Card/>
-                            <Card/>
-                            <Card/>
-                            <Card/>
-                            <Card/>
-
+                        {
+                            cards.slice(startIndex, stopIndex).map((card, index) => {
+                                return (
+                                    <Card
+                                        key={index}
+                                        title={card.title}
+                                        category={card.category}
+                                        verified={card.verified}
+                                        creator={card.creator}
+                                        description={card.description}
+                                        stats={card.status}
+                                        buttons={card.buttons}
+                                    />
+                                )
+                            })
+                        }
                     </div>
                 </div>
 
@@ -221,27 +305,27 @@ const Marketplace = () => {
                 <div className="pagination">
                     {
                         // length is less than 8 pages. only show 8 buttons (or less)
-                        (Math.ceil(cards.length / 10) < 8) ? (
-                            new Array(Math.ceil(cards.length / 10)).fill(0).map((val, index) => <button key={index} className={(((startIndex / 10)) == index) ? "active" : ""} onClick={() => goToPage(index)}>{index + 1}</button>)
+                        (Math.ceil(cards.length / itemsPerPage) < 8) ? (
+                            new Array(Math.ceil(cards.length / itemsPerPage)).fill(0).map((val, index) => <button key={index} className={(((startIndex / itemsPerPage)) == index) ? "active" : ""} onClick={() => goToPage(index)}>{index + 1}</button>)
                         ) : (
                             // length is more than 8. show 8 buttons and add ... in the middle and < > buttons
                             <>
                                 <button className='leftArrow' disabled={(startIndex === 0)} onClick={() => {
                                     if (startIndex !== 0) {
-                                        setStopIndex((stopIndex) => stopIndex - 10);
-                                        setStartIndex((startIndex) => startIndex - 10);
+                                        setStopIndex((stopIndex) => stopIndex - itemsPerPage);
+                                        setStartIndex((startIndex) => startIndex - itemsPerPage);
                                     }
 
                                 }} ><FaChevronLeft size={"20px"}  /></button>
                                 {
-                                    new Array(8).fill(0).map((val, index) => <button key={index} className={(((startIndex / 10)) == index) ? "active" : ""} onClick={() => goToPage(index)}>{index + 1}</button>)
+                                    new Array(8).fill(0).map((val, index) => <button key={index} className={(((startIndex / itemsPerPage)) == index) ? "active" : ""} onClick={() => goToPage(index)}>{index + 1}</button>)
                                 }
                                 
                                 
-                                <button className='rightArrow' disabled={(stopIndex === (Math.ceil(cards.length / 10) * 10))} onClick={() => {
-                                    if (stopIndex !== (Math.ceil(cards.length / 10) * 10)) {
-                                        setStopIndex((stopIndex) => stopIndex + 10);
-                                        setStartIndex((startIndex) => startIndex + 10);
+                                <button className='rightArrow' disabled={(stopIndex === (Math.ceil(cards.length / itemsPerPage) * itemsPerPage))} onClick={() => {
+                                    if (stopIndex !== (Math.ceil(cards.length / itemsPerPage) * itemsPerPage)) {
+                                        setStopIndex((stopIndex) => stopIndex + itemsPerPage);
+                                        setStartIndex((startIndex) => startIndex + itemsPerPage);
                                     }
 
                                 }}  ><FaChevronRight  size={"20px"} /> </button>
