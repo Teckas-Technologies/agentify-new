@@ -2,14 +2,18 @@
 
 
 .pc-menu-container{
+    z-index: 9;
+    position: sticky;
+    top: 0;
+    left: 0;
     height: 3rem;
     width: auto;
     border-bottom: 1px solid rgba(197, 197, 197, .6);
+    background-color: #111521;
     padding: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
 }
 
 .pc-menu-container a {
