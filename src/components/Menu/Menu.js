@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './Menu.css'
 import Button from '@mui/material/Button';
 import EastIcon from '@mui/icons-material/East';
@@ -8,12 +8,12 @@ function Menu(){
 return(
     <>
     <nav className='pc-menu-container'>
-        <Link to={"/"}>Agentify</Link>
+        <NavLink to={"/"}>Agentify</NavLink>
         <div className='pc-menu-items'>
-            <Link className='active' to={'/features'}>Features</Link>
-            <Link to={'/marketplace'}>Marketplace</Link>
-            <Link to={'/create'}>Create Agent</Link>
-            <Link to={'/playground'}>Playground</Link>
+            <NavLink to={'/features'}>Features</NavLink>
+            <NavLink to={'/marketplace'}>Marketplace</NavLink>
+            <NavLink to={'/create'}>Create Agent</NavLink>
+            <NavLink to={'/playground'}>Playground</NavLink>
         </div>
         <div>
             
