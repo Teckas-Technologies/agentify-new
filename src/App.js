@@ -7,6 +7,7 @@ import Features from './Pages/Features/Features'
 import Marketplace from './Pages/Marketplace/Marketplace';
 
 import NotFound from './Pages/NotFound/NotFound';
+import CreateAgent from './Pages/CreateAgent/CreateAgent';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           
           <Route path="/" element={<Features />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/create" element={<CreateAgent />} />
 
           <Route path="*" element={<NotFound />} />
          
