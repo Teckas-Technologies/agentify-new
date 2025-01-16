@@ -57,6 +57,12 @@
                 border-radius: 2rem;
                 color: #0ed149;
                 font-weight: 500;
+
+                &.private {
+                    background: rgba(255, 149, 0, 0.12);
+                    border: 1px solid rgba(255, 149, 0, 1);
+                    color: rgba(255, 149, 0, 1);
+                }
             }
         }
 
@@ -76,8 +82,43 @@
         }
     }
 
-    .description {
-        margin-bottom: 1.35rem;
+    .descriptionAndEditContainer {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .description {
+            margin-bottom: 1.35rem;
+        }
+
+        &:has(.editButtonContainer) {
+            .editButtonContainer {
+
+                button {
+                    height: 37px;
+                    width: 37px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: .7rem;
+                    border-style: none;
+
+                    background: linear-gradient(to bottom, rgba(171, 189, 254, 1), rgba(178, 161, 252, 1));
+                    cursor: pointer;
+
+                    transition: all .3s ease;
+
+                    &:hover {
+                        filter: brightness(.6);
+                    }
+
+                    svg {
+                        opacity: .8;
+                    }
+                }
+            }
+        }
+
     }
 
     .stats {

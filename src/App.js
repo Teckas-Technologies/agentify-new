@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // pages
 import Features from './Pages/Features/Features'
 import Marketplace from './Pages/Marketplace/Marketplace';
+import Dashboard from './Pages/Dashboard/Dashboard';
 
 import NotFound from './Pages/NotFound/NotFound';
 import CreateAgent from './Pages/CreateAgent/CreateAgent';
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Features />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/create" element={<CreateAgent />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="*" element={<NotFound />} />
          

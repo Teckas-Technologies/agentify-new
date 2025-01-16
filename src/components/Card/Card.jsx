@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 
 import "./Card.scss";
 
-import { FiUser } from "react-icons/fi"
+import { FiUser, FiEdit } from "react-icons/fi"
 import { FaCircle } from "react-icons/fa6";
 
 import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
@@ -20,15 +20,24 @@ export default function Card(props) {
                 </span>
 
                 <span className="info">
-                    <span className="category">
+                    {(props.category) && (<span className="category">
                         {props.category || "Blank"}
                     </span>
+                    )}
                     
                     {
                         (props.verified) && (
                             <span className={`status`}>
                                 <FaCircle size={"8px"} />
                                 Verified
+                            </span>
+                        )
+                    }
+                    {
+                        (props.published !== undefined) && (
+                            <span className={`status ${(props.published) ? 'published' : 'private'}`}>
+                                <FaCircle size={"8px"} />
+                                {(props.published) ? "Published" : "Private"}
                             </span>
                         )
                     }
@@ -39,9 +48,20 @@ export default function Card(props) {
                 {props.creator || "Sabari"}
             </div>
 
-            <div className="description">
+            <div className="descriptionAndEditContainer">
+                <span className="description">
+                    {
+                        props.description || "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, quis?"
+                    }
+                </span>
                 {
-                    props.description || "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, quis?"
+                    (props.showEditButton) && (
+                        <span className="editButtonContainer">
+                            <button>
+                                <FiEdit size={"15px"} />
+                            </button>
+                        </span>
+                    )
                 }
             </div>
 
