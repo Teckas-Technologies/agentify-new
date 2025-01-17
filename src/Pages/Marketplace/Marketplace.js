@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Menu from '../../components/Menu/Menu'
 import { Checkbox, Button, FormGroup, FormControlLabel } from '@mui/material';
 
@@ -7,7 +7,7 @@ import { CiFilter } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 
-import Card from "../../components/Card/Card";
+import Card from "../../components/Card/Card.tsx";
 
 import "./Marketplace.scss"
 
@@ -22,6 +22,7 @@ const Marketplace = () => {
         "Computational",
         "Other",
     ]);
+    const [selectedFilters, setSelectedFilters] = useState([]);
     const [showFilters, setShowFilters] = useState(false);
 
     const [cards] = useState([
@@ -241,6 +242,15 @@ const Marketplace = () => {
         setFilteredCards(filteredCards);
     }
 
+    const filter = () => {
+        let filteredCards = cards.filter((card) => selectedFilters.includes(card.category));
+        setFilteredCards(filteredCards);
+    }
+
+    // useEffect(() => {
+    //     filter();
+    // }, [selectedFilters])
+
     return (
         <div className='Marketplace'>
             <Menu />
@@ -267,15 +277,38 @@ const Marketplace = () => {
                     {
                         filters.map((filter, index) => (
                             <FormControlLabel 
+                                onChange={() => {
+                                    console.log("changed checkbox")
+                                    if (selectedFilters.includes(filter)) {
+                                        console.log(`Show ${filter}`)
+                                        setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+                                    } else {
+                                        console.log(`Hide ${filter}`)
+                                        setSelectedFilters([...selectedFilters, filter]);
+                                    }
+                                }}
                                 className='filter' 
                                 control={
                                     <Checkbox 
+                                        onChange={() => {
+                                            console.log("changed checkbox")
+                                            if (selectedFilters.includes(filter)) {
+                                                console.log(`Show ${filter}`)
+                                                setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+                                            } else {
+                                                console.log(`Hide ${filter}`)
+                                                setSelectedFilters([...selectedFilters, filter]);
+                                            }
+                                        }}
                                         sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
                                           color: '#ABBDFE',
                                         },
                                       }} 
+                                      inputProps={{
+                                        'aria-label': 'primary checkbox',
+                                      }}
                                     />
                                 } 
                                 label={filter} />

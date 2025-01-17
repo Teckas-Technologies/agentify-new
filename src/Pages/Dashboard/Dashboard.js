@@ -7,7 +7,7 @@ import { CiFilter } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 
-import Card from "../../components/Card/Card";
+import Card from "../../components/Card/Card.tsx";
 
 import "./Dashboard.scss"
 

@@ -9,6 +9,9 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 
 import CreateAgent from './Pages/CreateAgent/CreateAgent';
 import EditAgent from './Pages/EditAgent/EditAgent';
+import AgentDetails from './Pages/AgentDetails/AgentDetails';
+
+import Playground from './Pages/Playground/Playground';
 
 import NotFound from './Pages/NotFound/NotFound';
 
@@ -27,7 +30,9 @@ function App() {
 
           <Route path="/create" element={<CreateAgent />} />
           <Route path="/edit-agent" element={<EditAgent />} />
+          <Route path="/agent-details" element={<AgentDetails />} />
 
+          <Route path="/playground" element={<Playground />} />
           <Route path="*" element={<NotFound />} />
          
         
