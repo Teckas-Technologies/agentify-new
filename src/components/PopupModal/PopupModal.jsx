@@ -22,7 +22,7 @@ export default function PopupModal(props) {
                     {
                         props.buttons.map((button, index) => {
                             return (
-                                <Button variant={button.variant} className={button.variant}>
+                                <Button variant={button.variant} className={button.variant} onClick={button.onClick} key={index}>
                                     {button.text}    
                                 </Button>
                             )

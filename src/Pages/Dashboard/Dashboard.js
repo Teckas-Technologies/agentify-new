@@ -8,6 +8,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 
 import Card from "../../components/Card/Card.tsx";
+import dashboardCards from "../../data/dashboardCards.js";
 
 import "./Dashboard.scss"
 
@@ -25,153 +26,14 @@ const Dashboard = () => {
     const [selectedFilters, setSelectedFilters] = useState([]);
     const [showFilters, setShowFilters] = useState(false);
 
-    const [cards] = useState([
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            published: false,
-            creator: "Satoshi Nakamoto",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            published: true,
-            creator: "Satoshi Nakamoto",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            published: true,
-            creator: "Satoshi Nakamoto",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            published: true,
-            creator: "Samuel John",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            published: true,
-            creator: "Satoshi Nakamoto",
-            showEditButton: true,
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            buttons: [
-                { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-                { text: "Test Agent", onClick: () => console.log("Test Agent"), variant: "filled" }
-            ]
-        },
-    ])
-
+    const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState(cards);
+
+    useEffect(() => {
+        // we will be doing an API call here to get the cards.
+        setCards(dashboardCards);
+        setFilteredCards(dashboardCards);
+    }, []);
 
     const pageInput = useRef();
     const [itemsPerPage, setItemsPerPage] = useState(6);

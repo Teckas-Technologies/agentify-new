@@ -1,6 +1,7 @@
 import React from "react";
 import { Image } from 'mui-image'
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import "./Card.scss";
 
@@ -67,9 +68,9 @@ export default function Card(props: CardProps) {
                 {
                     (isDashboardCard(props) && props.showEditButton) && (
                         <span className="editButtonContainer">
-                            <button>
+                            <Link to={"/edit-agent?agentID=" + props.id}>
                                 <FiEdit size={"15px"} />
-                            </button>
+                            </Link>
                         </span>
                     )
                 }

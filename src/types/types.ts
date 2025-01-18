@@ -16,6 +16,7 @@ export type MarketplaceCardBadge = {
 }
 
 export type DashboardCardBadge = {
+    id: string,
     logo?: string,
     title: string,
     published: boolean,

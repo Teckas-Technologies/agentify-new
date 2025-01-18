@@ -9,9 +9,14 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 import Card from "../../components/Card/Card.tsx";
 
+import marketplaceCards from "../../data/marketplaceCards.js";
+
 import "./Marketplace.scss"
+import { useNavigate } from 'react-router-dom';
 
 const Marketplace = () => {
+
+    const navigate = useNavigate();
 
     const [filters, setFilters] = useState([
         "Memes",
@@ -25,192 +30,15 @@ const Marketplace = () => {
     const [selectedFilters, setSelectedFilters] = useState([]);
     const [showFilters, setShowFilters] = useState(false);
 
-    const [cards] = useState([
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            category: "DeFi",
-            verified: true,
-            creator: "Satoshi Nakamoto",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: "21 million", text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            category: "DeFi",
-            verified: true,
-            creator: "Satoshi Nakamoto",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: "21 million", text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            category: "DeFi",
-            verified: true,
-            creator: "Satoshi Nakamoto",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: "21 million", text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Decentramized",
-            category: "Memes",
-            verified: true,
-            creator: "Samuel John",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: 3452, text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-        {
-            title: "Agent Bit",
-            category: "DeFi",
-            verified: true,
-            creator: "Satoshi Nakamoto",
-            description: "Suggests decentralized and intelligent operations. Which is used in Blockchain Transactions",
-            status: [
-                { number: "21 million", text: "Interactions" },
-                { number: 24, text: "Available Functions" }
-            ],
-            buttons: [
-                { text: "Run Agent", onClick: () => console.log("Run Agent"), variant: "filled" }
-            ]
-        },
-    ])
-
+    const [cards, setCards] = useState([])
     const [filteredCards, setFilteredCards] = useState(cards);
+
+    useEffect(() => {
+        // we will be doing an API call here to get the cards.
+        setCards(marketplaceCards);
+        setFilteredCards(marketplaceCards);
+    }, []);
+
 
     const pageInput = useRef();
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -258,7 +86,7 @@ const Marketplace = () => {
             <div className='marketplaceContent'>
                 <div className='header'>
                     <h1>Agent Marketplace</h1>
-                    <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />}>
+                    <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />} onClick={() => navigate("/create")}>
                         Create new Agent
                     </Button>
                 </div>

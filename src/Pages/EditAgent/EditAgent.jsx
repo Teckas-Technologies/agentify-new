@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import Menu from '../../components/Menu/Menu'
 import FullscreenOverlay from '../../components/FullscreenOverlay/FullscreenOverlay';
 import PopupModal from '../../components/PopupModal/PopupModal';
@@ -6,11 +8,30 @@ import PopupModal from '../../components/PopupModal/PopupModal';
 import { Button, TextField } from '@mui/material';
 import { FiUpload } from "react-icons/fi";
 
+import dashboardCards from "../../data/dashboardCards.js";
 import "./EditAgent.scss"
 
 const EditAgent = () => {
 
     const [showPopup, setShowPopup] = useState(false);
+    const [agentID, setAgentID] = useState("");
+    const [agentDetails, setAgentDetails] = useState({});
+
+    const useQuery = () => {
+        return new URLSearchParams(useLocation().search);
+    };
+
+    const query = useQuery();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const id = query.get('agentID');
+        console.log(`Agent ID: ${id}`);
+        setAgentID(id);
+        setAgentDetails(
+            dashboardCards.find((card) => card.id === id)
+        );
+    }, [])
 
     return (
         <div className='EditAgent'>
@@ -19,10 +40,10 @@ const EditAgent = () => {
             <FullscreenOverlay show={showPopup} close={() => setShowPopup(false)}>
                 <PopupModal
                     title={"Agentify"}
-                    message={"Your Agent (Customer Support Chatbot) has been created successfully"}
+                    message={`Your Agent (${ agentDetails?.title }) has been created successfully`}
                     buttons={[
-                        { text: "Home", variant: "outlined", onClick: () => console.log("Going to home") },
-                        { text: "Test Agent", variant: "filled", onClick: () => console.log("Testing Agent") },
+                        { text: "Home", variant: "outlined", onClick: () => navigate("/dashboard") },
+                        { text: "Test Agent", variant: "filled", onClick: () => console.log(`Testing Agent ${agentDetails.title}...`) },
                     ]}
                 />
             </FullscreenOverlay>
@@ -76,6 +97,7 @@ const EditAgent = () => {
 
                         <label htmlFor="agentName">Agent Name</label>
                         <input
+                            defaultValue={agentDetails?.title}
                             placeholder='Ex. Customer Support Chatbot'
                         />
                     </div>
@@ -87,6 +109,7 @@ const EditAgent = () => {
                     <TextField
                         id="agentPurpose"
                         placeholder="Write your description"
+                        defaultValue={agentDetails?.description}
                         multiline
                         rows={6}
                         variant="filled"

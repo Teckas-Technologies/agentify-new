@@ -94,7 +94,8 @@
         &:has(.editButtonContainer) {
             .editButtonContainer {
 
-                button {
+                a {
+                    color: black;
                     height: 37px;
                     width: 37px;
                     display: flex;
