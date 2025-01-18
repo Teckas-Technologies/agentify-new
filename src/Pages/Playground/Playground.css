@@ -8,15 +8,15 @@
   background-color: #111521;
 }
 
-.desktop-header {
+/* .desktop-header {
   display: block;
   border-bottom: 1px solid #2a2d3d;
   background-color: #111521;
-}
-
+} */
+/* 
 .mobile-header {
   display: none;
-}
+} */
 
 .main-content {
   flex: 1;
@@ -44,7 +44,7 @@
     min-width: unset;
   }
 
-  .desktop-header {
+  /* .desktop-header {
     display: none;
   }
 
@@ -65,7 +65,7 @@
     border-radius: 8px;
     color: white;
     cursor: pointer;
-  }
+  } */
 
   .main-content {
     padding: 16px;

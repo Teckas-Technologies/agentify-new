@@ -9,7 +9,7 @@
   min-width: 300px;
   min-height: 500px;
   overflow: hidden;
-
+  padding-bottom: 1.25rem;
 }
 
 .left-panel-header {
@@ -51,8 +51,8 @@
   gap: 1rem;
 }
 
-.Card {
-  padding-bottom: 1rem !important;
+.cards-container .Card {
+  padding-bottom: 1rem;
   cursor: pointer;
 }
 

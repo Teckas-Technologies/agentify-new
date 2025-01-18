@@ -6,7 +6,7 @@
     max-width: max-content;
     // padding: 1.5rem;
     border-radius: 1rem;
-    width: min(450px, 95%);
+    width: min(450px, 90%);
 
     .title {
         width: 100%;
@@ -19,6 +19,8 @@
 
     .message {
         padding: 2rem;
+        padding-bottom: 0;
+        margin: 0 auto;
         flex-grow: 1;
         height: auto;
         font-size: 1.1rem;

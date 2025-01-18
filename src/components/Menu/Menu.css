@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 
-.pc-menu-container{
+.pc-menu-container {
     z-index: 9;
     position: sticky;
     top: 0;
@@ -70,3 +70,116 @@
     color: #000 !important;
 }
 
+
+.pc-menu-container .connectButtonContainer {
+    max-width: max-content;
+    display: inline;
+}
+
+
+/* mobile menu */
+
+.mobile-header {
+    display: none;
+}
+
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #111521;
+    padding: 16px;
+    z-index: 999;
+    border-bottom: 1px solid #2a2d3d;
+    animation: slideDown 0.3s ease;
+  }
+
+  .mobile-header .hamburger-menu {
+    max-width: max-content;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .mobile-menu-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 0;
+    transition: color 0.2s ease;
+  }
+  
+  .mobile-menu-links a:hover {
+    color: #ffffff;
+  }
+  
+  .mobile-menu .connect-wallet {
+    width: 100%;
+    justify-content: center;
+    background: linear-gradient(270deg, rgba(178,161,252,1) 0%, rgba(171,189,254,1) 91%) !important;
+    color: black;
+    border: 1px solid red;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  } 
+
+
+
+@media (max-width: 768px) {
+    .pc-menu-container {
+        display: none;
+      }
+    
+      .mobile-header {
+        display: flex;
+        padding: 1rem;
+        justify-content: space-between;
+        background-color: #111521;
+        border-bottom: 1px solid #2a2d3d;
+        position: relative;
+      }
+
+      .mobile-header .logo {
+        padding: .4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-weight: 600;
+        text-decoration: none;
+        color: white;
+        font-size: 1.5rem;
+      }
+    
+      .hamburger-menu {
+        display: flex;
+        background: transparent;
+        border: none;
+        padding: 8px;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+      }
+}

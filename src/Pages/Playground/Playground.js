@@ -30,13 +30,13 @@ function Playground() {
         <Menu />
       </div>
       
-      <div className="mobile-header">
+      {/* <div className="mobile-header">
         <button className="hamburger-menu" onClick={() => setShowMenu(!showMenu)}>
           <FiMenu size={24} />
         </button>
       </div>
 
-      {showMenu && <MobileMenu />}
+      {showMenu && <MobileMenu />} */}
 
       <main className="main-content">
         <div className="panels-container">

@@ -153,7 +153,7 @@
         justify-content: center;
         align-items: center;
         gap: 1rem;
-        padding: 2rem 0;
+        padding: 2rem;
 
         button {
             max-width: max-content;
@@ -168,6 +168,12 @@
         .EditAgentContent {
             flex-direction: column;
             gap: 2rem;
+        }
+
+        .editAgentControls {
+            button {
+                padding: 1rem 1.5rem;
+            }
         }
     }
 }
