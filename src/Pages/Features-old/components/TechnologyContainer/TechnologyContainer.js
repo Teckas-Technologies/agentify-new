@@ -3,15 +3,10 @@ import './TechnologyContainer.css'
 function TechnologyContainer(){
     return(
         <>
-        
         <button className='TechnologyContainer-btn'>TECHNOLOGY</button>
         <p className='TechnologyContainer-header-text'>Create multi-agent <br/>AI systems using Blockchain</p>
-        <p className='TechnologyContainer-sub-header-text'>Explore existing agents or create your own. Any API can easily become an agent. </p>
-        <p></p>
-        <p></p>
-
-        <div
-         className='TechnologyContainer-option-textcontainer'>
+        <p className='TechnologyContainer-sub-header-text'>Explore existing agents or create your own. Any API can easily become an agent.</p>
+        <div className='TechnologyContainer-option-textcontainer'>
             <p>Decentramind</p>
             <p>SmartAgent X</p>
             <p>ChainGenie</p>
@@ -42,10 +37,7 @@ function TechnologyContainer(){
         </div>
 
         <p className='TechnologyContainer-cover-text' >Unilimited PreBuilt Agents to Try</p>
-        <div className='blur'>
-        </div>
         </>
- 
     )
 }
 

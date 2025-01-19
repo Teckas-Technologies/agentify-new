@@ -9,10 +9,10 @@ function SupportChains(){
         <>
         <div className='supportchain-container'>
             <p className='supportchain-header'>
-             Supported Chains
+            Support Chains
             </p>
             <div className='supportchain-list'>
-                <div className='supportchain-items'><img src={image1}/></div>
+                <div className='supportchain-items' style={{marginTop:"4px"}}><img style={{height:"110%", width:"110%"}} src={image1}/></div>
                 <div className='supportchain-items'><img src={image2}/></div>
                 <div className='supportchain-items'><img src={image3}/></div>
                 <div className='supportchain-items'><img src={image4}/></div>

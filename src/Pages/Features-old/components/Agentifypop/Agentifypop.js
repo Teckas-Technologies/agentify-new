@@ -29,12 +29,12 @@ function Agentifypop(){
                     <p className='agentifypop-create-successfully-pop-text'>Your Agent<br/>
                     created Successfully</p>
 
-                    <Button style={{color:"#000000"}} className='agentify-goback-bnt' variant="outlined">
-                      Go to Playground<CallMadeIcon/>
+                    <Button style={{color:"#000000"}} className='agentify-goback-bnt' variant="outlined" endIcon={<CallMadeIcon style={{fontSize:"0.85rem", position:"absolute", top:"0.5rem", left:"7.8rem"}} />}>
+                      Go to Playground
                     </Button>
                 </div>
               </p>
-              <div className='AgentifyContainer-pop-upload-abi'>
+              <div>
                 <p className='agentifypop-lable'>Upload ABI</p>
               <Button
                 className='agentifypop-drop-down-button'
@@ -42,7 +42,6 @@ function Agentifypop(){
                 role={undefined}
                 variant="contained"
                 tabIndex={-1}
-                style={{width: "100%", minWidth: "310px"}}
                 >
                     <img src={uploadIcon} />
                     <p className='agentifypop-drop-down-button-mainlable' >Drag and drop your ABI file here</p>
@@ -57,15 +56,15 @@ function Agentifypop(){
               </div>
               <div style={{marginTop:"1rem"}}>
               <p className='agentifypop-lable'>Enter your Agent Name</p>
-              <input className='agentifypop-AgentName-input' style={{width: "100px", minWidth: "310px"}} />
+              <input  className='agentifypop-AgentName-input' />
               </div>
 
               <div style={{marginTop:"1rem"}}>
-              <Button style={{color:"#000000", width: "310px"}} className='agentify-bnt' variant="outlined">
-                    Test agent<CallMadeIcon/>
+              <Button style={{color:"#000000"}} className='agentify-bnt' variant="outlined" endIcon={<CallMadeIcon style={{fontSize:"0.85rem", position:"absolute", top:"0.8rem", left:"9rem"}} />}>
+                    Test agent
                 </Button>
 
-                <Button style={{color:"#b2a1fc", width: "310px"}} className='agentify-embed-agentbnt' variant="outlined" >
+                <Button style={{color:"#b2a1fc"}} className='agentify-embed-agentbnt' variant="outlined" >
                     Embed the agent
                 </Button>
               </div>

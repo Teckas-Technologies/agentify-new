@@ -1,9 +1,9 @@
 .agentifypop-container{
     position: absolute;
-    top: 50vh;
-    right: 4rem;
+    top: 30vh;
+    right: 7rem;
     min-height: 15rem;
-    width: 20rem;
+    width: 13rem;
     border-radius: 1rem;
     border: 1px solid #D0C9C9;
     display: flex;
@@ -22,20 +22,39 @@ background: linear-gradient(180deg, rgba(255,255,255,0.017419467787114895) 0%, r
 
 .agentifypop-create-successfully-pop{
     position: absolute;
-    top: -5rem;
-    right: -20rem;
-    width: 13rem;
-    height: 13rem;
+    top: -3rem;
+    left: 8rem;
+    width: 8rem;
+    height: 8rem;
     border: 1px solid #D0C9C9;
     border-radius: 1rem;
     background-color: #111521;
     /* filter: blur(4px); */
     overflow: hidden;
     padding: 0.5rem;
-    font-size: 20px !important;
+    font-size: 10px !important;
     z-index: 10;
 }
 
+.agentifypop-create-successfully-pop-text{
+    font-size: 0.7rem;
+}
+
+.agentify-goback-bnt{
+    background: rgb(178,161,252) !important;
+    background: linear-gradient(270deg, rgba(178,161,252,1) 0%, rgba(171,189,254,1) 91%) !important;
+    text-transform: none !important;
+    border-radius: 5px !important;
+    width: 9.5rem;
+    height: 2rem;
+    position: relative;
+    font-size: 0.8rem !important;
+    margin: 0.3rem 0px !important;
+    position: relative;
+    left: -10px;
+    top: 1.5rem;
+    color: #fff !important;
+}
 
 
 .agentifypop-lable{
@@ -108,23 +127,4 @@ background: linear-gradient(180deg, rgba(255,255,255,0.017419467787114895) 0%, r
     margin: 0.3rem 0px !important;
     background-color: transparent !important;
     border: 1px solid #b2a1fc !important;
-}
-.agentifypop-create-successfully-pop-text {
-   padding-left: 20px;
-}
-
-.agentify-goback-bnt{
-    background: rgb(178,161,252) !important;
-    background: linear-gradient(270deg, rgba(178,161,252,1) 0%, rgba(171,189,254,1) 91%) !important;
-    text-transform: none !important;
-    border-radius: 5px !important;
-    width: 14.2rem;
-    height: 3.5rem;
-    position: relative;
-    font-size: 1.1rem !important;
-    margin: 0.3rem 0px !important;
-    position: relative;
-    left: -10px;
-    top: 1.5rem;
-    color: #fff !important;
 }

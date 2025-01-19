@@ -1,6 +1,6 @@
 .AgentifyContainer-btn{
     width: 9rem;
-    height: 2rem;
+    height: 3rem;
     border-radius: 2rem;
     border: 1px solid #B2A1FC;
     background-color: transparent;
@@ -10,14 +10,22 @@
 .AgentifyContainer-header-text{
     font-size: 2.5rem;
     padding: 0px;
+    letter-spacing: -0.06em;
     margin: 0px;
+    margin-bottom: .45rem;
+    line-height: 3rem;
     text-align: center;
+    font-family: 'Inter', sans-serif;  /* Applying the Inter font */
+
 }
 
 .AgentifyContainer-sub-header-text{
     font-size: 0.9rem;
+    line-height: 1.5rem;
     text-align: center;
     color: #C9D5FF;
+    font-family: 'Inter', sans-serif;  /* Applying the Inter font */
+
 }
 
 .AgentifyContainer-for-details{
@@ -26,10 +34,18 @@
     /* border: 1px solid #fff; */
     padding: 1rem 0px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    flex-wrap: wrap;
     margin: 1rem;
+}
+
+.AgentifyContainer-for-details .row {
+  width: 100%;
+  display: flex;
+}
+
+.AgentifyContainer-for-details .row div {
+  flex: 1;
 }
 
 .AgentifyContainer-for-details-item-left{
@@ -49,11 +65,11 @@
     -webkit-filter: grayscale(100%); 
     filter: grayscale(100%);
     border: 1px solid #aaa;
-    border-radius: 16px;
+    border-radius: 3rem;
     padding:0px 2rem !important;
-    width: 31rem;
+    width: 40%;
     margin-right:  0.5rem;
-    height: 18rem;
+    height: 25rem;
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
@@ -65,11 +81,15 @@
   .AgentifyContainer-left-content-header {
     font-size: 1.5rem;
     margin-bottom: 8px;
+    font-family: 'DM Sans', sans-serif;
+
     z-index: 10;
   }
   
   .AgentifyContainer-left-content-p {
     font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+
     line-height: 1.5;
     color: #D1D1D1; 
   }
@@ -81,11 +101,11 @@
     /* -webkit-filter: grayscale(100%); 
     filter: grayscale(100%); */
     border: 1px solid #aaa;
-    border-radius: 16px;
+    border-radius: 3rem;
     padding:0px 2rem !important;
-    width: 31.5rem;
+    width: 40%;
     margin-left:  0.5rem;
-    height: 18rem;
+    height: 25rem;
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
@@ -103,17 +123,30 @@
   }
 
   .AgentifyContainer-right-content-header {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-family: 'DM Sans', sans-serif;
+
     margin-bottom: 8px;
     z-index: 10;
   }
   
   .AgentifyContainer-right-content-p {
-    font-size: 14px;
+    font-size: 1rem;
     line-height: 1.5;
+    font-family: 'DM Sans', sans-serif;
+
     color: #D1D1D1; 
     z-index: 10;
   }  
+
+  
+.AgentifyContainer-for-details .row div .appscreenshot-container {
+  position: absolute;
+  scale: .9;
+  right: 10rem;
+  top: -1rem;
+}
+
 
 
 /* 
@@ -126,16 +159,15 @@
 } */
 
 .AgentifyContainer-for-details-item-third{
-    width: calc(90% - 5rem);
-    height: 18rem;
-    padding:0px 7rem ;
+    width: 90%;
+    padding: 5rem 1rem;
     border: 1px solid #aaa; 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     margin: 1rem 0px;
-    border-radius: 1rem;
+    border-radius: 3rem;
     background: rgb(255,255,255);
     position: relative;
     overflow: hidden;
@@ -143,7 +175,151 @@
 }
 
 .AgentifyContainer-pop{
-  position: absolute;
-  top: -4.5rem;
-  left: 50rem;
+  position:absolute;
+  top: -17.5rem;
+  left: 70rem;
+}
+.AgentifyContainer-for-details-item-left-content {
+  margin-bottom: 50px;
+  margin-left: 5%;
+}
+.AgentifyContainer-left-content-p {
+  font-size: 1.2rem;
+}
+.AgentifyContainer-left-content-header {
+  font-size: 1.8rem;
+}
+.AgentifyContainer-for-details-item-right-content {
+  margin-bottom: 50px;
+  margin-left: 5%;
+  
+}
+.AgentifyContainer-for-details-item-right-content p{
+  font-size: 1.3rem;
+}
+
+@media screen and (max-width: 900px) {
+
+  .AgentifyContainer-for-details {
+    gap: 1rem;
+  }
+
+  .AgentifyContainer-for-details .row {
+    gap: 1rem;
+  }
+
+  .AgentifyContainer-for-details-item-right-card, .AgentifyContainer-for-details-item-left-card {
+    width: 90% !important;
+    margin: 0 auto !important;
+  }
+
+  .AgentifyContainer-for-details-item-third {
+    padding: 3rem 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .AgentifyContainer-for-details-item-third .text {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+  .appscreenshot-container {
+    all: unset !important;
+    position: relative !important;
+    scale: .85 !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .agentify-container {
+    padding: 20px;
+  }
+
+  .container-content {
+    flex-direction: column;
+  }
+
+  .content-section {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .AgentifyContainer-header-text {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+
+  .AgentifyContainer-for-details {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .AgentifyContainer-for-details .row {
+    flex-direction: column;
+    max-width: 95%;
+  }
+
+  .AgentifyContainer-for-details .row .AgentifyContainer-for-details-item-left-content,
+  .AgentifyContainer-for-details .row .AgentifyContainer-for-details-item-right-content {
+    margin: 2rem;
+    margin-top: 6rem !important;
+    
+  }
+
+  .AgentifyContainer-for-details .row .AgentifyContainer-for-details-item-right-content {
+    margin: 2rem;
+    margin-top: 3.5rem !important;
+    
+  }
+
+  .AgentifyContainer-for-details .row .AgentifyContainer-left-content-header,
+  .AgentifyContainer-for-details .row .AgentifyContainer-right-content-header {
+    font-size: 1.15rem;
+  }
+
+  
+  .AgentifyContainer-for-details .row .AgentifyContainer-left-content-p,
+  .AgentifyContainer-for-details .row .AgentifyContainer-right-content-p {
+    font-size: .9rem;
+  }
+
+
+  .AgentifyContainer-for-details-item-left-card,
+  .AgentifyContainer-for-details-item-right-card {
+    width: 100%;
+    margin: 1rem 0;
+    height: 18rem;
+    border-radius: 2rem;
+  }
+
+
+  .AgentifyContainer-right-content-header {
+    font-size: 2rem;
+  }
+
+  .AgentifyContainer-right-content-p {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container-heading {
+    font-size: 24px;
+  }
+
+  .feature-item {
+    padding: 15px;
+  }
 }

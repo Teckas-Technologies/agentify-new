@@ -46,33 +46,19 @@
 
 .features-circle-design{
     position: absolute;
-    width: 20rem;
+    width: 15rem;
     height: 15rem;
-    border-radius: 30%;
+    border-radius: 50%;
     background: rgb(178,161,252);
     /* filter: blur(1rem); */
-    filter: blur(2rem);
+    filter: blur(4rem);
     background: radial-gradient(circle, rgba(178, 161, 252, 0.171) 34%, rgba(178, 161, 252, 0.084) 94%);
     z-index: 1;
     top: -6rem;
-    left: -5rem;
+    left: -3rem;
     overflow: hidden;
 }
 
-.center-blur{
-    position: absolute;
-    width: 40rem;
-    height: 15rem;
-    border-radius: 30%;
-    background: rgb(178,161,252);
-    /* filter: blur(1rem); */
-    filter: blur(3.5rem);
-    background: radial-gradient(circle, rgba(178, 161, 252, 0.171) 34%, rgba(178, 161, 252, 0.084) 94%);
-    z-index: 1;
-    top: 6rem;
-    left: 27%;
-    overflow: hidden;
-}
 .features-cover-container-content{
     position: absolute;
     width: 100vw;
@@ -113,55 +99,4 @@
     background: linear-gradient(180deg, rgba(178,161,252,0.20229341736694673) 0%, rgba(106,96,150,0.10425420168067223) 91%);
 }
 
-.attractive-frame-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
 
-.attractive-frame {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-
-.app-screenshot {
-    width: 100%;
-
-    position: absolute;
-    top: 200px;
-    right: 100px;
-    width: 360px;
-    height: auto;
-    scale: .8;
-    background-color: #131724;
-}
-
-@media screen and (max-width: 1250px) {
-    .app-screenshot {
-        scale: .67;
-        opacity: .6;
-    }
-}
-
-@media screen and (max-width: 850px) {
-    .app-screenshot {
-        all: unset;
-        scale: .7;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-
-@media screen and (max-width: 800px) {
-    
-    .features-cover-container{
-        height: 120vh;
-        justify-content: flex-start;
-    }
-}

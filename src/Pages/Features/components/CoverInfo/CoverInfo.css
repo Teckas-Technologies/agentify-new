@@ -1,54 +1,271 @@
-.coverinfo-container{
-    width: auto;
-    min-height: 20rem;
-    margin: 2rem;
+.coverinfo-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
 }
 
-.coverinfo-header-text{
-    font-size: 2.5rem;
+
+
+.coverinfo-header-text {
+    font-size: 3.5rem;
+    letter-spacing: -3px;
     text-align: center;
+    font-family: 'Inter', sans-serif;
     padding: 0px;
+    padding-top: 1rem;
     margin: 0px;
 }
 
-.coverinfo-sub-header-text{
-    font-size: 1rem;
+.coverinfo-sub-header-text {
+    font-size: 1.2rem;
     text-align: center;
+    line-height: 1.2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: .5rem;
     color: #D7D7D7;
-    
+    font-family: 'Inter', sans-serif;
 }
 
-.coverinfo-action-btn{
+.sub-header-below-buttons {
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #D7D7D7;
+    font-family: 'Inter', sans-serif;
+}
+
+.coverinfo-action-btn {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    scale: .8;
 }
 
-.coverinfo-getstart-bnt{
+.coverinfo-getstart-bnt {
     background: rgb(178,161,252) !important;
     background: linear-gradient(270deg, rgba(178,161,252,1) 0%, rgba(171,189,254,1) 91%) !important;
     text-transform: none !important;
-    /* color: #fff !important; */
-    height: 3rem !important;
+    height: 4.8rem !important;
     margin: 0px 0.5rem !important;
-    border-radius: 2rem !important;
-    width: 14rem;
+    border-radius: 6rem !important;
+    width: 17rem;
     position: relative;
-    font-size: 1rem !important;
+    font-size: 1.5rem !important;
 }
 
-.coverinfo-bnt{
-   background-color: transparent;
-   color: #b2a1fc !important;
-   border: 1px solid #b2a1fc !important;
-   text-transform: none !important;
-    height: 3rem !important;
+.coverinfo-bnt {
+    background-color: transparent;
+    color: #b2a1fc !important;
+    border: 3px solid #b2a1fc !important;
+    text-transform: none !important;
+    height: 4.8rem !important;
     margin: 0px 0.5rem !important;
-    border-radius: 2rem !important;
-    width: 14rem;
-    font-size: 1rem !important;
-
-
+    border-radius: 6rem !important;
+    width: 17rem;
+    font-size: 1.3rem !important;
 }
+
+.support-chains-section {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    margin: 1rem 0 2rem 0;
+    padding: 0 4rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.support-chains-section .supportchain-container {
+    align-items: flex-start;
+}
+
+
+@media screen and (max-width: 1480px) {
+    .attractive-frame-section {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .coverinfo-container {
+        margin: 0;
+        padding: 1rem;
+        flex-direction: column;
+        margin-bottom: 3rem;
+    }
+
+    .coverinfo-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .coverinfo-header-text {
+        font-size: 275%;
+        line-height: 1.2;
+        letter-spacing: -1px;
+        padding-top: 4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .coverinfo-sub-header-text {
+        font-size: 100%;
+        max-width: 90%;
+    }
+
+    .coverinfo-action-btn {
+        flex-direction: column;
+        width: 60%;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .coverinfo-getstart-bnt,
+    .coverinfo-bnt {
+        width: 60% !important;
+        height: 3.5rem !important;
+        font-size: 110% !important;
+        margin: 0 !important;
+    }
+
+    .coverinfo-bnt {
+        border-width: 1px !important;
+    }
+
+    .support-chains-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        /* border: 1px solid red; */
+        padding: 0;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .support-chains-section .supportchain-container {
+        align-items: center;
+    }
+
+    .support-chains-text {
+        color: #fff;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    .support-chains-section > div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .attractive-frame-section {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .coverinfo-container {
+        transform: scale(0.9);
+        margin: 0 auto;
+        width: 95%;
+    }
+
+    .coverinfo-header-text {
+        font-weight: 400;
+        font-size: 300%;
+        padding-top: 0rem;
+        line-height: 1.1;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: .08px;
+    }
+    
+    .coverinfo-sub-header-text {
+        font-size: 100%;
+        max-width: 90%;
+    }
+    .coverinfo-action-btn {
+        flex-direction: column;
+        
+        width: 60%;
+        gap: .8rem;
+        margin-top: 1rem;
+    }
+
+    .mobile-center {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+/* 
+    .support-chains-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .support-chains-section > div {
+        width: 70%;
+        display: flex;
+        justify-content: center;
+    } */
+}
+
+@media screen and (max-width: 500px) {
+    .coverinfo-container {
+        transform: scale(0.85);
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .coverinfo-header-text {
+        padding-top: 0%;
+        padding-bottom: .0rem;
+        font-weight: 500;
+        font-size: 255%;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: -0.1px;
+    }
+
+    .coverinfo-sub-header-text {
+        font-size: 80%;
+        max-width: 90%;
+        padding-bottom: 0rem;
+    }
+    .coverinfo-action-btn {
+        flex-direction: column;
+        
+        width: 90%;
+        gap: .8rem;
+        margin-top: 1rem;
+    }
+    /* .support-chains-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        
+    }
+
+    .support-chains-section > div {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+    } */
+}
+
+

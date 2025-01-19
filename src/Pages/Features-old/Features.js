@@ -6,9 +6,6 @@ import Agentifypop from './components/Agentifypop/Agentifypop'
 import TechnologyContainer from './components/TechnologyContainer/TechnologyContainer'
 import AgentifyContainer from './components/AgentifyContainer/AgentifyContainer'
 import Agentifyinfo from './components/Agentifyinfo/Agentifyinfo'
-import Footer from './components/Footer/Footer.js'
-import appScreenshot from "../../assets/AttractiveFrame.png"
-
 const Features=()=>{
     return(
         <>
@@ -17,16 +14,10 @@ const Features=()=>{
                 <BgmTable/>
                 <div className='features-cover-container-content'>
                     <Menu/>
-                    
-                    <CoverInfo />                    
-                    
-
-                </div>
+                    <CoverInfo />
+                    <SupportChains/>
+                    <Agentifypop />
             </div>
-            <div className='app-screenshot'>
-                {/* <AttractiveFrameImage/> */}
-                <img src={appScreenshot} alt="App Demo Screenshot" className="app-screenshot-img"/>
-                
             </div>
             <div className='features-technology-container'>
                 <TechnologyContainer />
@@ -37,9 +28,6 @@ const Features=()=>{
             <div className='features-agentifyinfo-container'>
                 <Agentifyinfo />
             </div>
-            <div className='footerr'>
-                <Footer />
-              </div>
         </div>
         </>
     )
@@ -77,9 +65,6 @@ function BgmTable(){
                     <div className='features-cover-container-lines-vl-div'/>
                 </div>
                 <div className='features-circle-design' >
-            
-                </div>
-                <div className='center-blur' >
             
                 </div>
         </>
