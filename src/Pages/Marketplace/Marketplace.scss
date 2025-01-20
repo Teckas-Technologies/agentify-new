@@ -2,6 +2,7 @@
 
 div.Marketplace {
     font-size: 12px;        
+    width: 100%;
 
     ::-webkit-scrollbar {
         width: 8px;
@@ -53,7 +54,7 @@ div.Marketplace {
             input {
                 font-family: "Inter";
                 width: 100%;
-                padding: 0 60px;
+                padding: 0 2.5rem;
                 box-sizing: border-box;
                 height: 60px;
                 background-color: transparent;
@@ -119,6 +120,8 @@ div.Marketplace {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 1rem;
+            justify-items: center !important; 
+            align-items: center;
         }
     
     }
@@ -174,10 +177,17 @@ div.Marketplace {
 
 @media screen and (max-width: 800px) {
 
+    .Dashboard {
+        width: 100%; 
+    }
+
     .marketplaceContent {
         margin-bottom: 6rem;
 
         .header {
+            width: 90vw !important;
+            box-sizing: border-box;
+
             h1 {
                 font-size: 1.2rem !important;
             }
@@ -191,6 +201,16 @@ div.Marketplace {
                 }
             }
         }
+
+        .inputContainer {
+            input {
+                padding: 0 1rem;
+            }
+        }
+    }
+
+    .agentsGridContainer {
+        padding-bottom: 1rem;
     }
 
     
@@ -211,6 +231,67 @@ div.Marketplace {
             box-shadow: 
                 0 2px 5px -1px rgba(50, 50, 93, 0.25),
                 0 1px 3px -1px rgba(0, 0, 0, 0.3) !important;
+        }
+    }
+}
+
+@media screen and (max-width: 750px) {
+
+    .Dashboard {
+
+        .header {
+            padding: 0 !important;
+            
+            h1 {
+                font-size: 1rem !important;
+            }
+            button {
+                font-size: .6rem;
+                letter-spacing: 1px;
+
+                svg {
+                    size: 16px;
+                }
+            }
+        }
+
+    }
+
+    .marketplaceContent {
+
+        .pc-menu-connect-btn {
+            padding: .5rem .75rem !important;
+        }
+
+        .inputContainer {
+            input {
+                padding: 1.5rem !important;
+            }
+
+            button {
+                padding: 0 .25rem !important;
+
+                .MuiButton-icon {
+                    margin: 0;
+                }
+                .text {
+                    display: none;
+                }
+            }
+        }
+    }
+}   
+
+@media screen and (max-width: 450px) {
+    .agentsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+        gap: 1rem !important;
+        align-items: center;
+        justify-items: center !important;
+
+        .Card {
+            margin: 0 auto !important;
+            width: 100% !important;
         }
     }
 }

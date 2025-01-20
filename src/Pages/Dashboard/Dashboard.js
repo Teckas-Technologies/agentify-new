@@ -92,7 +92,7 @@ const Dashboard = () => {
                         startIcon={ <CiFilter/> }
                         onClick={() => setShowFilters(!showFilters)}
                     >
-                        Filter by
+                        <span className="text">Filter by</span>
                     </Button>
                 </div>
                 <FormGroup className={`inputFilters ${(showFilters) ? 'show' : ''}`}>

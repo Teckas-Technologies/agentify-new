@@ -26,7 +26,7 @@ export default function Card(props: CardProps) {
     const Tag = (isDashboardCard(props)) ? Link : "div";
 
     return (
-        <Tag to={ (isDashboardCard(props) && props.id) ? `/agent-details?agentID=${props.id}` : "/"} className="Card" {...props}>
+        <Tag to={ (isDashboardCard(props) && props.id) ? `/agent-details?agentID=${props.id}` : "/"} className={`Card ${isDashboardCard(props) ? 'dashboard' : 'marketplace'}`} {...props}>
             <div className="headRow">
                 <span className="agentName">
                     <Image src={props.logo || decentramizedLogo} width={20} />
@@ -100,7 +100,11 @@ export default function Card(props: CardProps) {
                         {
                             (props.buttons || []).map((button, index: number) => {
                                 return (
-                                    <Button className={button.variant || "filled"} onClick={button.onClick} key={index}>
+                                    <Button className={button.variant || "filled"} onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        button.onClick && button.onClick();
+                                    }} key={index}>
                                         {button.text}
                                     </Button>
                                 )
