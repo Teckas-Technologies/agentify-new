@@ -26,7 +26,7 @@
 
 .features-cover-container-lines{
   position: absolute;
-  width: 100%;
+  width: 80%;
   height: 100vh;
 }
 
@@ -78,6 +78,18 @@
     left: 27%;
     overflow: hidden;
 }
+
+@media screen and (max-width: 768px) {
+    .center-blur {
+        width: 100%;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+}
+
 .features-cover-container-content{
     position: absolute;
     width: 100vw;
@@ -134,33 +146,75 @@
 
 
 .app-screenshot {
-    width: 100%;
-
+    width: 360px;
+    height: auto;
     position: absolute;
     top: 200px;
     right: 100px;
-    width: 360px;
-    height: auto;
-    scale: .8;
-    background-color: #131724;
+    scale: 0.8;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (max-width: 1260px) {
+    .features-cover-container {
+        height: 80vh;
+    }
 }
 
 @media screen and (max-width: 1250px) {
     .app-screenshot {
-        scale: .67;
-        opacity: .5;
+        width: 300px;
+        position: static;
+        scale: 0.9;
+        opacity: 0.5;
+        background-image: radial-gradient(#13172488, #131724d5, #131724, #131724) !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    .app-screenshot {
+        all: unset;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+    .features-cover-container {
+        height: 140vh;  /* This will now take effect */
+        justify-content: flex-start;
     }
 }
 
 @media screen and (max-width: 850px) {
+    
     .app-screenshot {
         all: unset;
-        scale: .7;
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 0;
+        padding: 0;
     }
+    .center-blur,.features-circle-design{
+        display: none;
+    }
+    .features-cover-container{
+        height: 120vh;
+        justify-content: flex-start;
+    }
+    .features-cover-container-lines-vl{
+        display: none;
+    }
+    .features-cover-container-lines {
+        display: none; /* Hide vertical lines */
+         /* Ensure no width is taken */
+    }
+   
 }
+
 
 
 @media screen and (max-width: 800px) {
@@ -168,5 +222,91 @@
     .features-cover-container{
         height: 120vh;
         justify-content: flex-start;
+    }
+    .features-cover-container-lines {
+        display: none; /* Hide vertical lines */
+         /* Ensure no width is taken */
+    }
+    .center-blur,.features-circle-design{
+        display: none;
+    }
+   
+}
+
+@media screen and (max-width: 768px) {
+    .features-cover-container{
+        height: 120vh;
+        justify-content: flex-start;
+    }
+    .features-cover-container-lines {
+        display: none; /* Hide vertical lines */
+         /* Ensure no width is taken */
+    }
+    .center-blur,.features-circle-design{
+        display: none;
+    }
+
+    .features-main-container {
+        width: 100%;
+        min-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .features-cover-container {
+        width: 100%;
+        min-width: 100%;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    .features-cover-container-content {
+        width: 100%;
+        min-width: 100%;
+        margin: 0;
+        padding: 0;
+        right: 0;
+    }
+
+    .coverinfo-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    .features-cover-container {
+        height: 70vh;  /* Reduced from 120vh */
+        min-height: 200px;  /* Ensures minimum height for content */
+    }
+}
+
+
+@media screen and (max-width: 610px) {
+        .features-cover-container {
+            height: 90vh; /* Reduced from 120vh */
+        }
+    }
+
+/* Add these new rules near the top of the file */
+.coverinfo-getstart-bnt,
+.coverinfo-bnt {
+    min-width: 180px !important; /* Increased base width */
+    padding: 8px 24px !important;
+}
+
+/* Adjust for smaller screens */
+@media screen and (max-width: 768px) {
+    .coverinfo-getstart-bnt,
+    .coverinfo-bnt {
+        min-width: 160px !important;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    .coverinfo-getstart-bnt,
+    .coverinfo-bnt {
+        min-width: 140px !important;
     }
 }
