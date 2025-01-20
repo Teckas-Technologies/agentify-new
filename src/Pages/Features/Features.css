@@ -5,6 +5,11 @@
     color: #fff;
 }
 
+.features-main-container .pc-menu-container {
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
+
 .features-cover-container{
     width:  100vw;
     height: 100vh;
@@ -143,7 +148,7 @@
 @media screen and (max-width: 1250px) {
     .app-screenshot {
         scale: .67;
-        opacity: .6;
+        opacity: .5;
     }
 }
 
