@@ -49,9 +49,9 @@
     }
 
     .AgentDetailsContent {
-        padding: 2rem 4rem;
+        padding: 2rem;
         display: flex;
-        gap: 4rem;
+        gap: 2rem;
 
         .AgentDetailsSection {
             flex: 1;
@@ -76,7 +76,7 @@
                     border: 1px solid rgba(#ABBDFE, .7);
                     border-radius: .6rem;
                     padding: 1rem .5rem;
-                    white-space: pre-wrap;
+                    white-space: pre-line;
                 }
             }
 
@@ -148,15 +148,40 @@
 
            
         }
-    }
-}
-
-
+    }}
+    
+    
 @media screen and (max-width: 1100px) {
     .AgentDetails {
         .AgentDetailsContent {
             flex-direction: column;
             gap: 2rem;
+            padding: 2rem !important;
+        }
+    }
+
+    table {
+        tr {
+            display: contents;
+            border: solid red
+        }
+
+        td {
+            display: block;
+            font-size: .85rem !important;
+
+            &.key {
+                padding-bottom: 0 !important;
+                font-size: 1rem !important;
+            }
+
+            &.value {
+                padding-top: .3rem !important;
+            }
+        }
+
+        tr td+td {
+            order: 1;
         }
     }
 }

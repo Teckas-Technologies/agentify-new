@@ -23,8 +23,10 @@ export default function Card(props: CardProps) {
         return (props as DashboardCardBadge).published !== undefined;
     };
 
+    const Tag = (isDashboardCard(props)) ? Link : "div";
+
     return (
-        <div className="Card" {...props}>
+        <Tag to={ (isDashboardCard(props) && props.id) ? `/agent-details?agentID=${props.id}` : "/"} className="Card" {...props}>
             <div className="headRow">
                 <span className="agentName">
                     <Image src={props.logo || decentramizedLogo} width={20} />
@@ -60,7 +62,7 @@ export default function Card(props: CardProps) {
             }
             
             <div className="descriptionAndEditContainer">
-                <span className="description">
+                <span className="cardDescription">
                     {
                         props.description || "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, quis?"
                     }
@@ -108,7 +110,7 @@ export default function Card(props: CardProps) {
                 )
             }
            
-        </div>
+        </Tag>
         
     )
 }
