@@ -95,13 +95,13 @@
 
 /* Add media query for mobile view */
 @media screen and (max-width: 768px) {
-    .TechnologyContainer-option-textcontainer p {
-        font-size: 0.9rem;  /* Increased from 0.75rem */
-        margin: 0;
-        flex: 0 1 auto;   
-        gap: 1rem;
-        white-space: nowrap;
+    
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.8);  /* Increased from 0.8 */
+        width: 115% !important;
+        gap: 1rem; /* Increased width for better readability */
     }
+    
 
     .TechnologyContainer-header-text {
         font-size: 2.2rem;
@@ -130,6 +130,7 @@
     .blur {
         display: none;
     }
+    
 }
 
 /* For very small screens */
@@ -137,6 +138,11 @@
     .TechnologyContainer-option-textcontainer {
         gap: 0.75rem;  /* Slightly increased gap */
         height: 1.5rem;
+    }
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.8);  /* Increased from 0.8 */
+        width: 115% !important;
+        gap: 1rem; /* Increased width for better readability */
     }
 
     
@@ -161,5 +167,77 @@
         flex-direction: row;  /* Stack items vertically */
         align-items: center;
         gap: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.85);
+        width: 120% !important;
+        gap: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.82);
+        width: 118% !important;
+        gap: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.8);
+        width: 115% !important;
+        gap: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.75);
+        width: 112% !important;
+        gap: 0.6rem;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.7);
+        width: 110% !important;
+        gap: 0.4rem;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.65);
+        width: 108% !important;
+        gap: 0.3rem;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.78);
+        width: 122% !important;
+        gap: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.73);
+        width: 129% !important;
+        gap: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .TechnologyContainer-option-textcontainer {
+        transform: scale(0.6);
+        width: 145% !important;
+        gap: 0.7rem;
     }
 }
