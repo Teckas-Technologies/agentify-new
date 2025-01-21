@@ -4,7 +4,8 @@ import Button from '@mui/material/Button';
 import EastIcon from '@mui/icons-material/East';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
-import image from './image.png';
+// import image from './image.png';
+import { RiMenu3Line } from "react-icons/ri";
 
 function Menu(){
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ function Menu(){
                     Connect Wallet
                 </Button>
                 <div className='mobile-only'>
-                    <MenuIcon className='hamburger-btn' onClick={toggleMenu} />
+                    <RiMenu3Line className='hamburger-btn' onClick={toggleMenu} />
                 </div>
             </div>
         </nav>
