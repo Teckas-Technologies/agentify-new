@@ -5,7 +5,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { IoIosCloseCircle } from "react-icons/io";
 import './Playground.css';
 
-import MobileMenu from "./MobileMenu";
 import PlaygroundRight from './Playground-Right';
 import LeftPanel from "./LeftPanel";
 
