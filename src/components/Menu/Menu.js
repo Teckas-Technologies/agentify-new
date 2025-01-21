@@ -2,55 +2,48 @@ import { NavLink } from 'react-router-dom'
 import './Menu.css'
 import Button from '@mui/material/Button';
 import EastIcon from '@mui/icons-material/East';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
+import image from './image.png';
 
-import { FiMenu } from 'react-icons/fi';
+function Menu(){
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
-function Menu() {
-
-    const [showMenu, setShowMenu] = useState(false);
-
-    return (
+    return(
         <>
-            <nav className='pc-menu-container'>
-                <NavLink to={"/"}>Agentify</NavLink>
-                <div className='pc-menu-items'>
-                    <NavLink to={'/dashboard'}>Dashboard</NavLink>
-                    <NavLink to={'/marketplace'}>Marketplace</NavLink>
-                    <NavLink to={'/create'}>Create Agent</NavLink>
-                    <NavLink to={'/playground'}>Playground</NavLink>
-                </div>
-                <div className='connectButtonContainer'>
-                    <Button className='pc-menu-connect-btn' endIcon={<EastIcon />}>
-                        Connect Wallet
-                    </Button>
-                </div>
-            </nav>
-
-            <div className="mobile-header">
-                <NavLink className={"logo"} to={"/"}>Agentify</NavLink>
-                <button className="hamburger-menu" onClick={() => setShowMenu(!showMenu)}>
-                    <FiMenu size={24} />
-                </button>
+        <nav className='pc-menu-container'>
+            <NavLink to={"/"}>Agentify</NavLink>
+            <div className='pc-menu-items'>
+                <NavLink to={'/features'}>Features</NavLink>
+                <NavLink to={'/marketplace'}>Marketplace</NavLink>
+                <NavLink to={'/create'}>Create Agent</NavLink>
+                <NavLink to={'/playground'}>Playground</NavLink>
             </div>
+            <div className='menu-right'>
+                <Button className='pc-menu-connect-btn' endIcon={<EastIcon />}>
+                    Connect Wallet
+                </Button>
+                <div className='mobile-only'>
+                    <MenuIcon className='hamburger-btn' onClick={toggleMenu} />
+                </div>
+            </div>
+        </nav>
 
-            {
-                (showMenu) && (
-                    <div className="mobile-menu">
-                        <div className="mobile-menu-links">
-                            <NavLink to="/dashboard">Dashboard</NavLink>
-                            <NavLink to="/marketplace">Marketplace</NavLink>
-                            <NavLink to="/create">Create Agent</NavLink>
-                            <NavLink to="/playground">Playground</NavLink>
-                        </div>
-                        <button className="connect-wallet">Connect Wallet →</button>
-                    </div>
-                )
-            }
+        {/* Mobile Menu Dropdown */}
+        <div className={`mobile-menu ${isMenuOpen ? 'show' : ''}`}>
+            <div className='mobile-menu-links'>
+                <NavLink to={'/features'} onClick={toggleMenu}>FEATURES</NavLink>
+                <NavLink to={'/marketplace'} onClick={toggleMenu}>MARKETPLACE</NavLink>
+                <NavLink to={'/create'} onClick={toggleMenu}>CREATE AN AGENT</NavLink>
+                <NavLink to={'/playground'} onClick={toggleMenu}>PLAYGROUND</NavLink>
+            </div>
+        </div>
         </>
     )
 }
-
 
 export default Menu
