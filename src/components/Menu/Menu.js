@@ -19,7 +19,7 @@ function Menu(){
         <nav className='pc-menu-container'>
             <NavLink to={"/"}>Agentify</NavLink>
             <div className='pc-menu-items'>
-                <NavLink to={'/features'}>Features</NavLink>
+                <NavLink to={'/dashboard'}>Dashboard</NavLink>
                 <NavLink to={'/marketplace'}>Marketplace</NavLink>
                 <NavLink to={'/create'}>Create Agent</NavLink>
                 <NavLink to={'/playground'}>Playground</NavLink>
@@ -37,7 +37,7 @@ function Menu(){
         {/* Mobile Menu Dropdown */}
         <div className={`mobile-menu ${isMenuOpen ? 'show' : ''}`}>
             <div className='mobile-menu-links'>
-                <NavLink to={'/features'} onClick={toggleMenu}>FEATURES</NavLink>
+                <NavLink to={'/dashboard'} onClick={toggleMenu}>DASHBOARD</NavLink>
                 <NavLink to={'/marketplace'} onClick={toggleMenu}>MARKETPLACE</NavLink>
                 <NavLink to={'/create'} onClick={toggleMenu}>CREATE AN AGENT</NavLink>
                 <NavLink to={'/playground'} onClick={toggleMenu}>PLAYGROUND</NavLink>
