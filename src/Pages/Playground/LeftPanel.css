@@ -51,6 +51,10 @@
   gap: 1rem;
 }
 
+.mobile-cards-container {
+  display: none;
+}
+
 .cards-container .Card {
   padding-bottom: 1rem;
   cursor: pointer;
@@ -100,20 +104,67 @@
 @media (max-width: 768px) {
   .left-panel {
     width: 100%;
-    height: 900px;
-    min-height: 600px;
-    margin-bottom: 16px;
+    max-height: max-content;
     min-width: unset;
+    min-height: 0 !important;
+    padding-bottom: 0;
   }
 
   .left-panel-content {
-    padding: 16px;
-    min-height: 200px;
+    padding: 1rem;
+    min-height: 0;
+  }
+
+  
+  .left-panel-content:hover {
+    background: linear-gradient(270deg, rgba(178,161,252, .1) 0%, rgba(171,189,254, .1) 91%);
+  }
+
+
+  .left-panel-header {
+    display: none;
+  }
+
+  .search-bar {
+    display: none;
   }
 
   .cards-container {
-    max-height: 900px;
-    min-height: 590px;
+    max-height: 0;
+    display: none;
+  }
+
+  .mobile-cards-container {
+    display: block;
+    cursor: pointer;
+  }
+
+  .mobile-cards-container .selectedCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: .5rem 1rem;
+  }
+
+  .mobile-cards-container .selectedCard .left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .75rem;
+  }
+
+  
+  .mobile-cards-container .selectedCard .left .icon, .mobile-cards-container .selectedCard .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mobile-cards-container .selectedCard .left .title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
   }
 
   .search-bar {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
 
-function SearchBar({ onSearch }) {
+function SearchBar({ onSearch, className }) {
   const [query, setQuery] = useState('');
 
   const handleChange = (e) => {
@@ -11,7 +11,7 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <div className="search-bar">
+    <div className={className || "search-bar"}>
       <input
         type="text"
         placeholder="Search for agents..."

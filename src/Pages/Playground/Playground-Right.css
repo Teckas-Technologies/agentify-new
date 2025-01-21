@@ -224,6 +224,7 @@
   
     .playground-header {
       padding: 16px;
+      border-bottom: none;
     }
   
     .playground-content {
