@@ -20,6 +20,7 @@
 
 .left-panel-header h2 {
   color: #ffffff;
+  margin-bottom: 1rem;
   font-size: 20px;
   font-weight: 600;
   white-space: nowrap;
@@ -43,7 +44,7 @@
 .cards-container {
   flex: 1;
   overflow-y: auto;
-  padding-right: 10px;
+  /* padding-right: 10px; */
   min-height: 300px;
 
   display: flex;
@@ -58,6 +59,8 @@
 .cards-container .Card {
   padding-bottom: 1rem;
   cursor: pointer;
+  margin: 0 auto;
+  width: 100%;
 }
 
 

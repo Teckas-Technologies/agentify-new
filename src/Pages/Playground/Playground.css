@@ -320,6 +320,7 @@
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
+  margin-top: 4rem !important;
 }
 
 .agent-select-modal-header {
@@ -378,7 +379,13 @@
   overflow-y: auto;
 }
 
+.agent-select-modal-cards-container .card-wrapper {
+  display: flex;
+}
+
 .agent-select-modal-cards-container .Card {
+  max-width: 100%;
+  width: 100%;
   cursor: pointer;
   padding: 1.5rem 1rem;
   padding-bottom: .25rem;

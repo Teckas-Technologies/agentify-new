@@ -107,6 +107,11 @@
         align-items: center;
     }
 
+    .pc-menu-connect-btn {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+
     .pc-menu-items {
         display: none;
     }
@@ -168,11 +173,6 @@
 @media screen and (max-width: 320px) {
     .pc-menu-container {
         padding: 0.5rem;
-    }
-
-    .pc-menu-connect-btn {
-        padding: 0.5rem 1rem !important;
-        font-size: 0.9rem !important;
     }
 
     .hamburger-btn {
