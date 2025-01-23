@@ -10,10 +10,12 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import Card from "../../components/Card/Card.tsx";
 import dashboardCards from "../../data/dashboardCards.js";
 
+import { useNavigate } from 'react-router-dom';
+
 import "./Dashboard.scss"
 
 const Dashboard = () => {
-
+    const navigate = useNavigate();
     const [filters, setFilters] = useState([
         "Memes",
         "DeFi",
@@ -80,7 +82,7 @@ const Dashboard = () => {
             <div className='DashboardContent'>
                 <div className='header'>
                     <h1>Agent Dashboard</h1>
-                    <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />}>
+                    <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />} onClick={() => navigate("/create")}>
                         Create new Agent
                     </Button>
                 </div>

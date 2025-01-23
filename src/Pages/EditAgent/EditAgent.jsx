@@ -51,8 +51,8 @@ const EditAgent = () => {
             <form className="EditAgentContent" onSubmit={() => {}}>
                 
                 <div className="EditAgentSection">
-                    <h1>Edit Agent</h1>
-                    <h3>Upload your ABIs and create agents with help of AI</h3>
+                    <h2>Edit Agent</h2>
+                    <h4>Upload your ABIs and create agents with help of AI</h4>
                     
                     <div className="abi">
                         <TextField
@@ -84,7 +84,7 @@ const EditAgent = () => {
                     </div>
 
                     <div className="contract">
-                        <h1>Enter Contract Details</h1>
+                        <h2>Enter Contract Details</h2>
 
                         <label htmlFor="contractAddress">Smart Contract Address</label>
                         <input
@@ -105,7 +105,7 @@ const EditAgent = () => {
                 </div>
 
                 <div className="agentPurposeSection">
-                    <h1>Agent Purpose</h1>
+                    <h2>Agent Purpose</h2>
                     <TextField
                         id="agentPurpose"
                         placeholder="Write your description"
@@ -120,6 +120,30 @@ const EditAgent = () => {
                         }}
                     />
 
+                    <h2 style={{marginTop: "5px"}}>Instructions</h2>
+                        <TextField
+                            id="agentInstructions"
+                            placeholder="Write your instructions for functions which is listed in the ABI..."
+                            multiline
+                            rows={6}
+                            variant="filled"
+                            slotProps={{
+                                input: {
+                                disableUnderline: true,
+                            },
+                        }}
+                    />
+                    
+                    <div className="EditAgentSection" style={{padding: 0}}>
+                        <div className="contract" style={{marginTop: 0}}>
+                            <label htmlFor="agentName" style={{marginTop: "20px"}}>Tags</label>
+                            <input
+                                id='tags'
+                                placeholder='Ex. DeFi, Memes, DAO, etc..'
+                            />
+                        </div>
+                    </div>
+
                     <div className="buttons">
                         <Button className='outlined'>
                             Discard
@@ -130,7 +154,8 @@ const EditAgent = () => {
                                 setShowPopup(!showPopup)
                             }}
                         >
-                            Create Agent
+                            {/* Create Agent */}
+                            Save Changes
                         </Button>
                     </div>
 

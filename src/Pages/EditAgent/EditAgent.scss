@@ -31,12 +31,12 @@
         background-color: transparent;
     }
 
-    h1 {
-        font-weight: 500;
+    h2 {
+        font-weight: 400;
         margin: 0;
     }
 
-    h3 {
+    h4 {
         font-weight: 300;
         margin: .25rem 0;
         opacity: .8;
@@ -64,7 +64,7 @@
                     textarea {
                         color: white;
                         font-family: "DM Sans";
-                        padding: 1.5rem;
+                        padding: 0 1.5rem;
                     }
                 }
 
@@ -173,6 +173,39 @@
         .editAgentControls {
             button {
                 padding: 1rem 1.5rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .EditAgent {
+        .EditAgentContent {
+            .EditAgentSection {
+                .abi {
+                    .MuiFormControl-root {
+                        textarea {
+                            color: white;
+                            font-family: "DM Sans";
+                            padding: 0 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #contractAddress,
+    #agentName,
+    #tags {
+        padding: 20px 1.5rem;
+    }
+
+    .EditAgent {
+        .EditAgentContent {
+            padding: 1rem;
+            .EditAgentSection {
+                padding: 0.5rem;
             }
         }
     }
