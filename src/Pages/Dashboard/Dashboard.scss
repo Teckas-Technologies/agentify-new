@@ -1,5 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
+.DashboardContent {
+    width: 90%;
+}
+
+.inputContainer {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 800px) {
+    .DashboardContent {
+        width: 100%;
+    }
+
+    .inputContainer {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
 div.Dashboard {
     font-size: 12px;
     width: 100%;
@@ -23,7 +43,7 @@ div.Dashboard {
 
 
     .DashboardContent {
-        width: 90%;
+        // width: 100%;
         margin: 0 auto;
         margin-bottom: 10rem;
         display: flex;
@@ -36,8 +56,7 @@ div.Dashboard {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: .5rem 0;
-            padding: 0 .5rem;
+            margin: 0.5rem auto;
             
             h1 {
                 font-family: "DM Sans";
@@ -49,7 +68,7 @@ div.Dashboard {
         .inputContainer {
             height: auto;
             position: relative;
-            width: 100%;
+            // width: 100%;
           
             input {
                 font-family: "Inter";

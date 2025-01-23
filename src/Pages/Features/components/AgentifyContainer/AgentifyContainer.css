@@ -161,8 +161,8 @@
 } */
 
 .AgentifyContainer-for-details-item-third {
-  width: 90%;
-  padding: 5rem 1rem;
+  width: 100%;
+  padding: 5rem 2rem;
   border: 1px solid #aaa;
   display: flex;
   flex-direction: row;
@@ -455,7 +455,12 @@
 
   .AgentifyContainer-for-details-item-third {
     flex-direction: column;
-    padding: 20px;
+    /* padding: 20px; */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 3rem;
+    padding-bottom: 0;
+
   }
 
   .AgentifyContainer-for-details-item-third .text {
@@ -500,7 +505,7 @@
   }
 
   .AgentifyContainer-for-details-item-third {
-    width: 90%;
+    width: 100%;
   }
 
   .responsive-image {

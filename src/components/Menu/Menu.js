@@ -16,7 +16,7 @@ function Menu(){
 
     return(
         <>
-        <nav className='pc-menu-container'>
+        <nav className='pc-menu-container' style={{position: isMenuOpen ? "fixed" : "sticky"}}>
             <NavLink to={"/"}>Agentify</NavLink>
             <div className='pc-menu-items'>
                 <NavLink to={'/dashboard'}>Dashboard</NavLink>

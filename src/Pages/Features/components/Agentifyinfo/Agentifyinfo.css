@@ -50,6 +50,7 @@
     align-items: center;
     margin-right: 1rem;
     font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
 }
 
 .agentifyinfo-sec{
@@ -66,19 +67,20 @@
 }
 
 .image {
-    margin-left: 80px;
+    /* margin-left: 80px; */
     font-family: 'DM Sans', sans-serif;
     font-size: 20px;
-    margin-top: -50px;
-    margin-bottom: 3px;
+    line-height: 25px;
+    /* margin-top: -50px;
+    margin-bottom: 3px; */
 }
 
 .description {
     color: rgba(255, 255, 255, 0.301);
     font-size: 15px;
-    margin-left: 80px;
+    /* margin-left: 80px; */
     font-family: 'DM Sans', sans-serif;
-    margin-top: -28px;
+    /* margin-top: -28px; */
 }
 
 .circle-image {
@@ -86,6 +88,12 @@
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.text-holder {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .agentifyinfo-sec,
@@ -111,6 +119,18 @@
     margin: 0%;
 }
 
+.agentifyinfo-first-navigationbtn-cnt {
+  margin-top: 1rem;
+}
+
+.review {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+  margin-top: 1rem;
+}
+
 @media screen and (max-width: 1068px) {
   .agentifyinfo-container {
     flex-direction: column;
@@ -121,16 +141,16 @@
   }
 
   .agentifyinfo-first {
-    padding-left: 16px;
-    padding-right: 16px;
+    /* padding-left: 16px;
+    padding-right: 16px; */
     width: 100%;
     box-sizing: border-box;
     margin-left: 0;
   }
 
   .agentifyinfo-sec {
-    padding-left: 16px;
-    padding-right: 16px;
+    /* padding-left: 16px;
+    padding-right: 16px; */
     width: 100%;
     box-sizing: border-box;
   }
@@ -163,7 +183,6 @@
   .agentifyinfo-first-navigationbtn-cnt {
     display: flex;
     gap: 12px;
-    margin-bottom: 40px;
   }
 
   .agentifyinfo-first-navigationbtn {
@@ -180,21 +199,21 @@
   .agentifyinfo-sec-covertxt {
     font-size: 20px;
     line-height: 1.5;
-    margin-bottom: 24px;
+    /* margin-bottom: 24px; */
     color: #FFFFFF;
   }
 
   .circle-image {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
   }
 
   .image {
     font-size: 18px;
     font-weight: 500;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
   }
 
   .description {

@@ -9,12 +9,12 @@
         background-color: transparent;
     }
 
-    h1 {
-        font-weight: 500;
+    h2 {
+        font-weight: 400;
         margin: 0;
     }
 
-    h3 {
+    h4 {
         font-weight: 300;
         margin: .25rem 0;
         opacity: .8;
@@ -42,7 +42,7 @@
                     textarea {
                         color: white;
                         font-family: "DM Sans";
-                        padding: 1.5rem;
+                        padding: 0 1.5rem;
                     }
                 }
 
@@ -149,12 +149,49 @@
     }
 }
 
+.tag-view {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #ABBDFE, #B2A1FC);
+    border: 2px solid #B2A1FC;
+    padding: .1rem .4rem;
+    border-radius: 2rem;
+    color: black;
+}
+
 
 @media screen and (max-width: 1100px) {
     .CreateAgent {
         .createAgentContent {
             flex-direction: column;
             gap: 2rem;
+            padding: 0.5rem;
         }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .CreateAgent {
+        .createAgentContent {
+            .createAgentSection {
+                .abi {
+                    .MuiFormControl-root {
+                        textarea {
+                            color: white;
+                            font-family: "DM Sans";
+                            padding: 0 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #contractAddress,
+    #agentName,
+    #tags {
+        padding: 20px 1.5rem;
     }
 }
