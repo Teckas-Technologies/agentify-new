@@ -34,6 +34,24 @@
     transform: translate(-50%, -50%);   
 }
 
+@media screen and (min-width: 1480px) {
+    .pc-menu-items {
+        gap: 4rem;
+    }
+}
+
+@media (min-width: 1280px) and (max-width: 1479px) {
+    .pc-menu-items {
+        gap: 3rem;
+    }
+}
+
+@media (min-width: 1150px) and (max-width: 1279px) {
+    .pc-menu-items {
+        gap: 2rem;
+    }
+}
+
 .pc-menu-items a {
     font-family: "Inter" !important;
     font-weight: 400;

@@ -5,7 +5,7 @@ import CallMadeIcon from '@mui/icons-material/CallMade';
 import SupportChains from '../Supportchains/SupportChains';
 
 function CoverInfo(){
-    return(
+    return( 
         <>
         <div className='coverinfo-container'>
             <div className='coverinfo-content'>

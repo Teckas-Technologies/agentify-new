@@ -41,7 +41,7 @@ function TechnologyContainer(){
             <p>SmartAgent</p>
         </div>
 
-        <p className='TechnologyContainer-cover-text' >Unilimited PreBuilt Agents to Try</p>
+        <p className='TechnologyContainer-cover-text' >Unlimited PreBuilt Agents to Try</p>
         <div className='blur'>
         </div>
         </>

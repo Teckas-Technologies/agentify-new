@@ -275,19 +275,40 @@
     }
 }
 
-@media screen and (max-width: 470px) {
+@media (min-width: 568px) and (max-width: 768px) {
     .features-cover-container {
-        height: 70vh;  /* Reduced from 120vh */
-        min-height: 200px;  /* Ensures minimum height for content */
+        height: 90vh;  
+        min-height: 200px;
+    }
+}
+
+@media (min-width: 420px) and (max-width: 567px) {
+    .features-cover-container {
+        height: 70vh;  
+        min-height: 200px;
+    }
+}
+
+@media (min-width: 380px) and (max-width: 419px) {
+    .features-cover-container {
+        height: 75vh;  
+        min-height: 200px;
+    }
+}
+
+@media screen and (max-width: 379px) {
+    .features-cover-container {
+        height: 85vh;  
+        min-height: 200px;
     }
 }
 
 
-@media screen and (max-width: 610px) {
+/* @media screen and (max-width: 610px) {
         .features-cover-container {
-            height: 90vh; /* Reduced from 120vh */
+            height: 90vh; 
         }
-    }
+    } */
 
 /* Add these new rules near the top of the file */
 .coverinfo-getstart-bnt,
