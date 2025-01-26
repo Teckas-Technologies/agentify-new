@@ -1,20 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import SearchBar from './SearchBar';
 import { FaChevronDown } from "react-icons/fa";
-
-
 import Card from "../../components/Card/Card.tsx";
 import './LeftPanel.css';
 
-import decentramizedLogo from "../../assets/cardLogos/decentramind.svg"
+import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
 
-// Mock data for initial cards
+function LeftPanel({ initialCards,onCardSelect, selectedCard, handleSearch, onClick, fetchAgents,searchText }) {
+  const [cards, setCards] = useState(initialCards);
+  const [filteredCards, setFilteredCards] = useState(initialCards);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+   const [selectedFilters, setSelectedFilters] = useState([]);
 
-function LeftPanel({ initialCards, onCardSelect, selectedCard, handleSearch, onClick }) {
+   const panelRef = useRef(null);
 
+  const fetchData = async (isAppending = false) => {
+      const response = await fetchAgents({
+        search: searchText,
+        tags: selectedFilters,
+        page: currentPage,
+        limit: itemsPerPage,
+      });
+  
+      if (isAppending) {
+        setCards((prevCards) => [...prevCards, ...response.agents]);
+        setFilteredCards((prevCards) => [...prevCards, ...response.agents]);
+      } else {
+        setCards(response.agents);
+        setFilteredCards(response.agents);
+      }
+  
+      setTotalPages(response.page);
+    };
+  
+    useEffect(() => {
+      setCurrentPage(1);
+      fetchData(false);
+    }, [searchText, selectedFilters]);
+  
+    useEffect(() => {
+      const handleScroll = () => {
+        const container = panelRef.current;
+        if (!container) return;
+        if (
+          currentPage < totalPages &&
+          !loading
+        ) {
+          setCurrentPage((prevPage) => prevPage + 1);
+        }
+      };
+  
+      const container = panelRef.current;
+      if (container) {
+        container.addEventListener('scroll', handleScroll);
+      }
+  
+      return () => {
+        if (container) {
+          container.removeEventListener('scroll', handleScroll);
+        }
+      };
+    }, [currentPage, totalPages, loading]);
+  
+    useEffect(() => {
+      if (currentPage > 1) {
+        fetchData(true); 
+      }
+    }, [currentPage]);
+  
+
+  // Automatically select the first card after cards update
   useEffect(() => {
-    onCardSelect(initialCards[0]);
-  }, []);
+    onCardSelect(cards[0]);
+  }, [cards]);
 
   return (
     <div className="left-panel">
@@ -23,25 +84,26 @@ function LeftPanel({ initialCards, onCardSelect, selectedCard, handleSearch, onC
       </div>
       <div className="left-panel-content">
         <SearchBar onSearch={handleSearch} />
-        <div className="cards-container">
-          {initialCards.map(card => (
-            <div 
-              key={card.id} 
+        <div className="cards-container" ref={panelRef}>
+          {filteredCards.map((card) => (
+            <div
+              key={card._id}
               onClick={() => onCardSelect(card)}
-              className={`card-wrapper ${selectedCard?.id === card.id ? 'selected' : ''}`}
+              className={`card-wrapper ${selectedCard?._id === card._id ? 'selected' : ''}`}
             >
               <Card
-                title={card.title}
-                description={card.description}
+                agentName={card.agentName}
+                agentPurpose={card.agentPurpose}
               />
             </div>
           ))}
         </div>
+        {loading && <div className="loading-spinner">Loading...</div>}
         <div className="mobile-cards-container" onClick={onClick}>
           <div className="selectedCard">
             <div className="left">
               <span className="icon">
-                <img src={decentramizedLogo} /> {/* instead of hardcoding the icon, it should come from the 'cards' array, which will contain id, title and agent logo url. */}
+                <img src={decentramizedLogo} alt="logo" />
               </span>
               <span className="title">{selectedCard?.title}</span>
             </div>
@@ -55,4 +117,4 @@ function LeftPanel({ initialCards, onCardSelect, selectedCard, handleSearch, onC
   );
 }
 
-export default LeftPanel; 
+export default LeftPanel;

@@ -7,6 +7,8 @@ import { Button, TextField } from '@mui/material';
 import { FiUpload } from "react-icons/fi";
 
 import "./CreateAgent.scss"
+import useAgentHooks from '../../Hooks/useAgentHooks';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const CreateAgent = () => {
 
@@ -15,7 +17,25 @@ const CreateAgent = () => {
     const [tags] = useState(["DeFi", "AI", "DAO", "Memes", "Investing", "Computational", "Ecosystem"]);
     const [selectedTags, setSelectedTags] = useState([]);
     const dropdownRef = useRef(null);
+    const { user } = useAuth0();
+    const {loading,error,createAgent} = useAgentHooks();
 
+    useEffect(()=>{
+        console.log(user);
+    },[user]);
+
+    const [formData, setFormData] = useState({
+        creatorName:user.name,
+        creatorId:user.sub,
+        abi: '',
+        smartContractAddress: '',
+        agentName: '',
+        agentPurpose: '',
+        chain:'asdasd',
+        agentInstructions: '',
+        creatorWalletAddress:'0xabcdef1234567890abcdef1234567890abcdef12',
+        tags: []
+    });
     const handleFocus = () => {
         setDropdownVisible(true);
     };
@@ -52,6 +72,50 @@ const CreateAgent = () => {
     const handleRemoveTag = (tag) => {
         setSelectedTags((prev) => prev.filter((t) => t !== tag));
       };
+      const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setFormData((prev) => ({
+                    ...prev,
+                    abi: event.target.result,
+                }));
+            };
+            reader.readAsText(file);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const agentData = {
+            ...formData,
+            tags: selectedTags,
+        };
+       const res = await createAgent(agentData);
+       if(res){
+        setShowPopup(true);
+        setFormData({
+            creatorName: '',
+            creatorId: '',
+            abi: '',
+            smartContractAddress: '',
+            agentName: '',
+            agentPurpose: '',
+            chain: '',
+            agentInstructions: '',
+            creatorWalletAddress: '',
+            tags: []
+        });
+       }
+    };
 
     return (
         <div className='CreateAgent'>
@@ -68,8 +132,11 @@ const CreateAgent = () => {
                 />
             </FullscreenOverlay>
 
-            <form className="createAgentContent" onSubmit={() => {}}>
-                
+            <form className="createAgentContent"onSubmit={(e) => {
+            e.preventDefault(); 
+            handleSubmit(); 
+        }}>
+                        
                 <div className="createAgentSection">
                     <h2>Create New Agent</h2>
                     <h4>Upload your ABIs and create agents with help of AI</h4>
@@ -81,6 +148,9 @@ const CreateAgent = () => {
                             multiline
                             rows={6}
                             variant="filled"
+                            value={formData.abi}
+                            onChange={handleInputChange}
+                            id="abi"
                             slotProps={{
                                 input: {
                                     disableUnderline: true,
@@ -97,6 +167,7 @@ const CreateAgent = () => {
                                 <input
                                     type="file"
                                     hidden
+                                    onChange={handleFileUpload}
                                 />
                             </Button>
                             {/* <input type="file" id="file" name="file"></input> */}
@@ -106,10 +177,12 @@ const CreateAgent = () => {
                     <div className="contract">
                         <h2>Enter Contract Details</h2>
 
-                        <label htmlFor="contractAddress">Smart Contract Address</label>
+                        <label htmlFor="smartContractAddress">Smart Contract Address</label>
                         <input
-                            id="contractAddress"
+                            id="smartContractAddress"
                             placeholder='Ex. 0x1234abcd5678efgh9012ijkl3456mnop7890qrst'
+                            value={formData.smartContractAddress}
+                            onChange={handleInputChange}
                         />
                         <span className="info">
                             Ensure the address corresponds to the uploaded ABI file.
@@ -119,6 +192,8 @@ const CreateAgent = () => {
                         <input
                             id='agentName'
                             placeholder='Ex. Customer Support Chatbot'
+                            value={formData.agentName}
+                            onChange={handleInputChange}
                         />
                     </div>
                     
@@ -132,6 +207,8 @@ const CreateAgent = () => {
                         multiline
                         rows={6}
                         variant="filled"
+                        value={formData.agentPurpose}
+                        onChange={handleInputChange}
                         slotProps={{
                             input: {
                                 disableUnderline: true,
@@ -146,6 +223,8 @@ const CreateAgent = () => {
                         multiline
                         rows={6}
                         variant="filled"
+                        value={formData.agentInstructions}
+                        onChange={handleInputChange}
                         slotProps={{
                             input: {
                                 disableUnderline: true,
@@ -242,8 +321,9 @@ const CreateAgent = () => {
                             onClick={() => {
                                 setShowPopup(!showPopup)
                             }}
+                            type='submit'
                         >
-                            Create Agent
+                         {loading ? "Creating..." : "Create Agent"}
                         </Button>
                     </div>
 

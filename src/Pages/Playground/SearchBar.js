@@ -16,7 +16,10 @@ function SearchBar({ onSearch, className }) {
         type="text"
         placeholder="Search for agents..."
         value={query}
-        onChange={handleChange}
+        onChange={(e) => {
+          e.stopPropagation();
+          handleChange(e);
+        }}
         className="search-input"
       />
       <div className="search-icon">

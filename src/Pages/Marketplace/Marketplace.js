@@ -13,6 +13,7 @@ import marketplaceCards from "../../data/marketplaceCards.js";
 
 import "./Marketplace.scss"
 import { useNavigate } from 'react-router-dom';
+import useAgentHooks from '../../Hooks/useAgentHooks.js';
 
 const Marketplace = () => {
 
@@ -32,6 +33,36 @@ const Marketplace = () => {
 
     const [cards, setCards] = useState([])
     const [filteredCards, setFilteredCards] = useState(cards);
+    const [searchText, setSearchText] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [totalPages, setTotalPages] = useState(1);
+    const pageInput = useRef();
+    const [startIndex, setStartIndex] = useState(0);
+    const [stopIndex, setStopIndex] = useState(itemsPerPage);
+
+  
+    const { fetchAgents, agents } = useAgentHooks();
+    const fetchData = async () => {
+        const response = await fetchAgents({
+          search: searchText,
+          tags: selectedFilters,
+          page: currentPage,
+          limit: itemsPerPage,
+        });
+        setCards(response.agents);
+        setFilteredCards(response.agents);
+        setTotalPages(response.page);
+      };
+
+      useEffect(() => {
+        fetchData();
+      }, [searchText, selectedFilters, currentPage]);
+      
+      const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+      };
+  
 
     useEffect(() => {
         // we will be doing an API call here to get the cards.
@@ -39,24 +70,25 @@ const Marketplace = () => {
         setFilteredCards(marketplaceCards);
     }, []);
 
+    const handleFilterChange = (filter) => {
+        setSelectedFilters((prevFilters) =>
+          prevFilters.includes(filter)
+            ? prevFilters.filter((item) => item !== filter)
+            : [...prevFilters, filter]
+        );
+      };
 
-    const pageInput = useRef();
-    const [itemsPerPage, setItemsPerPage] = useState(6);
-    const [startIndex, setStartIndex] = useState(0);
-    const [stopIndex, setStopIndex] = useState(itemsPerPage);
-
-    const goToPage = (index) => {
-        index++
-
-        if (index == 1) {
-            setStartIndex(0)
-            setStopIndex(itemsPerPage)
+      const goToPage = (index) => {
+        setCurrentPage(index + 1);
+      };
+    
+      const handlePagination = (direction) => {
+        if (direction === 'prev' && currentPage > 1) {
+          setCurrentPage((prevPage) => prevPage - 1);
+        } else if (direction === 'next' && currentPage < totalPages) {
+          setCurrentPage((prevPage) => prevPage + 1);
         }
-        else {
-            setStartIndex( (index - 1)*itemsPerPage )  
-            setStopIndex(index * itemsPerPage);
-        }
-    };
+      };
 
     const handlePageInputChange = () => {
         if ( pageInput.current.value > 0 && pageInput.current.value <= Math.ceil(filters.length / itemsPerPage)  ) {
@@ -92,7 +124,8 @@ const Marketplace = () => {
                 </div>
 
                 <div className="inputContainer">
-                    <input type="text" placeholder='Search any agent or keyword' onChange={(e) => search(e.target.value)} />
+                    <input type="text" placeholder='Search any agent or keyword'   onChange={handleSearchChange}
+            value={searchText} />
                     <Button 
                         variant='filled' 
                         startIcon={ <CiFilter/> }
@@ -118,16 +151,7 @@ const Marketplace = () => {
                                 className='filter' 
                                 control={
                                     <Checkbox 
-                                        onChange={() => {
-                                            console.log("changed checkbox")
-                                            if (selectedFilters.includes(filter)) {
-                                                console.log(`Show ${filter}`)
-                                                setSelectedFilters(selectedFilters.filter((item) => item !== filter));
-                                            } else {
-                                                console.log(`Hide ${filter}`)
-                                                setSelectedFilters([...selectedFilters, filter]);
-                                            }
-                                        }}
+                                    onChange={() => handleFilterChange(filter)}
                                         sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
@@ -151,13 +175,7 @@ const Marketplace = () => {
                                 return (
                                     <Card
                                         key={index}
-                                        title={card.title}
-                                        category={card.category}
-                                        verified={card.verified}
-                                        creator={card.creator}
-                                        description={card.description}
-                                        stats={card.status}
-                                        buttons={card.buttons}
+                                        {...card}
                                     />
                                 )
                             })
@@ -169,39 +187,35 @@ const Marketplace = () => {
 
           
 
-            <div className="bottomPagination">
-                <div className="pagination">
-                    {
-                        // length is less than 8 pages. only show 8 buttons (or less)
-                        (Math.ceil(cards.length / itemsPerPage) < 8) ? (
-                            new Array(Math.ceil(cards.length / itemsPerPage)).fill(0).map((val, index) => <button key={index} className={(((startIndex / itemsPerPage)) == index) ? "active" : ""} onClick={() => goToPage(index)}>{index + 1}</button>)
-                        ) : (
-                            // length is more than 8. show 8 buttons and add ... in the middle and < > buttons
-                            <>
-                                <button className='leftArrow' disabled={(startIndex === 0)} onClick={() => {
-                                    if (startIndex !== 0) {
-                                        setStopIndex((stopIndex) => stopIndex - itemsPerPage);
-                                        setStartIndex((startIndex) => startIndex - itemsPerPage);
-                                    }
-
-                                }} ><FaChevronLeft size={"20px"}  /></button>
-                                {
-                                    new Array(8).fill(0).map((val, index) => <button key={index} className={(((startIndex / itemsPerPage)) == index) ? "active" : ""} onClick={() => goToPage(index)}>{index + 1}</button>)
-                                }
-                                
-                                
-                                <button className='rightArrow' disabled={(stopIndex === (Math.ceil(cards.length / itemsPerPage) * itemsPerPage))} onClick={() => {
-                                    if (stopIndex !== (Math.ceil(cards.length / itemsPerPage) * itemsPerPage)) {
-                                        setStopIndex((stopIndex) => stopIndex + itemsPerPage);
-                                        setStartIndex((startIndex) => startIndex + itemsPerPage);
-                                    }
-
-                                }}  ><FaChevronRight  size={"20px"} /> </button>
-                            </>
-                        )
-                    }
-                </div>
-            </div>
+              <div className="bottomPagination">
+                      <div className="pagination">
+                        <button
+                          className="leftArrow"
+                          disabled={currentPage === 1}
+                          onClick={() => handlePagination('prev')}
+                        >
+                          <FaChevronLeft size="20px" />
+                        </button>
+            
+                        {Array.from({ length: totalPages }, (_, index) => (
+                          <button
+                            key={index}
+                            className={currentPage === index + 1 ? 'active' : ''}
+                            onClick={() => goToPage(index)}
+                          >
+                            {index + 1}
+                          </button>
+                        ))}
+            
+                        <button
+                          className="rightArrow"
+                          disabled={currentPage === totalPages}
+                          onClick={() => handlePagination('next')}
+                        >
+                          <FaChevronRight size="20px" />
+                        </button>
+                      </div>
+                    </div>
         </div>
     );
 }
