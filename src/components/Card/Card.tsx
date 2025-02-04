@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from 'mui-image'
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./Card.scss";
 
@@ -12,51 +12,74 @@ import VerifiedBadge from '../VerifiedBadge/VerifiedBadge.tsx';
 import { CardProps, MarketplaceCardBadge, DashboardCardBadge } from "../../types/types.ts";
 
 import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
+import useAgentHooks from "../../Hooks/useAgentHooks.js";
+import { useAuth0 } from "@auth0/auth0-react";
+export default function Card(props: DashboardCardBadge& { refreshAgents: () => void }) {
 
-export default function Card(props: CardProps) {
+    const {updateAgentStatus} = useAgentHooks();
+    const location = useLocation(); 
+    const { getAccessTokenSilently } = useAuth0();
+    useEffect(()=>{
+        const tokeen =async()=>{
+            const token = await getAccessTokenSilently();
+            console.log(token);
+        }
+        tokeen();
+    },[])
 
-    const isMarketplaceCard = (props: CardProps): props is MarketplaceCardBadge => {
-        return (props as MarketplaceCardBadge).category !== undefined;
-    };
 
-    const isDashboardCard = (props: CardProps): props is DashboardCardBadge => {
-        return (props as DashboardCardBadge).published !== undefined;
-    };
 
-    const Tag = (isDashboardCard(props)) ? Link : "div";
+    const updateStatus = async(id:any)=>{
+        await updateAgentStatus(id);
+        props.refreshAgents();
+    }
+
+     const [button,setButton]=useState({buttons: [
+    { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
+    { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+]})
+const [market,setMarketButton]=useState({buttons: [
+    { text: "Run Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+]})
+
+const isDashboard = location.pathname === "/";
+const isMarketplace = location.pathname.includes("/marketplace");
+
+
+    const Tag = isDashboard? Link : "div";
 
     return (
-        <Tag to={ (isDashboardCard(props) && props.id) ? `/agent-details?agentID=${props.id}` : "/"} className={`Card ${isDashboardCard(props) ? 'dashboard' : 'marketplace'}`} {...props}>
+        <Tag to={ (isDashboard && props._id) ? `/agent-details?agentID=${props._id}` : "/"} className={`Card ${isDashboard ? 'dashboard' : 'marketplace'}`} {...props}>
             <div className="headRow">
                 <span className="agentName">
                     <Image src={props.logo || decentramizedLogo} width={20} />
-                    {props.title || "Title not given"}
+                    {props.agentName || "Title not given"}
                 </span>
 
                 <span className="info">
-                    {isMarketplaceCard(props) && (
+                    {/* {isMarketplace && (
                         <span className="category">
-                            {props.category || "Blank"}
+                            {props.agentName || "Blank"}
                         </span>
-                    )}
+                    )} */}
                     
                     {
-                        (isMarketplaceCard(props) && props.verified) && (
+                        (isMarketplace && props) && (
                             <VerifiedBadge color={"green"} />
                         )
                     }
                     {
-                        (isDashboardCard(props) && props.published !== undefined) && (
-                            <VerifiedBadge text={(props.published) ? "Published" : "Private"} color={ (props.published) ? "green" : "red" } />
+                        (isDashboard && props.isPublished !== undefined) && (
+                            <VerifiedBadge text={(props.isPublished) ? "Published" : "Private"} color={ (props.isPublished) ? "green" : "red" } />
                         )
                     }
                 </span>
             </div>
             {
-                (props.creator) && (
+                (props.creatorName) && (
                     <div className="creator">
                         <FiUser />
-                        {props.creator || "Sabari"}
+                        {props.creatorName || "Sabari"}
                     </div>
                 )
             }
@@ -64,29 +87,47 @@ export default function Card(props: CardProps) {
             <div className="descriptionAndEditContainer">
                 <span className="cardDescription">
                     {
-                        props.description || "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, quis?"
+                        props.agentPurpose || "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, quis?"
                     }
                 </span>
                 {
-                    (isDashboardCard(props) && props.showEditButton) && (
+                    (isDashboard) && (
                         <span className="editButtonContainer">
-                            <Link to={"/edit-agent?agentID=" + props.id}>
+                            <Link to={"/edit-agent?agentID=" + props._id}>
                                 <FiEdit size={"15px"} />
                             </Link>
                         </span>
                     )
                 }
             </div>
-            
-            {
-                (isMarketplaceCard(props) && props.stats) && ( 
+
+            {isMarketplace || isDashboard &&(
                     <div className="stats">
+                        <span className="stat">
+                            <span className="number">{props.totalRequests}</span> Interactions
+                        </span>
+                        <span className="stat">
+                            <span className="number">{props.totalRequests}</span> Available Functions
+                        </span>
+                    </div>
+                    )}
+
+            {
+                (isDashboard && button) && (
+                    <div className="buttons">
                         {
-                            props.stats?.map((stat, index: number) => {
+                            (button.buttons  || []).map((button, index: number) => {
                                 return (
-                                    <span className="stat" key={index}>
-                                        <span className="number">{stat.number}</span> {stat.text}
-                                    </span>
+                                    <Button className={button.variant || "filled"} onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                         if (button.text === "Publish Now") {
+                                                updateStatus(props._id); 
+                                            }
+                                        button.onClick && button.onClick();
+                                    }} key={index}>
+                                        {button.text}
+                                    </Button>
                                 )
                             })
                         }
@@ -94,15 +135,18 @@ export default function Card(props: CardProps) {
                 )
             }
 
-            {
-                ( props.buttons) && (
+{
+                (isMarketplace && market) && (
                     <div className="buttons">
                         {
-                            (props.buttons || []).map((button, index: number) => {
+                            (market.buttons  || []).map((button, index: number) => {
                                 return (
                                     <Button className={button.variant || "filled"} onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
+                                         if (button.text === "Publish Now") {
+                                                updateStatus(props._id); 
+                                            }
                                         button.onClick && button.onClick();
                                     }} key={index}>
                                         {button.text}

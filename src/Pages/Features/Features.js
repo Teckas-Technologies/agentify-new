@@ -8,8 +8,22 @@ import AgentifyContainer from './components/AgentifyContainer/AgentifyContainer'
 import Agentifyinfo from './components/Agentifyinfo/Agentifyinfo'
 import Footer from './components/Footer/Footer.js'
 import appScreenshot from "../../assets/AttractiveFrame.png"
+import { useEffect } from 'react'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Features=()=>{
+    const { getAccessTokenSilently } = useAuth0();
+     const tokenn = async () => {
+        try {
+          const token = await getAccessTokenSilently();
+          console.log(token);
+        } catch (error) {
+          console.error("Error fetching token:", error);
+        }
+      };
+      useEffect(() => {
+        tokenn();
+      }, []);
     return(
         <>
         <div className='features-main-container'>

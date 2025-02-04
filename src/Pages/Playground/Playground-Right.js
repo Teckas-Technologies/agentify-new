@@ -2,11 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { LuCodeXml, LuMessageSquareText } from 'react-icons/lu';
 import { FiCopy } from 'react-icons/fi';
 import './Playground-Right.css';
+import useChatHooks from '../../Hooks/useChatHook';
+import { useAccount } from 'wagmi';
+import { useGeneric } from '../../Hooks/useGeneric';
 
 function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
+  const [threadId, setThreadId] = useState('');
+  const {loading,error,fetchChat} = useChatHooks();
+  const [isTyping, setIsTyping] = useState(false);
+  const { address, isConnected } = useAccount();
+  const { funcCall, getfuncTokenValue } = useGeneric();
+const [isCreating, setIsCreating] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -16,11 +25,70 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (selectedCard) {
+      setMessages([]);
+      setThreadId('');
+    }
+  }, [selectedCard]);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (inputValue.trim()) {
       setMessages([...messages, { text: inputValue, sender: 'user' }]);
       setInputValue('');
+      setIsTyping(true);
+      try {
+        const response = await fetchChat({
+          prompt:{
+            query: inputValue,
+            isWalletConnected: true
+        },
+          threadId,
+          contractAddress: selectedCard.smartContractAddress
+        });
+        if (response) {
+          if (response.data.intent === "final_json") {
+            const metaData = response.data.meta_data;
+            if (!address || !isConnected) {
+                return;
+            }
+
+            const { contract, functionName, gasLimit, parameters } = metaData;
+            console.log(functionName,gasLimit,parameters) 
+
+            if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
+                return;
+            }
+
+            setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
+            setIsCreating(true);
+
+            const res = await getfuncTokenValue(functionName, parameters, gasLimit);
+            console.log(res);
+
+            if (res?.success) {
+                if (res?.isGas) {
+                    const txData = res.data;
+                    setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <span hidden>${txData.transactionHash}</span>` }]);
+                } else {
+                    setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
+                }
+            } else {
+                setMessages((prev) => [...prev, { sender: "bot", text: "Function call execution failed!" }]);
+            }
+
+            setIsCreating(false);
+        }
+
+          setThreadId(response.threadId);
+          setMessages(prevMessages => [...prevMessages, { text: response.data.responseText, sender: 'bot' }]);
+        }
+      } catch (err) {
+        console.error("Chat error:", err);
+      }finally{
+        setIsTyping(false);
+      }
     }
   };
 
@@ -73,6 +141,14 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
                   </div>
                 </div>
               ))}
+              {isTyping && (
+                <div className="message bot typing-indicator">
+                  <div className="message-content">
+                    <span>Bot is typing...</span>
+                  </div>
+                </div>
+              )}
+           
               <div ref={messagesEndRef} />
             </div>
 

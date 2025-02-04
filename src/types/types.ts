@@ -5,25 +5,31 @@ export type BadgePropsType = {
 
 
 export type MarketplaceCardBadge = {
+    _id: string,
     logo?: string,
-    title: string,
+    agentName: string,
     category: string,
     verified: boolean,
-    creator: string,
-    description: string,
+    creatorName: string,
+    agentPurpose: string,
     stats: any,
-    buttons: any
+    buttons: any,
+    totalRequests:any,
+    availaleFunctions:any
+
 }
 
 export type DashboardCardBadge = {
-    id: string,
+    _id: string,
     logo?: string,
-    title: string,
-    published: boolean,
-    creator: string,
+    agentName: string,
+    isPublished: boolean,
+    creatorName: string,
     showEditButton: boolean,
-    description: string,
+    agentPurpose: string,
     buttons: any,
+    totalRequests:any
+    availaleFunctions:any
 }
 
 export type CardProps = MarketplaceCardBadge | DashboardCardBadge;

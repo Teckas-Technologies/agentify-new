@@ -13,69 +13,9 @@ import SearchBar from './SearchBar';
 import Card from '../../components/Card/Card.tsx';
 
 import Menu from "../../components/Menu/Menu";
+import useAgentHooks from '../../Hooks/useAgentHooks.js';
 
-const initialCards = [
-  {
-    id: 1,
-    title: 'Decentramind',
-    description: 'Suggests decentralized and intelligent operations. You can customize the code and implement it wherever you need to.'
-  },
-  {
-    id: 2,
-    title: 'SmartAgentX',
-    description: 'Advanced AI agent for smart contract interactions and blockchain operations.'
-  },
-  {
-    id: 3,
-    title: 'ChainGenie',
-    description: 'Blockchain wizard that helps you navigate complex DeFi operations with ease.'
-  },
-  {
-    id: 4,
-    title: 'CryptoHelper',
-    description: 'Your personal assistant for cryptocurrency trading and portfolio management.'
-  },
-  {
-    id: 5,
-    title: 'NFTMaster',
-    description: 'Specialized agent for NFT creation, trading, and collection management.'
-  },
-  {
-    id: 6,
-    title: 'DeFiBot',
-    description: 'Automated DeFi protocol interaction and yield farming optimization.'
-  },
-  {
-    id: 7,
-    title: 'BlockExplorer',
-    description: 'Deep insights into blockchain data and transaction analysis.'
-  },
-  {
-    id: 8,
-    title: 'TokenTracker',
-    description: 'Real-time monitoring and analytics for token performance.'
-  },
-  {
-    id: 9,
-    title: 'SmartAudit',
-    description: 'Automated smart contract auditing and security analysis.'
-  },
-  {
-    id: 10,
-    title: 'GasOptimizer',
-    description: 'Intelligent gas fee optimization for blockchain transactions.'
-  },
-  {
-    id: 11,
-    title: 'WalletGuard',
-    description: 'Secure wallet management and transaction monitoring.'
-  },
-  {
-    id: 12,
-    title: 'ChainOracle',
-    description: 'Reliable data feeds and oracle services for smart contracts.'
-  }
-];
+const initialCards = [];
 
 function Playground() {
 
@@ -87,6 +27,69 @@ function Playground() {
     const [searchQuery, setSearchQuery] = useState('');
 
   const [showAgentSelectModal, setShowAgentSelectModal] = useState(false);
+  const [filteredCards, setFilteredCards] = useState(cards);
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageInput = useRef();
+  const [startIndex, setStartIndex] = useState(0);
+  const [stopIndex, setStopIndex] = useState(itemsPerPage);
+
+
+  const { fetchAgents, agents } = useAgentHooks();
+  const fetchData = async (isAppending = false) => {
+    const response = await fetchAgents({
+      search: searchText,
+      tags: selectedFilters,
+      page: currentPage,
+      limit: itemsPerPage,
+    });
+
+    if (isAppending) {
+      setCards((prevCards) => [...prevCards, ...response.agents]);
+      setFilteredCards((prevCards) => [...prevCards, ...response.agents]);
+    } else {
+      setCards(response.agents);
+      setFilteredCards(response.agents);
+    }
+
+    setTotalPages(response.page);
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    fetchData(false);
+  }, [searchText, selectedFilters]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 100 &&
+        currentPage < totalPages
+      ) {
+        console.log("payment")
+        setCurrentPage((prevPage) => prevPage + 1);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      fetchData(true); 
+    }
+  }, [currentPage]);
+  useEffect(() => {
+    if (showAgentSelectModal) {
+      setShowAgentSelectModal(true); 
+    }
+  }, [searchText]);
+  
 
   const onCardSelect = (card) => {
     setSelectedCard(card);
@@ -99,16 +102,10 @@ function Playground() {
   };
 
   const handleSearch = (query) => {
-    setSearchQuery(query);
-    if (query.trim()) {
-      const filteredCards = initialCards.filter(card =>
-        card.title.toLowerCase().includes(query.toLowerCase()) ||
-        card.description.toLowerCase().includes(query.toLowerCase())
-      );
-      setCards(filteredCards);
-    } else {
-      setCards(initialCards);
-    }
+    setShowAgentSelectModal(true); 
+    setSearchText(query);
+    setShowAgentSelectModal(true); 
+    
   };
 
   return (
@@ -127,15 +124,15 @@ function Playground() {
               <div className="agent-select-modal-content">
                 <SearchBar className="agent-select-modal-search" onSearch={handleSearch} />
                 <div className="agent-select-modal-cards-container">
-                  {initialCards.map(card => (
+                  {filteredCards.map(card => (
                     <div
-                      key={card.id}
+                      key={card._id}
                       onClick={() => onCardSelect(card)}
-                      className={`card-wrapper ${selectedCard?.id === card.id ? 'selected' : ''}`}
+                      className={`card-wrapper ${selectedCard?._id === card._id ? 'selected' : ''}`}
                     >
                       <Card
-                        title={card.title}
-                        description={card.description}
+                        agentName={card.agentName}
+                        agentPurpose={card.agentPurpose}
                       />
                     </div>
                   ))}
@@ -151,7 +148,7 @@ function Playground() {
       </div>
       <main className="main-content">
         <div className="panels-container">
-          <LeftPanel initialCards={initialCards} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearch} onCardSelect={onCardSelect} selectedCard={selectedCard} />
+          <LeftPanel initialCards={filteredCards} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearch} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText}/>
           <PlaygroundRight 
             selectedCard={selectedCard}
             isSwitched={isSwitched}
