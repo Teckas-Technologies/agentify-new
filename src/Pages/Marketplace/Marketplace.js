@@ -64,11 +64,11 @@ const Marketplace = () => {
       };
   
 
-    useEffect(() => {
-        // we will be doing an API call here to get the cards.
-        setCards(marketplaceCards);
-        setFilteredCards(marketplaceCards);
-    }, []);
+    // useEffect(() => {
+    //     // we will be doing an API call here to get the cards.
+    //     setCards(marketplaceCards);
+    //     setFilteredCards(marketplaceCards);
+    // }, []);
 
     const handleFilterChange = (filter) => {
         setSelectedFilters((prevFilters) =>

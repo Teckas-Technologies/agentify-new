@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import './Dashboard.scss';
 import useAgentHooks from '../../Hooks/useAgentHooks.js';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,9 +35,10 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
+  const itemsPerPage = 6;
   const [totalPages, setTotalPages] = useState(1);
   const { fetchAgents, agents } = useAgentHooks();
+  const { user } = useAuth0();
   const fetchData = async () => {
     const response = await fetchAgents({
       search: searchText,
@@ -45,7 +47,7 @@ const Dashboard = () => {
       endDate,
       page: currentPage,
       limit: itemsPerPage,
-      creatorId:"adasdsad"
+      creatorId:user.sub
     });
     setCards(response.agents);
     setFilteredCards(response.agents);
@@ -157,7 +159,7 @@ const Dashboard = () => {
 
         <div className="agentsGridContainer">
           <div className="agentsGrid">
-          {filteredCards.map((card, index) => (
+          {filteredCards && filteredCards.map((card, index) => (
   <Card key={index} {...card} updatedDate={card.updatedDate} createdDate={card.createdDate} refreshAgents={fetchData} />
 ))}
 

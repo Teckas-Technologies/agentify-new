@@ -75,7 +75,7 @@ const EditAgent = () => {
                     title={"Agentify"}
                     message={`Your Agent (${ agentDetails?.agentName }) has been created successfully`}
                     buttons={[
-                        { text: "Home", variant: "outlined", onClick: () => navigate("/dashboard") },
+                        { text: "Home", variant: "outlined", onClick: () => navigate("/") },
                         { text: "Test Agent", variant: "filled", onClick: () => console.log(`Testing Agent ${agentDetails.agentName}...`) },
                     ]}
                 />

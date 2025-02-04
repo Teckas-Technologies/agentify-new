@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from 'mui-image'
 import { Button } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
@@ -13,10 +13,21 @@ import { CardProps, MarketplaceCardBadge, DashboardCardBadge } from "../../types
 
 import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
 import useAgentHooks from "../../Hooks/useAgentHooks.js";
+import { useAuth0 } from "@auth0/auth0-react";
 export default function Card(props: DashboardCardBadge& { refreshAgents: () => void }) {
 
     const {updateAgentStatus} = useAgentHooks();
     const location = useLocation(); 
+    const { getAccessTokenSilently } = useAuth0();
+    useEffect(()=>{
+        const tokeen =async()=>{
+            const token = await getAccessTokenSilently();
+            console.log(token);
+        }
+        tokeen();
+    },[])
+
+
 
     const updateStatus = async(id:any)=>{
         await updateAgentStatus(id);
@@ -31,7 +42,7 @@ const [market,setMarketButton]=useState({buttons: [
     { text: "Run Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
 ]})
 
-const isDashboard = location.pathname.includes("/dashboard");
+const isDashboard = location.pathname === "/";
 const isMarketplace = location.pathname.includes("/marketplace");
 
 
@@ -46,11 +57,11 @@ const isMarketplace = location.pathname.includes("/marketplace");
                 </span>
 
                 <span className="info">
-                    {isMarketplace && (
+                    {/* {isMarketplace && (
                         <span className="category">
                             {props.agentName || "Blank"}
                         </span>
-                    )}
+                    )} */}
                     
                     {
                         (isMarketplace && props) && (

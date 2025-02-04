@@ -26,11 +26,8 @@ function App() {
   >
       <BrowserRouter>
       <Routes>
-          <Route path="/" element={<ProtectedRoute><Features /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
-          <Route path="/dashboard" element={<ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>} />
           <Route path="/create" element={ <ProtectedRoute>
                 <CreateAgent />
               </ProtectedRoute>} />

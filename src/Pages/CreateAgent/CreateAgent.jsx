@@ -9,6 +9,8 @@ import { FiUpload } from "react-icons/fi";
 import "./CreateAgent.scss"
 import useAgentHooks from '../../Hooks/useAgentHooks';
 import { useAuth0 } from "@auth0/auth0-react";
+import { useAccount } from 'wagmi';
+import { useAppKitNetwork } from '@reown/appkit/react';
 
 const CreateAgent = () => {
 
@@ -19,6 +21,10 @@ const CreateAgent = () => {
     const dropdownRef = useRef(null);
     const { user } = useAuth0();
     const {loading,error,createAgent} = useAgentHooks();
+    const { address } = useAccount();
+    const { chainId,caipNetwork } = useAppKitNetwork();
+    
+    
 
     useEffect(()=>{
         console.log(user);
@@ -31,11 +37,11 @@ const CreateAgent = () => {
         smartContractAddress: '',
         agentName: '',
         agentPurpose: '',
-        chain:'asdasd',
+        chain:caipNetwork,
         agentInstructions: '',
-        creatorWalletAddress:'0xabcdef1234567890abcdef1234567890abcdef12',
+        creatorWalletAddress:address,
         tags: []
-    });
+    }); 
     const handleFocus = () => {
         setDropdownVisible(true);
     };
