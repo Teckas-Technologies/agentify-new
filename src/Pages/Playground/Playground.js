@@ -84,11 +84,13 @@ function Playground() {
       fetchData(true); 
     }
   }, [currentPage]);
-  useEffect(() => {
-    if (showAgentSelectModal) {
-      setShowAgentSelectModal(true); 
-    }
-  }, [searchText]);
+  
+  // commented for search close
+  // useEffect(() => {
+  //   if (showAgentSelectModal) {
+  //     setShowAgentSelectModal(true); 
+  //   }
+  // }, [searchText]);
   
 
   const onCardSelect = (card) => {
@@ -111,7 +113,7 @@ function Playground() {
   return (
     <div className="app">
 
-      <div className="agentSelectModal">
+      {showAgentSelectModal && <div className="agentSelectModal">
         <FullScreenOverlay show={showAgentSelectModal} close={() => setShowAgentSelectModal(false)}>
           <>
             {/* <div className="closeIcon">
@@ -141,7 +143,7 @@ function Playground() {
             </div>
           </>
         </FullScreenOverlay>
-      </div>
+      </div>}
 
       <div className="desktop-header">
         <Menu />

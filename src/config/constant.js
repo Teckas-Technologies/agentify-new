@@ -7,7 +7,12 @@ const presaleAddress = "0x3D95D9285742b5064052AB31415e2C3D549a723A";
 const projectId = "7f9b6509e0948e122911ca12a1352438";
 const chainId = 11155111;
 
+const PYTHON_SERVER_URL = process.env.PYTHON_SERVER_URL || "http://localhost:8000"
+const NODEJS_SERVER_URL = process.env.NODEJS_SERVER_URL || "http://localhost:3001"
+
 export const constant = {
+    PYTHON_SERVER_URL,
+    NODEJS_SERVER_URL,
     MONGODB_URI,
     PROJECT_ID,
     CHAIN_ID,

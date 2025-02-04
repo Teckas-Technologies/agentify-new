@@ -36,6 +36,7 @@ function LeftPanel({ initialCards,onCardSelect, selectedCard, handleSearch, onCl
       setTotalPages(response.page);
     };
   
+    // commented for search close
     useEffect(() => {
       setCurrentPage(1);
       fetchData(false);

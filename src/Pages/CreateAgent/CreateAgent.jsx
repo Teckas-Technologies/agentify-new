@@ -11,37 +11,62 @@ import useAgentHooks from '../../Hooks/useAgentHooks';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAccount } from 'wagmi';
 import { useAppKitNetwork } from '@reown/appkit/react';
+import { useNavigate } from 'react-router-dom';
+import useFunctionMappingHooks from '../../Hooks/useFunctionMappingHook';
 
 const CreateAgent = () => {
 
     const [showPopup, setShowPopup] = useState(false);
+    const [showFailedPop, setShowFailedPop] = useState(false);
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const [tags] = useState(["DeFi", "AI", "DAO", "Memes", "Investing", "Computational", "Ecosystem"]);
     const [selectedTags, setSelectedTags] = useState([]);
     const dropdownRef = useRef(null);
     const { user } = useAuth0();
-    const {loading,error,createAgent} = useAgentHooks();
+    const { loading, error, createAgent } = useAgentHooks();
     const { address } = useAccount();
-    const { chainId,caipNetwork } = useAppKitNetwork();
-    
-    
+    const { chainId, caipNetwork } = useAppKitNetwork();
+    const [createdAgentDetails, setCreatedAgentDetails] = useState();
+    const [errMsg, setErrorMsg] = useState("");
+    const navigate = useNavigate();
 
-    useEffect(()=>{
+    const { mapLoading, mapError, mappingText, fetchFuncMappings } = useFunctionMappingHooks();
+    const [inputData, setInputData] = useState("");
+
+
+    useEffect(() => {
         console.log(user);
-    },[user]);
+    }, [user]);
 
     const [formData, setFormData] = useState({
-        creatorName:user.name,
-        creatorId:user.sub,
+        creatorName: user.name,
+        creatorId: user.sub,
         abi: '',
         smartContractAddress: '',
         agentName: '',
         agentPurpose: '',
-        chain:caipNetwork,
+        chain: chainId.toString(),
         agentInstructions: '',
-        creatorWalletAddress:address,
+        creatorWalletAddress: address,
         tags: []
-    }); 
+    });
+
+    useEffect(() => {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            agentInstructions: mappingText // Assigns streamed text with paragraph formatting
+        }));
+    }, [mappingText]);
+    
+
+    const handleFetch = () => {
+        if(!formData.agentInstructions) {
+            if (formData.abi.trim()) {
+                fetchFuncMappings({ abi: formData.abi });
+            }
+        }
+    };
+
     const handleFocus = () => {
         setDropdownVisible(true);
     };
@@ -56,14 +81,14 @@ const CreateAgent = () => {
     // Close the dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setDropdownVisible(false);
-        }
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownVisible(false);
+            }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
@@ -77,8 +102,8 @@ const CreateAgent = () => {
 
     const handleRemoveTag = (tag) => {
         setSelectedTags((prev) => prev.filter((t) => t !== tag));
-      };
-      const handleInputChange = (e) => {
+    };
+    const handleInputChange = (e) => {
         const { id, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -105,48 +130,65 @@ const CreateAgent = () => {
             ...formData,
             tags: selectedTags,
         };
-       const res = await createAgent(agentData);
-       if(res){
-        setShowPopup(true);
-        setFormData({
-            creatorName: '',
-            creatorId: '',
-            abi: '',
-            smartContractAddress: '',
-            agentName: '',
-            agentPurpose: '',
-            chain: '',
-            agentInstructions: '',
-            creatorWalletAddress: '',
-            tags: []
-        });
-       }
+        const res = await createAgent(agentData);
+        if (res) {
+            console.log("RES:", res)
+            if(res.success) {
+                setCreatedAgentDetails(res?.data);
+                setShowPopup(true);
+                setFormData({
+                    creatorName: '',
+                    creatorId: '',
+                    abi: '',
+                    smartContractAddress: '',
+                    agentName: '',
+                    agentPurpose: '',
+                    chain: '',
+                    agentInstructions: '',
+                    creatorWalletAddress: '',
+                    tags: []
+                });
+            } else {
+                setShowFailedPop(true);
+                setErrorMsg(res?.err)
+            }
+        }
     };
 
     return (
         <div className='CreateAgent'>
             <Menu />
-            
+
             <FullscreenOverlay show={showPopup} close={() => setShowPopup(false)}>
                 <PopupModal
                     title={"Agentify"}
-                    message={"Your Agent (Customer Support Chatbot) has been created successfully"}
+                    message={`Your Agent ${createdAgentDetails?.agentName} has been created successfully`}
                     buttons={[
-                        { text: "Home", variant: "outlined", onClick: () => console.log("Going to home") },
-                        { text: "Test Agent", variant: "filled", onClick: () => console.log("Testing Agent") },
+                        { text: "Home", variant: "outlined", onClick: () => navigate('/') },
+                        { text: "Test Agent", variant: "filled", onClick: () => navigate('/playground') },
                     ]}
                 />
             </FullscreenOverlay>
 
-            <form className="createAgentContent"onSubmit={(e) => {
-            e.preventDefault(); 
-            handleSubmit(); 
-        }}>
-                        
+            <FullscreenOverlay show={showFailedPop} close={() => setShowFailedPop(false)}>
+                <PopupModal
+                    title={"Agentify"}
+                    message={`${errMsg}`}
+                    buttons={[
+                        { text: "Check Inputs", variant: "outlined", onClick: () => setShowFailedPop(false) }
+                    ]}
+                />
+            </FullscreenOverlay>
+
+            <form className="createAgentContent" onSubmit={(e) => {
+                // e.preventDefault();
+                handleSubmit(e);
+            }}>
+
                 <div className="createAgentSection">
                     <h2>Create New Agent</h2>
                     <h4>Upload your ABIs and create agents with help of AI</h4>
-                    
+
                     <div className="abi">
                         <TextField
                             className="abiInput"
@@ -164,8 +206,8 @@ const CreateAgent = () => {
                             }}
                         />
                         <div className="uploadABIBox">
-                            <Button 
-                                className="uploadABI" 
+                            <Button
+                                className="uploadABI"
                                 endIcon={<FiUpload size={"14px"} />}
                                 component="label"
                             >
@@ -202,7 +244,7 @@ const CreateAgent = () => {
                             onChange={handleInputChange}
                         />
                     </div>
-                    
+
                 </div>
 
                 <div className="agentPurposeSection">
@@ -222,7 +264,7 @@ const CreateAgent = () => {
                         }}
                     />
 
-                    <h2 style={{marginTop: "5px"}}>Instructions</h2>
+                    <h2 style={{ marginTop: "5px" }}>Instructions</h2>
                     <TextField
                         id="agentInstructions"
                         placeholder="Write your instructions for functions which is listed in the ABI..."
@@ -231,6 +273,7 @@ const CreateAgent = () => {
                         variant="filled"
                         value={formData.agentInstructions}
                         onChange={handleInputChange}
+                        onClick={handleFetch}
                         slotProps={{
                             input: {
                                 disableUnderline: true,
@@ -238,9 +281,9 @@ const CreateAgent = () => {
                         }}
                     />
 
-                    <div className="createAgentSection" style={{padding: 0}}>
-                        <div className="contract" style={{marginTop: 0, position: "relative"}}>
-                            <label htmlFor="tags" style={{marginTop: "20px"}}>Tags</label>
+                    <div className="createAgentSection" style={{ padding: 0 }}>
+                        <div className="contract" style={{ marginTop: 0, position: "relative" }}>
+                            <label htmlFor="tags" style={{ marginTop: "20px" }}>Tags</label>
                             <input
                                 id='tags'
                                 onClick={handleFocus}
@@ -252,32 +295,32 @@ const CreateAgent = () => {
                                     className="dropdown"
                                     ref={dropdownRef}
                                     style={{
-                                    position: "absolute",
-                                    bottom: "98%",
-                                    left: 0,
-                                    width: "100%",
-                                    background: "#111521",
-                                    border: "1px solid #ccc",
-                                    boxShadow: "rgba(255, 255, 255, 0.21) 1.95px 1.95px 2.6px",
-                                    borderRadius: "13px",
-                                    marginTop: "4px",
-                                    zIndex: 10,
+                                        position: "absolute",
+                                        bottom: "98%",
+                                        left: 0,
+                                        width: "100%",
+                                        background: "#111521",
+                                        border: "1px solid #ccc",
+                                        boxShadow: "rgba(255, 255, 255, 0.21) 1.95px 1.95px 2.6px",
+                                        borderRadius: "13px",
+                                        marginTop: "4px",
+                                        zIndex: 10,
                                     }}
                                 >
                                     {tags.map((tag) => (
-                                    <div
-                                        key={tag}
-                                        onClick={() => handleTagClick(tag)}
-                                        tabIndex={0}
-                                        style={{
-                                        padding: "8px",
-                                        cursor: "pointer",
-                                        borderBottom: "1px solid #eee",
-                                        }}
-                                        onKeyDown={(e) => e.key === "Enter" && handleTagClick(tag)}
-                                    >
-                                        {tag}
-                                    </div>
+                                        <div
+                                            key={tag}
+                                            onClick={() => handleTagClick(tag)}
+                                            tabIndex={0}
+                                            style={{
+                                                padding: "8px",
+                                                cursor: "pointer",
+                                                borderBottom: "1px solid #eee",
+                                            }}
+                                            onKeyDown={(e) => e.key === "Enter" && handleTagClick(tag)}
+                                        >
+                                            {tag}
+                                        </div>
                                     ))}
                                 </div>
                             )}
@@ -291,30 +334,30 @@ const CreateAgent = () => {
                                 flexWrap: "wrap",
                                 gap: "8px",
                             }}
-                            >
+                        >
                             {selectedTags.map((tag) => (
                                 <span
-                                key={tag}
-                                className="tag-view"
+                                    key={tag}
+                                    className="tag-view"
                                 >
-                                {tag}
-                                <button
-                                    onClick={() => handleRemoveTag(tag)}
-                                    style={{
-                                    marginLeft: "8px",
-                                    fontSize: 15,
-                                    background: "transparent",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    color: "#00796b",
-                                    fontWeight: "bold",
-                                    }}
-                                >
-                                    &times;
-                                </button>
+                                    {tag}
+                                    <button
+                                        onClick={() => handleRemoveTag(tag)}
+                                        style={{
+                                            marginLeft: "8px",
+                                            fontSize: 15,
+                                            background: "transparent",
+                                            border: "none",
+                                            cursor: "pointer",
+                                            color: "#00796b",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        &times;
+                                    </button>
                                 </span>
                             ))}
-                            </div>
+                        </div>
                     </div>
 
                     <div className="buttons">
@@ -322,14 +365,14 @@ const CreateAgent = () => {
                             Discard
                         </Button>
                         <Button
-                            className='create' 
+                            className='create'
                             variant='filled'
-                            onClick={() => {
-                                setShowPopup(!showPopup)
-                            }}
+                            // onClick={() => {
+                            //     setShowPopup(!showPopup)
+                            // }}
                             type='submit'
                         >
-                         {loading ? "Creating..." : "Create Agent"}
+                            {loading ? "Creating..." : "Create Agent"}
                         </Button>
                     </div>
 

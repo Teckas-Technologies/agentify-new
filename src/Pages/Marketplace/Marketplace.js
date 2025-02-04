@@ -32,7 +32,7 @@ const Marketplace = () => {
     const [showFilters, setShowFilters] = useState(false);
 
     const [cards, setCards] = useState([])
-    const [filteredCards, setFilteredCards] = useState(cards);
+    const [filteredCards, setFilteredCards] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -50,9 +50,16 @@ const Marketplace = () => {
           page: currentPage,
           limit: itemsPerPage,
         });
-        setCards(response.agents);
-        setFilteredCards(response.agents);
-        setTotalPages(response.page);
+        if(response.agents && response.agents.length > 0 ) {
+          setCards(response.agents);
+          setFilteredCards(response.agents);
+          console.log("RES:", response.agents)
+          setTotalPages(response.page);
+        } else {
+          setCards([]);
+          setFilteredCards([]);
+          setTotalPages(response.page);
+        }
       };
 
       useEffect(() => {

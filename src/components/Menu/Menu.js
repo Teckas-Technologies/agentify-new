@@ -18,6 +18,16 @@ function Menu(){
     const { address } = useAccount();
     const { chainId,caipNetwork } = useAppKitNetwork();
     const { open } = useAppKit();
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
     useEffect(()=>{
         console.log(isConnecting);
@@ -55,7 +65,7 @@ function Menu(){
                     </Button>
                 ) : (
                     <Button className='pc-menu-connect-btn' endIcon={<EastIcon />} onClick={handleDisconnect}>
-                        Disconnect Wallet ({address?.slice(0, 6)}...{address?.slice(-4)})
+                        {!isMobile && "View"} ({address?.slice(0, 6)}...{address?.slice(-4)})
                     </Button>
                 )}
                 <div className='mobile-only'>

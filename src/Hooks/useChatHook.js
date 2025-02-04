@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react"
+import { constant } from "../config/constant";
 
 const useChatHooks =()=>{
     const { getAccessTokenSilently } = useAuth0();
@@ -11,19 +12,19 @@ const useChatHooks =()=>{
         try {
             setLoading(true);
             setError(null);
-            const payload = {
-                ...data,
-                prompt: JSON.stringify(data.prompt), 
-              };
+            // const payload = {
+            //     ...data,
+            //     prompt: JSON.stringify(data.prompt), 
+            //   };
             const token = await getAccessTokenSilently();
-            const response = await fetch("http://localhost:3001/chat",{
+            const response = await fetch(`${constant.PYTHON_SERVER_URL}/api/chat`,{
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "Authorization":`Bearer ${token}`
+                //   "Authorization":`Bearer ${token}`
                 },
 
-                body:JSON.stringify(payload)
+                body:JSON.stringify(data)
             })
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
