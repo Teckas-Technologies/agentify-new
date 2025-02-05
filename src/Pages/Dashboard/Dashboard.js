@@ -53,8 +53,9 @@ const Dashboard = () => {
     setFilteredCards(response.agents);
     console.log(response.agents);
     console.log(response.page);
-    setTotalPages(response.page);
-
+    if(response.page!=0){
+      setTotalPages(response.page);
+    }
   };
 
   useEffect(() => {

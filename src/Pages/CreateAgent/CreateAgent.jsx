@@ -45,7 +45,7 @@ const CreateAgent = () => {
         smartContractAddress: '',
         agentName: '',
         agentPurpose: '',
-        chain: chainId.toString(),
+        chain: caipNetwork.name,
         agentInstructions: '',
         creatorWalletAddress: address,
         tags: []
@@ -126,10 +126,12 @@ const CreateAgent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData);
         const agentData = {
             ...formData,
             tags: selectedTags,
         };
+        console.log(agentData);
         const res = await createAgent(agentData);
         if (res) {
             console.log("RES:", res)
