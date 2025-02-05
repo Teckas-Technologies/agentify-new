@@ -28,16 +28,20 @@ export default function Card(props: DashboardCardBadge& { refreshAgents: () => v
     },[])
 
 
+    const [button,setButton]=useState({buttons: [
+        { text: !props.isPublished ? "Publish Now" : "Published", onClick: () => console.log("Publish Now"), variant: "outlined" },
+        { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+    ]})
 
     const updateStatus = async(id:any)=>{
         await updateAgentStatus(id);
         props.refreshAgents();
+        setButton({buttons: [
+            { text: "Published", onClick: () => console.log("Publish Now"), variant: "outlined" },
+            { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+        ]})
     }
 
-     const [button,setButton]=useState({buttons: [
-    { text: "Publish Now", onClick: () => console.log("Publish Now"), variant: "outlined" },
-    { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
-]})
 const [market,setMarketButton]=useState({buttons: [
     { text: "Run Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
 ]})
@@ -107,7 +111,7 @@ const isMarketplace = location.pathname.includes("/marketplace");
                             <span className="number">{props.totalRequests}</span> Interactions
                         </span>
                         <span className="stat">
-                            <span className="number">{props.totalRequests}</span> Available Functions
+                            <span className="number">{props?.availableFunctions?.length}</span> Available Functions
                         </span>
                     </div>
                     )}

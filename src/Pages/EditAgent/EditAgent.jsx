@@ -15,6 +15,7 @@ import useAgentHooks from '../../Hooks/useAgentHooks.js';
 const EditAgent = () => {
 
     const [showPopup, setShowPopup] = useState(false);
+    const [showFailedPop, setShowFailedPop] = useState(false);
     const [agentID, setAgentID] = useState("");
     const [agentDetails, setAgentDetails] = useState({});
     const [formData, setFormData] = useState({
@@ -25,7 +26,11 @@ const EditAgent = () => {
         agentInstructions: "",
         tags: []
     });
-    const {fetchAgentById,updateAgent,loading,error} = useAgentHooks();
+    const { fetchAgentById, updateAgent, updateAgentStatus, loading, error } = useAgentHooks();
+    const [editedAgentDetails, setEditedAgentDetails] = useState();
+    const [errMsg, setErrorMsg] = useState("");
+
+    const [discard, setDiscard] = useState(false)
 
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
@@ -38,7 +43,7 @@ const EditAgent = () => {
         const id = query.get('agentID');
         console.log(`Agent ID: ${id}`);
         setAgentID(id);
-        const fetchAgentDetailsById = async()=>{
+        const fetchAgentDetailsById = async () => {
             const response = await fetchAgentById(id);
             setAgentDetails(response);
             setFormData({
@@ -47,11 +52,11 @@ const EditAgent = () => {
                 agentName: response.agentName || "",
                 agentPurpose: response.agentPurpose || "",
                 agentInstructions: response.agentInstructions || "",
-                tags: response.tags?.join(", ") || "" 
+                tags: response.tags?.join(", ") || ""
             });
         }
         fetchAgentDetailsById();
-    }, [])
+    }, [discard])
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -60,36 +65,63 @@ const EditAgent = () => {
 
     const handleSave = async () => {
         try {
-            await updateAgent(agentID, { ...formData, tags: formData.tags.split(", ") });
+            const res = await updateAgent(agentID, { ...formData, tags: formData.tags.split(", ") });
+            console.log("RES: ", res)
+
+            if (res) {
+                if (res.success) {
+                    setEditedAgentDetails(res.data);
+                    setShowPopup(true);
+                } else {
+                    setShowFailedPop(true);
+                    setErrorMsg(res?.err)
+                }
+            }
+
         } catch (error) {
             console.error("Error updating agent:", error);
         }
     };
 
+    const updateStatus = async () => {
+        // await updateAgentStatus(id);
+        // props.refreshAgents();
+    }
+
     return (
         <div className='EditAgent'>
             <Menu />
-            
+
             <FullscreenOverlay show={showPopup} close={() => setShowPopup(false)}>
                 <PopupModal
                     title={"Agentify"}
-                    message={`Your Agent (${ agentDetails?.agentName }) has been created successfully`}
+                    message={`Your Agent (${editedAgentDetails?.agentName}) has been updated successfully`}
                     buttons={[
                         { text: "Home", variant: "outlined", onClick: () => navigate("/") },
-                        { text: "Test Agent", variant: "filled", onClick: () => console.log(`Testing Agent ${agentDetails.agentName}...`) },
+                        { text: "Test Agent", variant: "filled", onClick: () => navigate("/playground") },
                     ]}
                 />
             </FullscreenOverlay>
 
-            <form className="EditAgentContent"  onSubmit={(e) => {
-    e.preventDefault(); 
-    handleSave(); 
-  }}>
-                
+            <FullscreenOverlay show={showFailedPop} close={() => setShowFailedPop(false)}>
+                <PopupModal
+                    title={"Agentify"}
+                    message={`${errMsg}`}
+                    buttons={[
+                        { text: "Check Inputs", variant: "outlined", onClick: () => setShowFailedPop(false) }
+                    ]}
+                />
+            </FullscreenOverlay>
+
+            <form className="EditAgentContent" onSubmit={(e) => {
+                e.preventDefault();
+                handleSave();
+            }}>
+
                 <div className="EditAgentSection">
                     <h2>Edit Agent</h2>
                     <h4>Upload your ABIs and create agents with help of AI</h4>
-                    
+
                     <div className="abi">
                         <TextField
                             className="abiInput"
@@ -106,8 +138,8 @@ const EditAgent = () => {
                             }}
                         />
                         <div className="uploadABIBox">
-                            <Button 
-                                className="uploadABI" 
+                            <Button
+                                className="uploadABI"
                                 endIcon={<FiUpload size={"14px"} />}
                                 component="label"
                             >
@@ -136,13 +168,13 @@ const EditAgent = () => {
 
                         <label htmlFor="agentName">Agent Name</label>
                         <input
-                            id="agentName"  
+                            id="agentName"
                             defaultValue={agentDetails?.agentName}
                             placeholder='Ex. Customer Support Chatbot'
                             value={formData.agentName} onChange={handleChange}
                         />
                     </div>
-                    
+
                 </div>
 
                 <div className="agentPurposeSection">
@@ -163,45 +195,45 @@ const EditAgent = () => {
                         }}
                     />
 
-                    <h2 style={{marginTop: "5px"}}>Instructions</h2>
-                        <TextField
-                            id="agentInstructions"
-                            placeholder="Write your instructions for functions which is listed in the ABI..."
-                            multiline
-                            rows={6}
-                            variant="filled"
-                            value={formData.agentInstructions}
-                            onChange={handleChange}
-                            slotProps={{
-                                input: {
+                    <h2 style={{ marginTop: "5px" }}>Instructions</h2>
+                    <TextField
+                        id="agentInstructions"
+                        placeholder="Write your instructions for functions which is listed in the ABI..."
+                        multiline
+                        rows={6}
+                        variant="filled"
+                        value={formData.agentInstructions}
+                        onChange={handleChange}
+                        slotProps={{
+                            input: {
                                 disableUnderline: true,
                             },
                         }}
                     />
-                    
-                    <div className="EditAgentSection" style={{padding: 0}}>
-                        <div className="contract" style={{marginTop: 0}}>
-                            <label htmlFor="agentName" style={{marginTop: "20px"}}>Tags</label>
+
+                    <div className="EditAgentSection" style={{ padding: 0 }}>
+                        <div className="contract" style={{ marginTop: 0 }}>
+                            <label htmlFor="agentName" style={{ marginTop: "20px" }}>Tags</label>
                             <input
                                 id='tags'
                                 placeholder='Ex. DeFi, Memes, DAO, etc..'
-                                value={formData.tags} onChange={handleChange} 
+                                value={formData.tags} onChange={handleChange}
                             />
                         </div>
                     </div>
 
                     <div className="buttons">
-                        <Button className='outlined'>
+                        <Button className='outlined' onClick={() => setDiscard(!discard)}>
                             Discard
                         </Button>
                         <Button
-                            className='filled' 
+                            className='filled'
                             type='submit'
-                            onClick={() => {
-                                setShowPopup(!showPopup)
-                            }}
-                            >
-                             {loading ? "Saving..." : "Save Changes"}
+                        // onClick={() => {
+                        //     setShowPopup(!showPopup)
+                        // }}
+                        >
+                            {loading ? "Saving..." : "Save Changes"}
                         </Button>
                     </div>
 
@@ -209,12 +241,12 @@ const EditAgent = () => {
             </form>
 
             <div className="editAgentControls">
-                <Button className='outlined'>
+                <Button className='outlined' onClick={() => navigate("/playground")}>
                     Test in Playground
                 </Button>
                 <Button
-                    className='filled' 
-                    onClick={handleSave}
+                    className='filled'
+                    onClick={updateStatus}
                 >
                     Publish to Marketplace
                 </Button>

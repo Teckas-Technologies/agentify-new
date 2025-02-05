@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react"
+import { constant } from "../config/constant";
 
 const useAgentHooks =()=>{
     const { getAccessTokenSilently } = useAuth0();
@@ -12,7 +13,7 @@ const useAgentHooks =()=>{
             setLoading(true);
             setError(null);
             const token = await getAccessTokenSilently();
-            const response = await fetch("http://localhost:3001/api/agents",{
+            const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents`,{
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -21,14 +22,24 @@ const useAgentHooks =()=>{
 
                 body:JSON.stringify(data)
             })
+            let errorMessage = "Something went wrong"; // Default error message
+
             if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+                // Try to extract JSON error message
+                try {
+                    const errorResponse = await response.json();
+                    errorMessage = errorResponse.error || `Error: ${response.statusText}`;
+                } catch (jsonError) {
+                    errorMessage = `Error: ${response.statusText}`;
+                }
+                throw new Error(errorMessage);
             }
             const result = await response.json();
-            return result;
+            return {success: true, data: result }
         } catch (err) {
             console.error("Error occurred:", err);
             setError(err.message || "Something went wrong");
+            return {success: false, err: err.message || "" }
         } finally {
             setLoading(false);
             console.log("Loading state set to false");
@@ -39,7 +50,7 @@ const useAgentHooks =()=>{
             setLoading(true);
             setError(null);
             const token = await getAccessTokenSilently();
-            const response = await fetch(`http://localhost:3001/api/agents/${agentId}`,{
+            const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents/${agentId}`,{
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
@@ -48,14 +59,24 @@ const useAgentHooks =()=>{
 
                 body:JSON.stringify(data)
             })
+            let errorMessage = "Something went wrong"; // Default error message
+
             if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+                // Try to extract JSON error message
+                try {
+                    const errorResponse = await response.json();
+                    errorMessage = errorResponse.error || `Error: ${response.statusText}`;
+                } catch (jsonError) {
+                    errorMessage = `Error: ${response.statusText}`;
+                }
+                throw new Error(errorMessage);
             }
             const result = await response.json();
-            return result;
+            return {success: true, data: result }
         } catch (err) {
             console.error("Error occurred:", err);
             setError(err.message || "Something went wrong");
+            return {success: false, err: err.message || "" }
         } finally {
             setLoading(false);
             console.log("Loading state set to false");
@@ -67,7 +88,7 @@ const useAgentHooks =()=>{
             setLoading(true);
             setError(null);
             const token = await getAccessTokenSilently();
-            const response = await fetch(`http://localhost:3001/api/agents/${agentId}`,{
+            const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents/${agentId}`,{
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
@@ -94,7 +115,7 @@ const useAgentHooks =()=>{
             setLoading(true);
             setError(null);
             const token = await getAccessTokenSilently();
-            const response = await fetch(`http://localhost:3001/api/agents/${agentId}/status`,{
+            const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents/${agentId}/status`,{
                 method: "PATCH",
                 headers: {
                   "Content-Type": "application/json",
@@ -147,7 +168,7 @@ const useAgentHooks =()=>{
     
           const query = new URLSearchParams(filteredParams).toString();
     
-          const response = await fetch(`http://localhost:3001/api/agents?${query}`, {
+          const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents?${query}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

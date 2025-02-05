@@ -15,7 +15,7 @@ export type MarketplaceCardBadge = {
     stats: any,
     buttons: any,
     totalRequests:any,
-    availaleFunctions:any
+    availableFunctions:any
 
 }
 
@@ -29,7 +29,7 @@ export type DashboardCardBadge = {
     agentPurpose: string,
     buttons: any,
     totalRequests:any
-    availaleFunctions:any
+    availableFunctions:any
 }
 
 export type CardProps = MarketplaceCardBadge | DashboardCardBadge;
