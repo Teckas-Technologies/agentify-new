@@ -6,7 +6,7 @@ import './LeftPanel.css';
 
 import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
 
-function LeftPanel({ initialCards,onCardSelect, selectedCard, handleSearch, onClick, fetchAgents,searchText }) {
+function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard, handleSearch, onClick, fetchAgents,searchText }) {
   const [cards, setCards] = useState(initialCards);
   const [filteredCards, setFilteredCards] = useState(initialCards);
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,7 +75,8 @@ function LeftPanel({ initialCards,onCardSelect, selectedCard, handleSearch, onCl
 
   // Automatically select the first card after cards update
   useEffect(() => {
-    onCardSelect(cards[0]);
+    // onCardSelect(cards[0]);
+    onCardSelectMobile(cards[0])
   }, [cards]);
 
   return (
@@ -106,7 +107,7 @@ function LeftPanel({ initialCards,onCardSelect, selectedCard, handleSearch, onCl
               <span className="icon">
                 <img src={decentramizedLogo} alt="logo" />
               </span>
-              <span className="title">{selectedCard?.title}</span>
+              <span className="title">{selectedCard?.agentName}</span>
             </div>
             <div className="right">
               <FaChevronDown />
