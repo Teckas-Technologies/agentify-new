@@ -31,7 +31,7 @@ function Playground() {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
   const [totalPages, setTotalPages] = useState(1);
   const pageInput = useRef();
   const [startIndex, setStartIndex] = useState(0);
@@ -99,6 +99,11 @@ function Playground() {
     setShowAgentSelectModal(false);
   };
 
+  const onCardSelectMobile = (card) => {
+    setSelectedCard(card);
+    setIsSwitched(false);
+  };
+
   const handleSwitch = () => {
     setIsSwitched(!isSwitched);
   };
@@ -107,8 +112,11 @@ function Playground() {
     setShowAgentSelectModal(true); 
     setSearchText(query);
     setShowAgentSelectModal(true); 
-    
   };
+
+  const handleSearchDesktop = (query) => {
+    setSearchText(query);
+  }
 
   return (
     <div className="app">
@@ -150,7 +158,7 @@ function Playground() {
       </div>
       <main className="main-content">
         <div className="panels-container">
-          <LeftPanel initialCards={filteredCards} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearch} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText}/>
+          <LeftPanel initialCards={filteredCards} onCardSelectMobile={onCardSelectMobile} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearchDesktop} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText}/>
           <PlaygroundRight 
             selectedCard={selectedCard}
             isSwitched={isSwitched}
