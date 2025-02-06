@@ -19,7 +19,6 @@ const useAgentHooks =()=>{
                   "Content-Type": "application/json",
                   "Authorization":`Bearer ${token}`
                 },
-
                 body:JSON.stringify(data)
             })
             let errorMessage = "Something went wrong"; // Default error message
