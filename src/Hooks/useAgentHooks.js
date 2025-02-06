@@ -12,6 +12,10 @@ const useAgentHooks =()=>{
         try {
             setLoading(true);
             setError(null);
+            if (data.abi) {
+                data.abi = JSON.stringify(data.abi, null, 2);
+                console.log(data.abi)
+            }
             const token = await getAccessTokenSilently();
             const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents`,{
                 method: "POST",
@@ -19,7 +23,6 @@ const useAgentHooks =()=>{
                   "Content-Type": "application/json",
                   "Authorization":`Bearer ${token}`
                 },
-
                 body:JSON.stringify(data)
             })
             let errorMessage = "Something went wrong"; // Default error message

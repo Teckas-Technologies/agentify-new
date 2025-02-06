@@ -42,7 +42,7 @@ const Dashboard = () => {
   const fetchData = async () => {
     const response = await fetchAgents({
       search: searchText,
-      tags,
+      tags:selectedFilters,
       startDate,
       endDate,
       page: currentPage,
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, [searchText, tags, startDate, endDate, currentPage]);
+  }, [searchText, tags,selectedFilters, startDate, endDate, currentPage]);
   
 
   useEffect(() => {

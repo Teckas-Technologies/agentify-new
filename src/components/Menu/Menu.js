@@ -59,6 +59,9 @@ function Menu(){
                 <NavLink to={'/marketplace'}>Marketplace</NavLink>
                 <NavLink to={'/create'}>Create Agent</NavLink>
                 <NavLink to={'/playground'}>Playground</NavLink>
+                </div>
+            <div className='menu-right'>
+            <div>
                 {!address ? (
                     <div style={{cursor:"pointer"}} onClick={handleConnect}>
                      <svg width="55" height="54" viewBox="0 0 55 54" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,13 +93,12 @@ function Menu(){
                   </linearGradient>
                   </defs>
                   </svg>
-                    <span style={{ fontSize: "18px"}}>
+                    <span className='address-text' style={{ fontSize: "18px"}}>
                       {address?.slice(0, 6)}...{address?.slice(-4)}
                     </span>
                   </div>                  
                 )}
-            </div>
-            <div className='menu-right'>
+                </div>
                    <Button className='pc-menu-connect-btn' onClick={() => logout({ returnTo: window.location.origin })}>
                      Log Out
                     </Button>
