@@ -15,9 +15,9 @@ export const useGeneric = () => {
         console.error(`Error with ${tokenType}:`, error);
         setErrorReason(error.message || "An unknown error occurred.");
     };
-    const getfuncTokenValue = async (func, value, isGasLimit) => {
+    const functionCall = async (func, value, isGas) => {
         if (!contract) {
-            console.log("Contract not found", isGasLimit)
+            console.log("Contract not found", isGas)
             return;
         }
         console.log("value", value);
@@ -29,13 +29,16 @@ export const useGeneric = () => {
                 throw new Error(`Function ${func} does not exist on the contract`);
             }
             let res;
-            if (isGasLimit === true) {
-                console.log("Step1:", isGasLimit)
-                const token = await contract[func](...args, { gasLimit: 300000 });
+            if (isGas === true) {
+                console.log("Step1:", isGas)
+                const gasLimit = await contract?.estimateGas[func](...args)
+                console.log("GAS:", gasLimit)
+                const token = await contract[func](...args, { gasLimit: gasLimit });
                 const receipt = await token.wait();
+                console.log("RECEIPT:", receipt)
                 return { data: receipt, isGas: true, success: true };
             } else {
-                console.log("Step2:", isGasLimit)
+                console.log("Step2:", isGas)
                 res = await contract[func](...args);
                 const tokenValue = Number(ethers.utils.formatUnits(res, 6));
                 return { data: tokenValue, isGas: false, success: true };
@@ -48,7 +51,7 @@ export const useGeneric = () => {
             return { data: null, isGas: false, success: false };
         }
     };
-    const funcCall = async (usdtValue) => {
+    const approveCall = async (usdtValue) => {
         if (!contract || !provider) return;
         setProcessing(true);
         try {
@@ -87,7 +90,7 @@ export const useGeneric = () => {
                 }
             }
         } catch (error) {
-            console.error("Error in funcCall:", error);
+            console.error("Error in approveCall:", error);
             setFailed(true);
             setErrorReason(error.message);
         } finally {
@@ -95,8 +98,8 @@ export const useGeneric = () => {
         }
     };
     return {
-        getfuncTokenValue,
-        funcCall,
+        functionCall,
+        approveCall,
         states: {
             processing,
             convertionFailed,

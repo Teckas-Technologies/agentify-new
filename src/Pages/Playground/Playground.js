@@ -14,6 +14,7 @@ import Card from '../../components/Card/Card.tsx';
 
 import Menu from "../../components/Menu/Menu";
 import useAgentHooks from '../../Hooks/useAgentHooks.js';
+import { useContract } from '../../contexts/ContractProvider.js';
 
 const initialCards = [];
 
@@ -37,6 +38,7 @@ function Playground() {
   const [startIndex, setStartIndex] = useState(0);
   const [stopIndex, setStopIndex] = useState(itemsPerPage);
 
+  const { changeAgent, setChangeAgent, setAbi, setContractAddress } = useContract();
 
   const { fetchAgents, agents } = useAgentHooks();
   const fetchData = async (isAppending = false) => {
@@ -94,6 +96,9 @@ function Playground() {
   
 
   const onCardSelect = (card) => {
+    setChangeAgent(!changeAgent);
+    setAbi(card?.abi);
+    setContractAddress(card?.smartContractAddress);
     setSelectedCard(card);
     setIsSwitched(false);
     setShowAgentSelectModal(false);
@@ -102,6 +107,9 @@ function Playground() {
   const onCardSelectMobile = (card) => {
     setSelectedCard(card);
     setIsSwitched(false);
+    setChangeAgent(!changeAgent);
+    setAbi(card?.abi);
+    setContractAddress(card?.smartContractAddress);
   };
 
   const handleSwitch = () => {

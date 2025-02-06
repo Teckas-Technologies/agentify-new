@@ -15,7 +15,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const { loading, error, fetchChat } = useChatHooks();
   const [isTyping, setIsTyping] = useState(false);
   const { address, isConnected } = useAccount();
-  const { funcCall, getfuncTokenValue } = useGeneric();
+  const { approveCall, functionCall } = useGeneric();
   const [isCreating, setIsCreating] = useState(false);
   const { isLoading, isAuthenticated, user, logout } = useAuth0();
 
@@ -44,47 +44,68 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       setIsTyping(true);
       console.log("SEL CARD;", selectedCard)
       try {
-        const response = await fetchChat({
-          message: inputValue,
-          agentName: selectedCard?.agentName || "MYID Token Presale",
-          userId: user?.sub,
-          walletAddress: address,
-          threadId: selectedCard?._id // agent_id replace
-        });
+        // const response = await fetchChat({
+        //   message: inputValue,
+        //   agentName: selectedCard?.agentName || "MYID Token Presale",
+        //   userId: user?.sub,
+        //   walletAddress: address,
+        //   threadId: selectedCard?._id // agent_id replace
+        // });
+
+        const response = {
+          data: {
+            intent: "final_json",
+            meta_data: {
+              contract: "0xed72346f59241D1A8E043f1dd60E2967D9baB90C", 
+              functionName: "contributeUSDT", 
+              isGas: true,
+              gasLimit: "500000", 
+              parameters: {
+                amount: "500000"
+              }
+            } 
+          }
+        }
+        
         if (response) {
           console.log("RES:", response)
-          // if (response.data.intent === "final_json") {
-          //   const metaData = response.data.meta_data;
-          //   if (!address || !isConnected) {
-          //     return;
-          //   }
+          if (response.data.intent === "final_json") {
+            const metaData = response.data.meta_data;
+            if (!address || !isConnected) {
+              return;
+            }
 
-          //   const { contract, functionName, gasLimit, parameters } = metaData;
-          //   console.log(functionName, gasLimit, parameters)
+            const { contract, functionName, gasLimit, parameters, isGas } = metaData;
+            console.log(functionName, gasLimit, parameters, isGas)
 
-          //   if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
-          //     return;
-          //   }
+            if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
+              return;
+            }
 
-          //   setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
-          //   setIsCreating(true);
+            setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
+            setIsCreating(true);
 
-          //   const res = await getfuncTokenValue(functionName, parameters, gasLimit);
-          //   console.log(res);
+            // const resposeApprove = await approveCall(response.data.meta_data.parameters.amount)
+            // console.log("RES:", resposeApprove)
 
-          //   if (res?.success) {
-          //     if (res?.isGas) {
-          //       const txData = res.data;
-          //       setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <span hidden>${txData.transactionHash}</span>` }]);
-          //     } else {
-          //       setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
-          //     }
-          //   } else {
-          //     setMessages((prev) => [...prev, { sender: "bot", text: "Function call execution failed!" }]);
-          //   }
+            const res = await functionCall(functionName, parameters, isGas, gasLimit);
+            console.log(res);
 
-          //   setIsCreating(false);
-          // }
+            if (res?.success) {
+              if (res?.isGas) {
+                const txData = res.data;
+                setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <span style="display: none;">${txData.transactionHash}</span>` }]);
+                return;
+              } else {
+                setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
+                return;
+              }
+            } else {
+              setMessages((prev) => [...prev, { sender: "bot", text: "Function call execution failed!" }]);
+            }
+
+            setIsCreating(false);
+          }
 
           setThreadId(response.threadId);
           setMessages(prevMessages => [...prevMessages, { text: response.agentResponse, sender: 'bot' }]);
@@ -96,6 +117,8 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       }
     }
   };
+
+  console.log("MSGS:", messages)
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -163,7 +186,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
               {isTyping && (
                 <div className="message bot typing-indicator">
                   <div className="message-content">
-                    <span>Bot is typing...</span>
+                    <span>Agent is typing...</span>
                   </div>
                 </div>
               )}
