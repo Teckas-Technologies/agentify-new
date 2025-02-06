@@ -68,8 +68,6 @@ function Playground() {
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 100 &&
         currentPage < totalPages
       ) {
         console.log("payment")
