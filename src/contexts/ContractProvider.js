@@ -14,6 +14,9 @@ export const ContractProvider = ({ children }) => {
     const [provider, setProvider] = useState(null);
     const [myidBalance, setMyidBalance] = useState("0");
     const { isConnected, address } = useAccount();
+    const [changeAgent, setChangeAgent] = useState(false);
+    const [abi, setAbi] = useState();
+    const [contractAddress, setContractAddress] = useState("");
 
     const getBalances = async (account) => {
         if (!contract) return;
@@ -65,7 +68,7 @@ export const ContractProvider = ({ children }) => {
                     return;
                 }
                 const signer = detectedProvider.getSigner();
-                const contractInstance = new ethers.Contract(MYIDPresaleAddress, MYIDPresaleABI, signer);
+                const contractInstance = new ethers.Contract(contractAddress || MYIDPresaleAddress, abi || MYIDPresaleABI, signer);
                 setProvider(detectedProvider);
                 setContract(contractInstance);
                 console.log("Contract initialized:", contractInstance);
@@ -76,10 +79,10 @@ export const ContractProvider = ({ children }) => {
         };
 
         initializeContract();
-    }, [isConnected, address]);
+    }, [isConnected, address, changeAgent]);
 
     return (
-        <ContractContext.Provider value={{ provider, contract, myidBalance, refetchBalance }}>
+        <ContractContext.Provider value={{ provider, contract, myidBalance, refetchBalance, changeAgent, setChangeAgent, setAbi, setContractAddress }}>
             {children}
         </ContractContext.Provider>
     );
