@@ -33,6 +33,24 @@ export default function Card(props: DashboardCardBadge& { refreshAgents: () => v
         { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
     ]})
 
+    const buttons = [
+        { 
+            text: props.isPublished ? "Published" : "Publish Now", 
+            onClick: () => {
+                if (!props.isPublished) {
+                    updateStatus(props._id);
+                }
+            },
+            variant: "outlined" 
+        },
+        { 
+            text: "Test Agent", 
+            onClick: () => window.location.href = "/playground", 
+            variant: "filled" 
+        }
+    ];
+    
+
     const updateStatus = async(id:any)=>{
         await updateAgentStatus(id);
         props.refreshAgents();
@@ -117,10 +135,10 @@ const isMarketplace = location.pathname.includes("/marketplace");
                     )}
 
             {
-                (isDashboard && button) && (
+                (isDashboard && buttons) && (
                     <div className="buttons">
                         {
-                            (button.buttons  || []).map((button, index: number) => {
+                            (buttons  || []).map((button, index: number) => {
                                 return (
                                     <Button className={button.variant || "filled"} onClick={(e) => {
                                         e.preventDefault();
