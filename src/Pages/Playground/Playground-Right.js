@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi';
 import { useGeneric } from '../../Hooks/useGeneric';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
+function PlaygroundRight({ selectedCard, isSwitched, onSwitch, chatHistory }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
@@ -17,6 +17,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const { address, isConnected } = useAccount();
   const { approveCall, functionCall } = useGeneric();
   const [isCreating, setIsCreating] = useState(false);
+  const [executing, setExecuting] = useState(false);
   const { isLoading, isAuthenticated, user, logout } = useAuth0();
 
   // console.log("User:", user)
@@ -31,7 +32,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
 
   useEffect(() => {
     if (selectedCard) {
-      setMessages([]);
+      setMessages(chatHistory);
       setThreadId(selectedCard._id);
     }
   }, [selectedCard]);
@@ -44,71 +45,168 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       setIsTyping(true);
       console.log("SEL CARD;", selectedCard)
       try {
-        // const response = await fetchChat({
-        //   message: inputValue,
-        //   agentName: selectedCard?.agentName || "MYID Token Presale",
-        //   userId: user?.sub,
-        //   walletAddress: address,
-        //   threadId: selectedCard?._id // agent_id replace
-        // });
+        const response = await fetchChat({
+          message: inputValue,
+          agentName: "Uniswap Agent New",  // selectedCard?.agentName || "Uniswap Agent New",
+          userId: user?.sub,
+          walletAddress: address,
+          threadId: selectedCard?._id // agent_id replace
+        });
 
-        const response = {
-          data: {
-            intent: "final_json",
-            meta_data: {
-              contract: "0xed72346f59241D1A8E043f1dd60E2967D9baB90C", 
-              functionName: "contributeUSDT", 
-              isGas: true,
-              gasLimit: "500000", 
-              parameters: {
-                amount: "500000"
-              }
-            } 
-          }
-        }
-        
+        console.log("RES:", response)
+
+        // const response = {
+        //   data: {
+        //     intent: "final_json",
+        //     meta_data: {
+        //       contract: "0xed72346f59241D1A8E043f1dd60E2967D9baB90C",
+        //       functionName: "contributeUSDT",
+        //       isGas: true,
+        //       gasLimit: "500000",
+        //       parameters: {
+        //         amount: "500000"
+        //       }
+        //     }
+        //   }
+        // }
+
+        // const response = {
+        //   "data": {
+        //     "intent": "final_json",
+        //     "meta_data": {
+        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+        //       "functionName": "createExchange",
+        //       "isGas": true,
+        //       "gasLimit": "500000",
+        //       "parameters": {
+        //         "token": "0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9"
+        //       }
+        //     }
+        //   }
+        // }
+
+        // const response = {
+        //   "data": {
+        //     "intent": "final_json",
+        //     "meta_data": {
+        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+        //       "functionName": "createPair",
+        //       "isGas": true,
+        //       "gasLimit": "500000",
+        //       "parameters": {
+        //         "tokenA": "0x5E2F8dfD0E05833f0DD88aFFe71414d08B698D2B",
+        //         "tokenB": "0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9"
+        //       }
+        //     }
+        //   }
+        // }
+
+        // working
+        // const response = {
+        //   "data": {
+        //     "intent": "final_json",
+        //     "meta_data": {
+        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+        //       "functionName": "allPairs",
+        //       "isGas": false,
+        //       "parameters": {
+        //         "_index": "0"
+        //       }
+        //     }
+        //   }
+        // }
+
+        // const response = {
+        //   "data": {
+        //     "intent": "final_json",
+        //     "meta_data": {
+        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+        //       "functionName": "allPairsLength",
+        //       "isGas": false,
+        //       "parameters": {}
+        //     }
+        //   }
+        // }
+
+        // const response = {
+        //   "data": {
+        //     "intent": "final_json",
+        //     "meta_data": {
+        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+        //       "functionName": "getPair",
+        //       "isGas": false,
+        //       "parameters": {
+        //         "tokenA": "0x5E2F8dfD0E05833f0DD88aFFe71414d08B698D2B",
+        //         "tokenB": "0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9"
+        //       }
+        //     }
+        //   }
+        // }
+
+        // const response = {
+        //   "data": {
+        //     "intent": "final_json",
+        //     "meta_data": {
+        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+        //       "functionName": "createPair",
+        //       "isGas": true,
+        //       "gasLimit": "500000",
+        //       "parameters": {
+        //         "tokenA": "0x5E2F8dfD0E05833f0DD88aFFe71414d08B698D2B",
+        //         "tokenB": "0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9"
+        //       }
+        //     }
+        //   }
+        // }
+
         if (response) {
           console.log("RES:", response)
-          if (response.data.intent === "final_json") {
-            const metaData = response.data.meta_data;
+          if (response?.tool_response !== "None") {  //  if (response.data.intent === "final_json")
+            const metaData = JSON.parse(response?.tool_response);
+            console.log("Metadata:", metaData)
+            // const metaData = response.data.meta_data;
             if (!address || !isConnected) {
               return;
             }
-
-            const { contract, functionName, gasLimit, parameters, isGas } = metaData;
-            console.log(functionName, gasLimit, parameters, isGas)
 
             if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
               return;
             }
 
-            setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
-            setIsCreating(true);
+            if(metaData.transactionType === "sign") {
+              const { functionName, gasFees, contractAddress, blockchain, params, gasLimit } = metaData;
+              console.log(functionName, gasFees, contractAddress, blockchain, params, gasLimit)
 
-            // const resposeApprove = await approveCall(response.data.meta_data.parameters.amount)
-            // console.log("RES:", resposeApprove)
+              setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
+              setExecuting(true);
 
-            const res = await functionCall(functionName, parameters, isGas, gasLimit);
-            console.log(res);
+              // const resposeApprove = await approveCall(response.data.meta_data.parameters.amount)
+              // console.log("RES:", resposeApprove)
 
-            if (res?.success) {
-              if (res?.isGas) {
-                const txData = res.data;
-                setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <span style="display: none;">${txData.transactionHash}</span>` }]);
-                return;
+              const res = await functionCall(functionName, params, gasFees);
+              console.log(res);
+
+              if (res?.success) {
+                if (res?.isGas) {
+                  const txData = res.data;
+                  setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <a href="https://sepolia.etherscan.io/tx/${txData.transactionHash}" target="_blank" class="hash" style="text-decoration:none; color: #fff;">Status</a>` }]);
+                  setExecuting(false);
+                  return;
+                } else {
+                  setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
+                  setExecuting(false);
+                  return;
+                }
               } else {
-                setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
+                setMessages((prev) => [...prev, { sender: "bot", text: `Function call execution failed!` }]);
+                setExecuting(false);
                 return;
               }
-            } else {
-              setMessages((prev) => [...prev, { sender: "bot", text: "Function call execution failed!" }]);
             }
-
-            setIsCreating(false);
           }
 
           setThreadId(response.threadId);
-          setMessages(prevMessages => [...prevMessages, { text: response.agentResponse, sender: 'bot' }]);
+          setMessages(prevMessages => [...prevMessages, { text: response.ai_message, sender: 'bot' }]);
         }
       } catch (err) {
         console.error("Chat error:", err);
@@ -130,17 +228,17 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
 
   const getCardText = (card) => (
     <>
-      <span style={{color: "#ffffff"}}> Title: </span> {card?.agentName}
+      <span style={{ color: "#ffffff" }}> Title: </span> {card?.agentName}
       <br />
-      <span style={{color: "#ffffff"}}> Description: </span> {card?.agentPurpose}
+      <span style={{ color: "#ffffff" }}> Description: </span> {card?.agentPurpose}
       <br />
       <br />
-      <span style={{color: "#ffffff"}}> Code Snippet: <br /> </span>{card?.codeSnippet}
+      <span style={{ color: "#ffffff" }}> Code Snippet: <br /> </span>{card?.codeSnippet}
     </>
   );
-  
+
   <div className="code-text">{getCardText(selectedCard)}</div>;
-  
+
 
   return (
     <div className="playground">
@@ -176,13 +274,20 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
           <>
             {messages.length === 0 && <div className="playground-title">Execute Transactions with AI</div>}
             <div className="messages-container">
-              {messages.map((message, index) => (
-                <div key={index} className={`message ${message.sender}`}>
-                  <div className="message-content">
-                    {message.text}
+              {messages.map((message, index) => {
+                const isLastMessage = index === messages.length - 1; // Check if it's the last message
+                return (
+                  <div key={index} className={`message ${message?.sender}`}>
+                    <div className="message-content">
+                      {isLastMessage && message.sender === "bot" && message?.text?.includes("Executing") && executing && (
+                        <div className="loader"></div>
+                      )}
+                      <p dangerouslySetInnerHTML={{ __html: message.text }}></p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+
               {isTyping && (
                 <div className="message bot typing-indicator">
                   <div className="message-content">
