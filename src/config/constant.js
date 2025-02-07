@@ -9,6 +9,9 @@ const chainId = 11155111;
 
 const PYTHON_SERVER_URL = process.env.PYTHON_SERVER_URL || "https://6f1d-2405-201-e062-f03d-34a8-3fce-c6b8-b118.ngrok-free.app"
 const NODEJS_SERVER_URL = process.env.NODEJS_SERVER_URL || "http://localhost:3001"
+export const AUTH0_CLIENT_ID =process.env.AUTH0_CLIENT_ID||"Tqbaa3qIoLUVIVXb74p9KlVIizo19RRW"
+export const AUTH0_CLIENT_URL=process.env.AUTH0_CLIENT_URL||"dev-nndolpmecyghhm8z.us.auth0.com"
+export const API_AUDIENCE_URL=process.envAPI_AUDIENCE_URL||"http://localhost:3001"
 
 export const constant = {
     PYTHON_SERVER_URL,

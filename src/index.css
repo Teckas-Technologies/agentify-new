@@ -10,9 +10,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 
-  background-color: #111521;
+  background: radial-gradient(circle, #27145d 10%, #130a3b 40%, #07042A 80%);
   color: #fff;
 }
+
 
 
 body::-webkit-scrollbar {

@@ -12,15 +12,16 @@ import AgentDetails from './Pages/AgentDetails/AgentDetails';
 import Playground from './Pages/Playground/Playground';
 import NotFound from './Pages/NotFound/NotFound';
 import ProtectedRoute from './components/ProtectedRoute ';
+import { API_AUDIENCE_URL, AUTH0_CLIENT_ID, AUTH0_CLIENT_URL } from './config/constant';
 function App() {
   return (
     <div className="App">
       <Auth0Provider
-    domain={"dev-nndolpmecyghhm8z.us.auth0.com"}
-    clientId={"Tqbaa3qIoLUVIVXb74p9KlVIizo19RRW"}
+    domain={AUTH0_CLIENT_URL}
+    clientId={AUTH0_CLIENT_ID}
     authorizationParams={{
       redirect_uri: window.location.origin,
-      audience: "http://localhost:3001",
+      audience: API_AUDIENCE_URL,
       scope: "openid profile email"
     }}
   >
