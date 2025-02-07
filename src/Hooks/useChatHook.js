@@ -64,6 +64,29 @@ const useChatHooks = () => {
         }
     }
 
-    return { loading, error, chat, fetchChat, fetchChatHistory }
+    const clearHistory = async (userId, agentId) => {
+        try {
+            setLoading(true);
+            setError(null);
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`${constant.PYTHON_SERVER_URL}/api/history/${userId}/${agentId}`, {
+                method: "DELETE"
+            })
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const result = await response.json();
+            console.log("Result:", result)
+            return result;
+        } catch (err) {
+            console.error("Error occurred:", err);
+            setError(err.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+            console.log("Loading state set to false");
+        }
+    }
+
+    return { loading, error, chat, fetchChat, fetchChatHistory, clearHistory }
 }
 export default useChatHooks;
