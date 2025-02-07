@@ -1,3 +1,24 @@
+.loader {
+  width: 15px;
+  height: 15px;
+  border: 2.5px solid #555555d8;
+  border-top: 2.5px solid  rgba(178,161,252,1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinning animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hash {
+  background: rgba(178,161,252,1);
+  padding: 3px 9px;
+  border-radius: 25px;
+}
+
 .playground {
     width: 70%;
     height: 100%;
@@ -140,6 +161,9 @@
     line-height: 1.5;
     font-family: 'DM Sans', sans-serif;
     word-break: break-word;
+    display: flex;
+    gap: 3px;
+    align-items: center;
   }
   
   .message.user .message-content {

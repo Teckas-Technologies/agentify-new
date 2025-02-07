@@ -15,6 +15,8 @@ import Card from '../../components/Card/Card.tsx';
 import Menu from "../../components/Menu/Menu";
 import useAgentHooks from '../../Hooks/useAgentHooks.js';
 import { useContract } from '../../contexts/ContractProvider.js';
+import useChatHooks from '../../Hooks/useChatHook.js';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const initialCards = [];
 
@@ -24,8 +26,8 @@ function Playground() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isSwitched, setIsSwitched] = useState(false);
 
-    const [cards, setCards] = useState(initialCards);
-    const [searchQuery, setSearchQuery] = useState('');
+  const [cards, setCards] = useState(initialCards);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [showAgentSelectModal, setShowAgentSelectModal] = useState(false);
   const [filteredCards, setFilteredCards] = useState(cards);
@@ -38,7 +40,9 @@ function Playground() {
   const [startIndex, setStartIndex] = useState(0);
   const [stopIndex, setStopIndex] = useState(itemsPerPage);
   const panelRef = useRef(null);
-
+  const { loading, error, fetchChatHistory } = useChatHooks();
+  const { isLoading, isAuthenticated, user, logout } = useAuth0();
+  const [chatHistory, setChatHistory] = useState([]);
   const { changeAgent, setChangeAgent, setAbi, setContractAddress } = useContract();
 
   const { fetchAgents, agents } = useAgentHooks();
@@ -90,30 +94,56 @@ function Playground() {
 
   useEffect(() => {
     if (currentPage > 1) {
-      fetchData(true); 
+      fetchData(true);
     }
   }, [currentPage]);
-  
+
   // commented for search close
   // useEffect(() => {
   //   if (showAgentSelectModal) {
   //     setShowAgentSelectModal(true); 
   //   }
   // }, [searchText]);
-  
 
-  const onCardSelect = (card) => {
+
+  const onCardSelect = async (card) => {
     setChangeAgent(!changeAgent);
     setAbi(card?.abi);
     setContractAddress(card?.smartContractAddress);
     setSelectedCard(card);
     setIsSwitched(false);
     setShowAgentSelectModal(false);
+    console.log("Thread Id:", user?.sub, "-", card?._id)
+    const res = await fetchChatHistory(user?.sub, card?._id)
+    console.log("History:", res);
+    if (res?.success) {
+      const formattedMessages = res?.threads?.map(thread => ({
+        sender: thread?.role === "human" ? "user" : "bot",
+        text: thread?.message
+      }));
+
+      // Update state with formatted messages
+      setChatHistory(formattedMessages);
+    }
   };
 
-  const onCardSelectMobile = (card) => {
+  console.log("History:", chatHistory);
+
+  const onCardSelectMobile = async (card) => {
     setSelectedCard(card);
     setIsSwitched(false);
+    console.log("Thread Id:", user?.sub, "-", card?._id)
+    const res = await fetchChatHistory(user?.sub, card?._id)
+    console.log("History:", res);
+    if (res?.success) {
+      const formattedMessages = res?.threads?.map(thread => ({
+        sender: thread?.role === "human" ? "user" : "bot",
+        text: thread?.message
+      }));
+
+      // Update state with formatted messages
+      setChatHistory(formattedMessages);
+    }
     setChangeAgent(!changeAgent);
     setAbi(card?.abi);
     setContractAddress(card?.smartContractAddress);
@@ -124,9 +154,9 @@ function Playground() {
   };
 
   const handleSearch = (query) => {
-    setShowAgentSelectModal(true); 
+    setShowAgentSelectModal(true);
     setSearchText(query);
-    setShowAgentSelectModal(true); 
+    setShowAgentSelectModal(true);
   };
 
   const handleSearchDesktop = (query) => {
@@ -173,16 +203,17 @@ function Playground() {
       </div>
       <main className="main-content">
         <div className="panels-container">
-          <LeftPanel initialCards={filteredCards} onCardSelectMobile={onCardSelectMobile} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearchDesktop} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText}/>
-          <PlaygroundRight 
+          <LeftPanel initialCards={filteredCards} onCardSelectMobile={onCardSelectMobile} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearchDesktop} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText} />
+          <PlaygroundRight
             selectedCard={selectedCard}
             isSwitched={isSwitched}
             onSwitch={handleSwitch}
+            chatHistory={chatHistory}
           />
         </div>
       </main>
     </div>
-  ) 
+  )
 }
 
 export default Playground; 
