@@ -39,10 +39,10 @@ function Playground() {
   const pageInput = useRef();
   const [startIndex, setStartIndex] = useState(0);
   const [stopIndex, setStopIndex] = useState(itemsPerPage);
+  const panelRef = useRef(null);
   const { loading, error, fetchChatHistory } = useChatHooks();
   const { isLoading, isAuthenticated, user, logout } = useAuth0();
   const [chatHistory, setChatHistory] = useState([]);
-
   const { changeAgent, setChangeAgent, setAbi, setContractAddress } = useContract();
 
   const { fetchAgents, agents } = useAgentHooks();
@@ -75,14 +75,22 @@ function Playground() {
       if (
         currentPage < totalPages
       ) {
-        console.log("payment")
         setCurrentPage((prevPage) => prevPage + 1);
       }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [currentPage, totalPages]);
+    handleScroll();
+    const container = panelRef.current;
+      if (container) {
+        container.addEventListener('scroll', handleScroll);
+      }
+  
+      return () => {
+        if (container) {
+          container.removeEventListener('scroll', handleScroll);
+        }
+      };
+  }, [totalPages]);
+  
 
   useEffect(() => {
     if (currentPage > 1) {
@@ -170,7 +178,7 @@ function Playground() {
               </div>
               <div className="agent-select-modal-content">
                 <SearchBar className="agent-select-modal-search" onSearch={handleSearch} />
-                <div className="agent-select-modal-cards-container">
+                <div className="agent-select-modal-cards-container" ref={panelRef}>
                   {filteredCards.map(card => (
                     <div
                       key={card._id}
