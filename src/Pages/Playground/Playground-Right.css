@@ -19,6 +19,10 @@
   border-radius: 25px;
 }
 
+.dflex {
+  display: flex;
+}
+
 .playground {
     width: 70%;
     height: 100%;
@@ -161,7 +165,7 @@
     line-height: 1.5;
     font-family: 'DM Sans', sans-serif;
     word-break: break-word;
-    display: flex;
+    /* display: flex; */
     gap: 3px;
     align-items: center;
   }
