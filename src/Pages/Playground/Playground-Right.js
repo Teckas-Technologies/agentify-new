@@ -178,18 +178,19 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
           if (response?.tool_response !== "None") {  //  if (response.data.intent === "final_json")
             const metaData = JSON.parse(response?.tool_response);
             console.log("Metadata:", metaData)
-            // const metaData = response.data.meta_data;
-            if (!address || !isConnected) {
-              return;
-            }
-
-            if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
-              return;
-            }
 
             if (metaData.transactionType === "sign") {
               const { functionName, gasFees, contractAddress, blockchain, params, gasLimit } = metaData;
               console.log(functionName, gasFees, contractAddress, blockchain, params, gasLimit)
+
+              if (!address || !isConnected) {
+                setMessages((prev) => [...prev, { sender: "bot", text: `Please connect your wallet to execute ${functionName}` }]);
+                return;
+              }
+  
+              if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
+                return;
+              }
 
               setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
               setExecuting(true);

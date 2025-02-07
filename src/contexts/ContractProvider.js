@@ -61,13 +61,13 @@ export const ContractProvider = ({ children }) => {
                 }
                 const accounts = await detectedProvider.listAccounts();
                 if (!accounts.length) {
-                    alert("No accounts found. Please connect a wallet.");
+                    // alert("No accounts found. Please connect a wallet.");
                     return;
                 }
                 const network = await detectedProvider.getNetwork();
                 console.log("Network:", network)
                 if (network.chainId !== constant.chainId) {
-                    alert("Wrong network detected. Please switch to the correct network.");
+                    // alert("Wrong network detected. Please switch to the correct network.");
                     return;
                 }
                 const signer = detectedProvider.getSigner();
@@ -77,7 +77,7 @@ export const ContractProvider = ({ children }) => {
                 console.log("Contract initialized:", contractInstance);
             } catch (error) {
                 console.error("Error initializing contract:", error);
-                alert(error?.message || "Error initializing contract. Check the console for details.");
+                // alert(error?.message || "Error initializing contract. Check the console for details.");
             }
         };
 
