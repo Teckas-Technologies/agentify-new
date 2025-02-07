@@ -66,7 +66,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       setInputValue('');
       setIsTyping(true);
       console.log("SEL CARD;", selectedCard)
-      if(!selectedCard || !user) return;
+      if (!selectedCard || !user) return;
       try {
         const response = await fetchChat({
           message: inputValue,
@@ -139,54 +139,33 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
         //   }
         // }
 
-        // const response = {
-        //   "data": {
-        //     "intent": "final_json",
-        //     "meta_data": {
-        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
-        //       "functionName": "allPairsLength",
-        //       "isGas": false,
-        //       "parameters": {}
-        //     }
-        //   }
-        // }
-
-        // const response = {
-        //   "data": {
-        //     "intent": "final_json",
-        //     "meta_data": {
-        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
-        //       "functionName": "getPair",
-        //       "isGas": false,
-        //       "parameters": {
-        //         "tokenA": "0x5E2F8dfD0E05833f0DD88aFFe71414d08B698D2B",
-        //         "tokenB": "0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9"
-        //       }
-        //     }
-        //   }
-        // }
-
-        // const response = {
-        //   "data": {
-        //     "intent": "final_json",
-        //     "meta_data": {
-        //       "contract": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
-        //       "functionName": "createPair",
-        //       "isGas": true,
-        //       "gasLimit": "500000",
-        //       "parameters": {
-        //         "tokenA": "0x5E2F8dfD0E05833f0DD88aFFe71414d08B698D2B",
-        //         "tokenB": "0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9"
-        //       }
-        //     }
-        //   }
-        // }
-
         if (response) {
           console.log("RES:", response)
           if (response?.tool_response !== "None") {  //  if (response.data.intent === "final_json")
-            const metaData = JSON.parse(response?.tool_response);
-            console.log("Metadata:", metaData)
+
+            let metaData;
+
+            try {
+              metaData = JSON.parse(response?.tool_response); // Parse tool response
+              metaData.params = JSON.parse(metaData.params);  // Parse params separately
+
+              // Convert array to object with dynamic keys (key1, key2, etc.)
+              const paramsObject = metaData.params.reduce((acc, value, index) => {
+                acc[`key${index + 1}`] = value;
+                return acc;
+              }, {});
+
+              console.log("Params:", paramsObject)
+
+              metaData.params = paramsObject;
+            } catch (error) {
+              metaData = response?.tool_response; // If parsing fails, treat it as a normal string
+              setMessages(prevMessages => [...prevMessages, { text: response.ai_message, sender: 'bot' }]);
+              return;
+            }
+
+            // const metaData = JSON.parse(response?.tool_response);
+            // console.log("Metadata:", metaData)
 
             if (metaData.transactionType === "sign") {
               const { functionName, gasFees, contractAddress, blockchain, params, gasLimit } = metaData;
