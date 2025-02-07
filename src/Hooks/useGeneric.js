@@ -65,7 +65,7 @@ export const useGeneric = () => {
             const usdtContract = new ethers.Contract(usdtAddress, usdtABI, signer);
             const usdtBalance = await usdtContract.balanceOf(signerAddress);
             if (usdtBalance.lt(usdtAmountBigNumber)) {
-                alert("Insufficient USDT balance.");
+                // alert("Insufficient USDT balance.");
                 setFailed(true);
                 return;
             }
@@ -77,7 +77,7 @@ export const useGeneric = () => {
                     if (resetReceipt.status === 1) {
                         setResetSuccess(true);
                     } else {
-                        alert("Failed to reset allowance.");
+                        // alert("Failed to reset allowance.");
                         setFailed(true);
                         return;
                     }

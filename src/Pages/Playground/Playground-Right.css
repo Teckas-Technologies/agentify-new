@@ -263,6 +263,8 @@
     .messages-container {
       padding-right: 8px;
       min-height: 150px;
+      max-height: 55vh;
+      overflow-y: scroll;
     }
   
     .input-container {
