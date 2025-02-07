@@ -7,12 +7,12 @@ import { useAccount } from 'wagmi';
 import { useGeneric } from '../../Hooks/useGeneric';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function PlaygroundRight({ selectedCard, isSwitched, onSwitch, chatHistory }) {
+function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
   const [threadId, setThreadId] = useState('');
-  const { loading, error, fetchChat } = useChatHooks();
+  const { loading, error, fetchChat, fetchChatHistory } = useChatHooks();
   const [isTyping, setIsTyping] = useState(false);
   const { address, isConnected } = useAccount();
   const { approveCall, functionCall } = useGeneric();
@@ -30,9 +30,23 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch, chatHistory }) {
     scrollToBottom();
   }, [messages]);
 
+  const fetchHistory = async (selectedCard) => {
+    const res = await fetchChatHistory(user?.sub, selectedCard?._id)
+    console.log("History:", res);
+    if (res?.success) {
+      const formattedMessages = res?.threads?.map(thread => ({
+        sender: thread?.role === "human" ? "user" : "bot",
+        text: thread?.message
+      }));
+
+      // Update state with formatted messages
+      setMessages(formattedMessages || []);
+    }
+  }
+
   useEffect(() => {
     if (selectedCard) {
-      setMessages(chatHistory);
+      fetchHistory(selectedCard);
       setThreadId(selectedCard._id);
     }
   }, [selectedCard]);
@@ -47,7 +61,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch, chatHistory }) {
       try {
         const response = await fetchChat({
           message: inputValue,
-          agentName: "Uniswap Agent New",  // selectedCard?.agentName || "Uniswap Agent New",
+          agentName: selectedCard?.agentName,  // selectedCard?.agentName || "Uniswap Agent New",
           userId: user?.sub,
           walletAddress: address,
           threadId: selectedCard?._id // agent_id replace
@@ -173,7 +187,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch, chatHistory }) {
               return;
             }
 
-            if(metaData.transactionType === "sign") {
+            if (metaData.transactionType === "sign") {
               const { functionName, gasFees, contractAddress, blockchain, params, gasLimit } = metaData;
               console.log(functionName, gasFees, contractAddress, blockchain, params, gasLimit)
 

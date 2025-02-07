@@ -15,8 +15,6 @@ import Card from '../../components/Card/Card.tsx';
 import Menu from "../../components/Menu/Menu";
 import useAgentHooks from '../../Hooks/useAgentHooks.js';
 import { useContract } from '../../contexts/ContractProvider.js';
-import useChatHooks from '../../Hooks/useChatHook.js';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const initialCards = [];
 
@@ -39,10 +37,8 @@ function Playground() {
   const pageInput = useRef();
   const [startIndex, setStartIndex] = useState(0);
   const [stopIndex, setStopIndex] = useState(itemsPerPage);
+
   const panelRef = useRef(null);
-  const { loading, error, fetchChatHistory } = useChatHooks();
-  const { isLoading, isAuthenticated, user, logout } = useAuth0();
-  const [chatHistory, setChatHistory] = useState([]);
   const { changeAgent, setChangeAgent, setAbi, setContractAddress } = useContract();
 
   const { fetchAgents, agents } = useAgentHooks();
@@ -113,37 +109,11 @@ function Playground() {
     setSelectedCard(card);
     setIsSwitched(false);
     setShowAgentSelectModal(false);
-    console.log("Thread Id:", user?.sub, "-", card?._id)
-    const res = await fetchChatHistory(user?.sub, card?._id)
-    console.log("History:", res);
-    if (res?.success) {
-      const formattedMessages = res?.threads?.map(thread => ({
-        sender: thread?.role === "human" ? "user" : "bot",
-        text: thread?.message
-      }));
-
-      // Update state with formatted messages
-      setChatHistory(formattedMessages);
-    }
   };
-
-  console.log("History:", chatHistory);
 
   const onCardSelectMobile = async (card) => {
     setSelectedCard(card);
     setIsSwitched(false);
-    console.log("Thread Id:", user?.sub, "-", card?._id)
-    const res = await fetchChatHistory(user?.sub, card?._id)
-    console.log("History:", res);
-    if (res?.success) {
-      const formattedMessages = res?.threads?.map(thread => ({
-        sender: thread?.role === "human" ? "user" : "bot",
-        text: thread?.message
-      }));
-
-      // Update state with formatted messages
-      setChatHistory(formattedMessages);
-    }
     setChangeAgent(!changeAgent);
     setAbi(card?.abi);
     setContractAddress(card?.smartContractAddress);
@@ -208,7 +178,6 @@ function Playground() {
             selectedCard={selectedCard}
             isSwitched={isSwitched}
             onSwitch={handleSwitch}
-            chatHistory={chatHistory}
           />
         </div>
       </main>
