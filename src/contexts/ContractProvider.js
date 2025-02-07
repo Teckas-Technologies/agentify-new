@@ -5,6 +5,7 @@ import { MYIDPresaleABI } from "../config/ABI";
 import { useAccount } from "wagmi";
 import { constant } from "../config/constant";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { useAppKitNetwork } from "@reown/appkit/react";
 const MYIDPresaleAddress = constant.presaleAddress;
 
 const ContractContext = createContext(undefined);
@@ -17,6 +18,7 @@ export const ContractProvider = ({ children }) => {
     const [changeAgent, setChangeAgent] = useState(false);
     const [abi, setAbi] = useState();
     const [contractAddress, setContractAddress] = useState("");
+    const { chainId, caipNetwork } = useAppKitNetwork();
 
     const getBalances = async (account) => {
         if (!contract) return;
@@ -52,7 +54,7 @@ export const ContractProvider = ({ children }) => {
                 } else {
                     const walletConnectProvider = await EthereumProvider.init({
                         projectId: constant.projectId,
-                        chains: [constant.chainId],
+                        chains: [ constant.chainId ],
                         showQrModal: true,
                     });
                     detectedProvider = new ethers.providers.Web3Provider(walletConnectProvider);
@@ -63,6 +65,7 @@ export const ContractProvider = ({ children }) => {
                     return;
                 }
                 const network = await detectedProvider.getNetwork();
+                console.log("Network:", network)
                 if (network.chainId !== constant.chainId) {
                     alert("Wrong network detected. Please switch to the correct network.");
                     return;

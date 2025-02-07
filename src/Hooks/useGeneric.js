@@ -15,34 +15,37 @@ export const useGeneric = () => {
         console.error(`Error with ${tokenType}:`, error);
         setErrorReason(error.message || "An unknown error occurred.");
     };
-    const functionCall = async (func, value, isGas) => {
+    const functionCall = async (functionName, params, gasFees) => { // isGas
         if (!contract) {
-            console.log("Contract not found", isGas)
+            console.log("Contract not found", gasFees)
             return;
         }
-        console.log("value", value);
+        console.log("value", params);
         try {
             // const usdtAmountBigNumber = ethers.utils.parseUnits(value, 6);
-            const args = Object.values(value);
+            const args = Object.values(params);
             console.log("args", args);
-            if (typeof contract[func] !== "function") {
-                throw new Error(`Function ${func} does not exist on the contract`);
+            if (typeof contract[functionName] !== "function") {
+                throw new Error(`Function ${functionName} does not exist on the contract`);
             }
             let res;
-            if (isGas === true) {
-                console.log("Step1:", isGas)
-                const gasLimit = await contract?.estimateGas[func](...args)
-                console.log("GAS:", gasLimit)
-                const token = await contract[func](...args, { gasLimit: gasLimit });
-                const receipt = await token.wait();
-                console.log("RECEIPT:", receipt)
-                return { data: receipt, isGas: true, success: true };
-            } else {
-                console.log("Step2:", isGas)
-                res = await contract[func](...args);
-                const tokenValue = Number(ethers.utils.formatUnits(res, 6));
-                return { data: tokenValue, isGas: false, success: true };
-            }
+            // if (isGas === true) {
+            console.log("Step1:", gasFees)
+            const gasLimit = await contract?.estimateGas[functionName](...args)
+            // console.log("GAS:", gasLimit)
+            const token = await contract[functionName](...args, { gasLimit: gasLimit });
+            console.log("token:", token)
+            const receipt = await token.wait();
+            console.log("RECEIPT:", receipt)
+            return { data: receipt, isGas: true, success: true };
+            // } else {
+            //     console.log("Step2:", isGas)
+            //     res = await contract[functionName](...args);
+            //     console.log("RES:", res)
+            //     const tokenValue = Number(ethers.utils.formatUnits(res, 6));
+            //     console.log("RES:", res)
+            //     return { data: tokenValue, isGas: false, success: true };
+            // }
         } catch (error) {
             console.log("Step3:", error)
             console.error("Error fetching token value:", error);

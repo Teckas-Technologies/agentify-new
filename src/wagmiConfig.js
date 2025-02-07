@@ -27,10 +27,16 @@ const wagmiAdapter = new WagmiAdapter({
 createAppKit({
   adapters: [wagmiAdapter],
   networks,
+  defaultNetwork: sepolia,
   projectId,
   metadata,
   features: {
     analytics: true, // Enables analytics
+    email: false,
+    socials: [],
+    allWallets: true,
+    emailShowWallets: true,
+    swaps: false,
   },
 });
 
