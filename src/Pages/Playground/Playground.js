@@ -85,7 +85,7 @@ function Playground() {
           container.removeEventListener('scroll', handleScroll);
         }
       };
-  }, [totalPages]);
+  }, [currentPage,totalPages]);
   
 
   useEffect(() => {
@@ -146,9 +146,9 @@ function Playground() {
                 <h2>Agents</h2>
                 <IoIosCloseCircle size={"30px"} onClick={() => setShowAgentSelectModal(false)} />
               </div>
-              <div className="agent-select-modal-content">
+              <div className="agent-select-modal-content" ref={panelRef}>
                 <SearchBar className="agent-select-modal-search" onSearch={handleSearch} />
-                <div className="agent-select-modal-cards-container" ref={panelRef}>
+                <div className="agent-select-modal-cards-container">
                   {filteredCards.map(card => (
                     <div
                       key={card._id}
