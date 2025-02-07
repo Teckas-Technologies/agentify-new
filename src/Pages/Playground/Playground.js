@@ -149,7 +149,7 @@ function Playground() {
               <div className="agent-select-modal-content" ref={panelRef}>
                 <SearchBar className="agent-select-modal-search" onSearch={handleSearch} />
                 <div className="agent-select-modal-cards-container">
-                  {filteredCards.map(card => (
+                  {filteredCards?.map(card => (
                     <div
                       key={card._id}
                       onClick={() => onCardSelect(card)}

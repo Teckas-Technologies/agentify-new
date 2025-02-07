@@ -124,7 +124,7 @@ div.Marketplace {
                 border: 1px solid rgba(white, .05);
                 padding: .5rem;
                 border-radius: .3rem;
-                background: #161A25;
+                background: #07042A;
 
                 span {
                     opacity: .9;
@@ -150,7 +150,8 @@ div.Marketplace {
         position: fixed;
         bottom: 0;
         width: 100%;
-        background-color: #111521;
+        // background: linear-gradient(to right, #07042A, #130a3b 50%, #07042A);
+        color: #fff;
         border-top: 1px solid rgba(197, 197, 197, .1);
         padding: 1rem;
         display: flex;

@@ -87,7 +87,7 @@ function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard
       <div className="left-panel-content">
         <SearchBar onSearch={handleSearch} />
         <div className="cards-container" ref={panelRef}>
-          {filteredCards.map((card) => (
+          {filteredCards?.map((card) => (
             <div
               key={card._id}
               onClick={() => onCardSelect(card)}

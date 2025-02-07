@@ -66,7 +66,7 @@ const Dashboard = () => {
   useEffect(() => {
     console.log("Updating filteredCards:", cards);
     setFilteredCards(
-      cards.filter(
+      cards?.filter(
         (card) =>
           (!selectedFilters.length ||
             selectedFilters.some((filter) => card.tags?.includes(filter))) &&
