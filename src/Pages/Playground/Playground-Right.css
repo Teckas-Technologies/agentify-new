@@ -255,6 +255,10 @@
       padding: 16px;
       min-height: 300px;
     }
+
+    .switch {
+      display: none;
+    }
   
     .playground-title {
       margin-top: 80px;

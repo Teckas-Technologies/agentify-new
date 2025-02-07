@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LuCodeXml, LuMessageSquareText } from 'react-icons/lu';
+import { LuCodeXml, LuMessageSquareText, LuTrash, LuMessageSquareX } from 'react-icons/lu';
 import { FiCopy } from 'react-icons/fi';
 import './Playground-Right.css';
 import useChatHooks from '../../Hooks/useChatHook';
@@ -12,7 +12,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
   const [threadId, setThreadId] = useState('');
-  const { loading, error, fetchChat, fetchChatHistory } = useChatHooks();
+  const { loading, error, fetchChat, fetchChatHistory, clearHistory } = useChatHooks();
   const [isTyping, setIsTyping] = useState(false);
   const { address, isConnected } = useAccount();
   const { approveCall, functionCall } = useGeneric();
@@ -31,7 +31,8 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   }, [messages]);
 
   const fetchHistory = async (selectedCard) => {
-    const res = await fetchChatHistory(user?.sub, selectedCard?._id)
+    if (!user || !selectedCard?._id) return;
+    const res = await fetchChatHistory(user?.sub?.split("|")[1], selectedCard?._id)
     console.log("History:", res);
     if (res?.success) {
       const formattedMessages = res?.threads?.map(thread => ({
@@ -42,6 +43,13 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       // Update state with formatted messages
       setMessages(formattedMessages || []);
     }
+  }
+
+  const clearChat = async () => {
+    if (!user || !selectedCard?._id) return;
+    const res = await clearHistory(user?.sub?.split("|")[1], selectedCard?._id);
+    console.log("Cleared History:", res);
+    setMessages([]);
   }
 
   useEffect(() => {
@@ -58,11 +66,12 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       setInputValue('');
       setIsTyping(true);
       console.log("SEL CARD;", selectedCard)
+      if(!selectedCard || !user) return;
       try {
         const response = await fetchChat({
           message: inputValue,
           agentName: selectedCard?.agentName,  // selectedCard?.agentName || "Uniswap Agent New",
-          userId: user?.sub,
+          userId: user?.sub?.split("|")[1],
           walletAddress: address,
           threadId: selectedCard?._id // agent_id replace
         });
@@ -187,7 +196,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
                 setMessages((prev) => [...prev, { sender: "bot", text: `Please connect your wallet to execute ${functionName}` }]);
                 return;
               }
-  
+
               if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
                 return;
               }
@@ -260,13 +269,19 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       <div className="playground-header">
         <h2>{isSwitched ? 'Embeddable Code' : 'Playground'}</h2>
         <div className="switch-container">
-          <span>Switch to</span>
+          <span className='switch'>Switch to</span>
           <button
             className="switch-icon-btn"
             onClick={onSwitch}
             title={isSwitched ? "Switch to chat" : "Switch to code"}
           >
             {isSwitched ? <LuMessageSquareText size={20} /> : <LuCodeXml size={20} />}
+          </button>
+          <button
+            className="switch-icon-btn"
+            onClick={clearChat}
+          >
+            <LuMessageSquareX size={20} />
           </button>
         </div>
       </div>
