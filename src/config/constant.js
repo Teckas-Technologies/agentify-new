@@ -7,7 +7,7 @@ const presaleAddress = "0xed72346f59241D1A8E043f1dd60E2967D9baB90C";
 const projectId = "7f9b6509e0948e122911ca12a1352438";
 const chainId = 11155111;
 
-const PYTHON_SERVER_URL = process.env.PYTHON_SERVER_URL || "http://localhost:8000"
+const PYTHON_SERVER_URL = process.env.PYTHON_SERVER_URL || "https://6f1d-2405-201-e062-f03d-34a8-3fce-c6b8-b118.ngrok-free.app"
 const NODEJS_SERVER_URL = process.env.NODEJS_SERVER_URL || "http://localhost:3001"
 
 export const constant = {
