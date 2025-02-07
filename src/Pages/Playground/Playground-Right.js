@@ -6,6 +6,8 @@ import useChatHooks from '../../Hooks/useChatHook';
 import { useAccount } from 'wagmi';
 import { useGeneric } from '../../Hooks/useGeneric';
 import { useAuth0 } from '@auth0/auth0-react';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
 
 function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [messages, setMessages] = useState([]);
@@ -35,10 +37,12 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
     const res = await fetchChatHistory(user?.sub?.split("|")[1], selectedCard?._id)
     console.log("History:", res);
     if (res?.success) {
-      const formattedMessages = res?.threads?.map(thread => ({
-        sender: thread?.role === "human" ? "user" : "bot",
-        text: thread?.message
-      }));
+      const formattedMessages = res?.threads
+        ?.filter(thread => thread?.message?.trim() !== "")
+        .map(thread => ({
+          sender: thread?.role === "human" ? "user" : "bot",
+          text: thread?.message
+        }));
 
       // Update state with formatted messages
       setMessages(formattedMessages || []);
@@ -192,7 +196,8 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
               if (res?.success) {
                 if (res?.isGas) {
                   const txData = res.data;
-                  setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <a href="https://sepolia.etherscan.io/tx/${txData.transactionHash}" target="_blank" class="hash" style="text-decoration:none; color: #fff;">Status</a>` }]);
+                  // setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <a href="https://sepolia.etherscan.io/tx/${txData.transactionHash}" target="_blank" class="hash" style="text-decoration:none; color: #fff;">Status</a>` }]);
+                  setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! [Status](https://sepolia.etherscan.io/tx/${txData.transactionHash})` }]);
                   setExecuting(false);
                   return;
                 } else {
@@ -287,11 +292,12 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
                 const isLastMessage = index === messages.length - 1; // Check if it's the last message
                 return (
                   <div key={index} className={`message ${message?.sender}`}>
-                    <div className="message-content">
+                    <div className={`message-content ${isLastMessage && message.sender === "bot" && message?.text?.includes("Executing") && executing ? "dflex" : ""}`}>
                       {isLastMessage && message.sender === "bot" && message?.text?.includes("Executing") && executing && (
                         <div className="loader"></div>
                       )}
-                      <p dangerouslySetInnerHTML={{ __html: message.text }}></p>
+                      {/* <p dangerouslySetInnerHTML={{ __html: message.text }}></p> */}
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
                     </div>
                   </div>
                 );
