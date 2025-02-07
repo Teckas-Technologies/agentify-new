@@ -88,6 +88,20 @@ const EditAgent = () => {
         // props.refreshAgents();
     }
 
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setFormData((prev) => ({
+                    ...prev,
+                    abi: event.target.result,
+                }));
+            };
+            reader.readAsText(file);
+        }
+    };
+
     return (
         <div className='EditAgent'>
             <Menu />
@@ -131,6 +145,7 @@ const EditAgent = () => {
                             variant="filled"
                             value={formData.abi}
                             onChange={handleChange}
+                            id="abi"
                             slotProps={{
                                 input: {
                                     disableUnderline: true,
@@ -147,6 +162,7 @@ const EditAgent = () => {
                                 <input
                                     type="file"
                                     hidden
+                                    onChange={handleFileUpload}
                                 />
                             </Button>
                             {/* <input type="file" id="file" name="file"></input> */}
@@ -156,9 +172,9 @@ const EditAgent = () => {
                     <div className="contract">
                         <h2>Enter Contract Details</h2>
 
-                        <label htmlFor="contractAddress">Smart Contract Address</label>
+                        <label htmlFor="smartContractAddress">Smart Contract Address</label>
                         <input
-                            id="contractAddress"
+                            id="smartContractAddress"
                             placeholder='Ex. 0x1234abcd5678efgh9012ijkl3456mnop7890qrst'
                             value={formData.smartContractAddress} onChange={handleChange}
                         />
