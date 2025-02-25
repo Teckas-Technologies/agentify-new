@@ -7,11 +7,11 @@ const presaleAddress = "0xed72346f59241D1A8E043f1dd60E2967D9baB90C";
 const projectId = "7f9b6509e0948e122911ca12a1352438";
 const chainId = 11155111;
 
-const PYTHON_SERVER_URL = process.env.PYTHON_SERVER_URL || "https://agentify-ai-dvfhgwctf6cwdvbz.canadacentral-01.azurewebsites.net"
-const NODEJS_SERVER_URL = process.env.NODEJS_SERVER_URL || "https://agentify-backend.vercel.app"
+const PYTHON_SERVER_URL = process.env.PYTHON_SERVER_URL || "http://localhost:8000"
+const NODEJS_SERVER_URL = process.env.NODEJS_SERVER_URL || "http://localhost:3001"
 export const AUTH0_CLIENT_ID =process.env.AUTH0_CLIENT_ID||"Tqbaa3qIoLUVIVXb74p9KlVIizo19RRW"
 export const AUTH0_CLIENT_URL=process.env.AUTH0_CLIENT_URL||"dev-nndolpmecyghhm8z.us.auth0.com"
-export const API_AUDIENCE_URL=process.env.API_AUDIENCE_URL||"https://agentify-backend.vercel.app"
+export const API_AUDIENCE_URL=process.env.API_AUDIENCE_URL||"http://localhost:3001"
 
 export const constant = {
     PYTHON_SERVER_URL,

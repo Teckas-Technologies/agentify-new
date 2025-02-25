@@ -8,6 +8,8 @@ import { useGeneric } from '../../Hooks/useGeneric';
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
+import { usdtABI } from '../../config/usdtABI';
+import { useAppKitNetwork } from '@reown/appkit/react';
 
 function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [messages, setMessages] = useState([]);
@@ -21,6 +23,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [isCreating, setIsCreating] = useState(false);
   const [executing, setExecuting] = useState(false);
   const { isLoading, isAuthenticated, user, logout } = useAuth0();
+  const { chainId, caipNetwork } = useAppKitNetwork();
 
   // console.log("User:", user)
 
@@ -63,6 +66,8 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
     }
   }, [selectedCard]);
 
+  console.log("chain Id:", caipNetwork.id.toString(), chainId)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputValue.trim()) {
@@ -72,15 +77,15 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       console.log("SEL CARD;", selectedCard)
       if (!selectedCard || !user) return;
       try {
-        const response = await fetchChat({
-          message: inputValue,
-          agentName: selectedCard?.agentName,  // selectedCard?.agentName || "Uniswap Agent New",
-          userId: user?.sub?.split("|")[1],
-          walletAddress: address,
-          threadId: selectedCard?._id // agent_id replace
-        });
+        // const response = await fetchChat({
+        //   message: inputValue,
+        //   agentName: selectedCard?.agentName,  // selectedCard?.agentName || "Uniswap Agent New",
+        //   userId: user?.sub?.split("|")[1],
+        //   walletAddress: address,
+        //   threadId: selectedCard?._id // agent_id replace
+        // });
 
-        console.log("RES:", response)
+        // console.log("RES:", response)
 
         // const response = {
         //   data: {
@@ -143,37 +148,51 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
         //   }
         // }
 
+        // const response = {
+        //   "ai_message": "To proceed with your contribution of 2 USDT, you'll need to sign the transaction. Here are the details:\n\n- **Blockchain:** Sepolia\n- **Contract Address:** 0xed72346f59241D1A8E043f1dd60E2967D9baB90C\n- **Function Name:** contributeUSDT\n\nPlease confirm the transaction in your wallet. If you need any more help, feel free to ask!",
+        //   "tool_response": "{\"transactionType\": \"sign\", \"params\": \"[\\\"2\\\"]\", \"blockchain\": \"Sepolia\", \"contractAddress\": \"0xed72346f59241D1A8E043f1dd60E2967D9baB90C\", \"tokenAddress\": \"0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9\", \"functionName\": \"contributeUSDT\", \"approveNeed\": \"yes\"}"
+        // }
+
+        // ERC20 sample responsee
+        const response = {
+          "ai_message": "To proceed with your contribution of 1 USDT, you'll need to sign the transaction. Here are the details:\n\n- **Blockchain:** Sepolia\n- **Contract Address:** 0xed72346f59241D1A8E043f1dd60E2967D9baB90C\n- **Function Name:** contributeUSDT\n\nPlease confirm the transaction in your wallet. If you need any more help, feel free to ask!",
+          "tool_response": "{\"transactionType\": \"sign\", \"params\": \"[ { \\\"tokenAddress\\\": \\\"0x0EC435037161ACd3bB94eb8DF5BC269f17A4E1b9\\\", \\\"amount\\\": \\\"1\\\", \\\"approveNeeded\\\": \\\"yes\\\" }]\", \"blockchain\": \"Sepolia\", \"contractAddress\": \"0xed72346f59241D1A8E043f1dd60E2967D9baB90C\", \"functionName\": \"contributeUSDT\"}"
+        };
+
+        // Native token response
+        // const response = {
+        //   "ai_message": "To proceed with your contribution of 1 ETH, you'll need to sign the transaction. Here are the details:\n\n- **Blockchain:** Sepolia\n- **Contract Address:** 0xed72346f59241D1A8E043f1dd60E2967D9baB90C\n- **Function Name:** contributeEth\n\nPlease confirm the transaction in your wallet. If you need any more help, feel free to ask!",
+        //   "tool_response": "{\"transactionType\": \"sign\", \"params\": \"[ { \\\"amount\\\": \\\"0.00037\\\" }]\", \"blockchain\": \"Sepolia\", \"contractAddress\": \"0xed72346f59241D1A8E043f1dd60E2967D9baB90C\", \"functionName\": \"contributeEth\"}"
+        // };
+
         if (response) {
           console.log("RES:", response)
-          if (response?.tool_response !== "None") {  //  if (response.data.intent === "final_json")
+          if (response?.tool_response !== "None") {
 
-            let metaData;
+            // let metaData;
 
-            try {
-              metaData = JSON.parse(response?.tool_response); // Parse tool response
-              metaData.params = JSON.parse(metaData.params);  // Parse params separately
+            // try {
+            let metaData = JSON.parse(response?.tool_response); // Parse tool response
+            metaData.params = JSON.parse(metaData.params);  // Parse params separately
+            console.log("metaData:", metaData)
+            console.log("metaData.params:", metaData.params)
 
-              // Convert array to object with dynamic keys (key1, key2, etc.)
-              const paramsObject = metaData.params.reduce((acc, value, index) => {
-                acc[`key${index + 1}`] = value;
-                return acc;
-              }, {});
+            const approvalParam = metaData.params.find(param => param.approveNeeded === "yes");
+            let tokenAddress = null;
+            let amount = null;
 
-              console.log("Params:", paramsObject)
+            console.log("ApprovalParam:", approvalParam)
 
-              metaData.params = paramsObject;
-            } catch (error) {
-              metaData = response?.tool_response; // If parsing fails, treat it as a normal string
-              setMessages(prevMessages => [...prevMessages, { text: response.ai_message, sender: 'bot' }]);
-              return;
+            if (approvalParam) {
+              tokenAddress = approvalParam.tokenAddress; // First field is the token address
+              amount = approvalParam.amount; // Amount for approval
             }
-
-            // const metaData = JSON.parse(response?.tool_response);
-            // console.log("Metadata:", metaData)
 
             if (metaData.transactionType === "sign") {
               const { functionName, gasFees, contractAddress, blockchain, params, gasLimit } = metaData;
               console.log(functionName, gasFees, contractAddress, blockchain, params, gasLimit)
+
+              const tokenABI = usdtABI;
 
               if (!address || !isConnected) {
                 setMessages((prev) => [...prev, { sender: "bot", text: `Please connect your wallet to execute ${functionName}` }]);
@@ -184,32 +203,34 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
                 return;
               }
 
+              console.log(approvalParam, ",", tokenAddress, ",", amount)
+
+              if (approvalParam && tokenAddress && amount) {
+                console.log(`Approving token: ${tokenAddress} with amount: ${amount}`);
+                // Approve the token dynamically with decimals
+                const approvalResult = await approveCall(tokenAddress, tokenABI, contractAddress, amount);
+                if (!approvalResult.success) {
+                  setMessages((prev) => [...prev, { sender: "bot", text: `Token approval failed!` }]);
+                  return;
+                }
+              }
+
               setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
               setExecuting(true);
 
-              // const resposeApprove = await approveCall(response.data.meta_data.parameters.amount)
-              // console.log("RES:", resposeApprove)
-
-              const res = await functionCall(functionName, params, gasFees);
-              console.log(res);
-
-              if (res?.success) {
-                if (res?.isGas) {
-                  const txData = res.data;
-                  // setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <a href="https://sepolia.etherscan.io/tx/${txData.transactionHash}" target="_blank" class="hash" style="text-decoration:none; color: #fff;">Status</a>` }]);
-                  setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! [Status](https://sepolia.etherscan.io/tx/${txData.transactionHash})` }]);
-                  setExecuting(false);
-                  return;
-                } else {
-                  setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
-                  setExecuting(false);
-                  return;
-                }
+              // Execute the transaction
+              const executionResult = await functionCall(functionName, params, tokenABI);
+              if (executionResult.success) {
+                const txData = executionResult.data;
+                setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! [Status](https://sepolia.etherscan.io/tx/${txData.transactionHash})` }]);
+                setExecuting(false);
+                return;
               } else {
                 setMessages((prev) => [...prev, { sender: "bot", text: `Function call execution failed!` }]);
                 setExecuting(false);
                 return;
               }
+              // setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <a href="https://sepolia.etherscan.io/tx/${txData.transactionHash}" target="_blank" class="hash" style="text-decoration:none; color: #fff;">Status</a>` }]);
             }
           }
 
@@ -286,7 +307,11 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
           </div>
         ) : (
           <>
-            {messages.length === 0 && <div className="playground-title">Execute Transactions with AI</div>}
+            {messages.length === 0 && !loading && <div className="playground-title">Execute Transactions with AI</div>}
+            {loading && <div className='empty'>
+              <div className='loader'></div>
+              <h2>Fetching chat history...</h2>
+            </div>}
             <div className="messages-container">
               {messages.map((message, index) => {
                 const isLastMessage = index === messages.length - 1; // Check if it's the last message

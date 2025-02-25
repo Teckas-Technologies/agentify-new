@@ -29,6 +29,16 @@ const CreateAgent = () => {
     const [createdAgentDetails, setCreatedAgentDetails] = useState();
     const [errMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
+    const { getAccessTokenSilently } = useAuth0();
+
+    const fetchToken = async () => {
+        const token = await getAccessTokenSilently();
+        console.log("TOKEN:", token)
+    }
+
+    useEffect(()=>{
+        fetchToken();
+    }, [])
 
     const { mapLoading, mapError, mappingText, fetchFuncMappings } = useFunctionMappingHooks();
     const [inputData, setInputData] = useState("");
@@ -45,11 +55,21 @@ const CreateAgent = () => {
         smartContractAddress: '',
         agentName: '',
         agentPurpose: '',
-        chain: caipNetwork.name,
+        chain: caipNetwork.id.toString(),
         agentInstructions: '',
         creatorWalletAddress: address,
         tags: []
     });
+
+    useEffect(() => {
+        if(address) {
+            setFormData((prevData) => ({
+                ...prevData,
+                creatorWalletAddress: address,
+            }));
+        }
+    }, [address]);
+    
 
     useEffect(() => {
         setFormData((prevFormData) => ({
@@ -126,6 +146,12 @@ const CreateAgent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!address) {
+            setShowFailedPop(true);
+            setErrorMsg("Please connect wallet before create an agent.");
+            return;
+        }
+        console.log("CWA", formData?.creatorWalletAddress)
         const agentData = {
             ...formData,
             tags: selectedTags,
@@ -135,7 +161,7 @@ const CreateAgent = () => {
         if (res) {
             console.log("RES:", res)
             if(res.success) {
-                setCreatedAgentDetails(res?.data);
+                setCreatedAgentDetails(res?.data?.agent);
                 setShowPopup(true);
                 setFormData({
                     creatorName: '',
@@ -366,13 +392,14 @@ const CreateAgent = () => {
                             Discard
                         </Button>
                         <Button
-                            className='create'
+                            className='create empty'
                             variant='filled'
                             // onClick={() => {
                             //     setShowPopup(!showPopup)
                             // }}
                             type='submit'
                         >
+                            {loading && <div className='loader'></div>}
                             {loading ? "Creating..." : "Create Agent"}
                         </Button>
                     </div>

@@ -17,214 +17,227 @@ import useAgentHooks from '../../Hooks/useAgentHooks.js';
 
 const Marketplace = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [filters, setFilters] = useState([
-        "Memes",
-        "DeFi",
-        "Investing",
-        "DAO",
-        "Ecosystem",
-        "Computational",
-        "Other",
-    ]);
-    const [selectedFilters, setSelectedFilters] = useState([]);
-    const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState([
+    "Memes",
+    "DeFi",
+    "Investing",
+    "DAO",
+    "Ecosystem",
+    "Computational",
+    "Other",
+  ]);
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
 
-    const [cards, setCards] = useState([])
-    const [filteredCards, setFilteredCards] = useState([]);
-    const [searchText, setSearchText] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(6);
-    const [totalPages, setTotalPages] = useState(1);
-    const pageInput = useRef();
-    const [startIndex, setStartIndex] = useState(0);
-    const [stopIndex, setStopIndex] = useState(itemsPerPage);
+  const [cards, setCards] = useState([])
+  const [filteredCards, setFilteredCards] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageInput = useRef();
+  const [startIndex, setStartIndex] = useState(0);
+  const [stopIndex, setStopIndex] = useState(itemsPerPage);
 
-  
-    const { fetchAgents, agents } = useAgentHooks();
-    const fetchData = async () => {
-        const response = await fetchAgents({
-          search: searchText,
-          tags: selectedFilters,
-          page: currentPage,
-          limit: itemsPerPage,
-        });
-        if(response.agents && response.agents.length > 0 ) {
-          setCards(response.agents);
-          setFilteredCards(response.agents);
-          console.log("RES:", response.agents)
-          setTotalPages(response.page);
-        } else {
-          setCards([]);
-          setFilteredCards([]);
-          setTotalPages(response.page);
-        }
-      };
 
-      useEffect(() => {
-        fetchData();
-      }, [searchText, selectedFilters, currentPage]);
-      
-      const handleSearchChange = (e) => {
-        setSearchText(e.target.value);
-      };
-  
-
-    // useEffect(() => {
-    //     // we will be doing an API call here to get the cards.
-    //     setCards(marketplaceCards);
-    //     setFilteredCards(marketplaceCards);
-    // }, []);
-
-    const handleFilterChange = (filter) => {
-        setSelectedFilters((prevFilters) =>
-          prevFilters.includes(filter)
-            ? prevFilters.filter((item) => item !== filter)
-            : [...prevFilters, filter]
-        );
-      };
-
-      const goToPage = (index) => {
-        setCurrentPage(index + 1);
-      };
-    
-      const handlePagination = (direction) => {
-        if (direction === 'prev' && currentPage > 1) {
-          setCurrentPage((prevPage) => prevPage - 1);
-        } else if (direction === 'next' && currentPage < totalPages) {
-          setCurrentPage((prevPage) => prevPage + 1);
-        }
-      };
-
-    const handlePageInputChange = () => {
-        if ( pageInput.current.value > 0 && pageInput.current.value <= Math.ceil(filters.length / itemsPerPage)  ) {
-            setStartIndex( (pageInput.current.value - 1)*itemsPerPage );
-            setStopIndex( (pageInput.current.value)*itemsPerPage );
-        }
-    };
-
-    const search = (searchText) => {
-        let filteredCards = cards.filter((card) => card.title.toLowerCase().includes(searchText.toLowerCase()));
-        setFilteredCards(filteredCards);
+  const { fetchAgents, agents, loading } = useAgentHooks();
+  const fetchData = async () => {
+    const response = await fetchAgents({
+      search: searchText,
+      tags: selectedFilters,
+      page: currentPage,
+      limit: itemsPerPage,
+      isPublished: true
+    });
+    if (response.agents && response.agents.length > 0) {
+      setCards(response.agents);
+      setFilteredCards(response.agents);
+      console.log("RES:", response.agents)
+      setTotalPages(response.page);
+    } else {
+      setCards([]);
+      setFilteredCards([]);
+      setTotalPages(response.page);
     }
+  };
 
-    const filter = () => {
-        let filteredCards = cards.filter((card) => selectedFilters.includes(card.category));
-        setFilteredCards(filteredCards);
-    }
+  useEffect(() => {
+    fetchData();
+  }, [searchText, selectedFilters, currentPage]);
 
-    // useEffect(() => {
-    //     filter();
-    // }, [selectedFilters])
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
 
-    return (
-        <div className='Marketplace'>
-            <Menu />
 
-            <div className='marketplaceContent'>
-                <div className='header'>
-                    <h1>Agent Marketplace</h1>
-                    <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />} onClick={() => navigate("/create")}>
-                        Create new Agent
-                    </Button>
-                </div>
+  // useEffect(() => {
+  //     // we will be doing an API call here to get the cards.
+  //     setCards(marketplaceCards);
+  //     setFilteredCards(marketplaceCards);
+  // }, []);
 
-                <div className="inputContainer">
-                    <input type="text" placeholder='Search any agent or keyword'   onChange={handleSearchChange}
-            value={searchText} />
-                    <Button 
-                        variant='filled' 
-                        startIcon={ <CiFilter/> }
-                        onClick={() => setShowFilters(!showFilters)}
-                    >
-                        <span className="text">Filter by</span>
-                    </Button>
-                </div>
-                <FormGroup className={`inputFilters ${(showFilters) ? 'show' : ''}`}>
-                    {
-                        filters.map((filter, index) => (
-                            <FormControlLabel 
-                                onChange={() => {
-                                    console.log("changed checkbox")
-                                    if (selectedFilters.includes(filter)) {
-                                        console.log(`Show ${filter}`)
-                                        setSelectedFilters(selectedFilters.filter((item) => item !== filter));
-                                    } else {
-                                        console.log(`Hide ${filter}`)
-                                        setSelectedFilters([...selectedFilters, filter]);
-                                    }
-                                }}
-                                className='filter' 
-                                control={
-                                    <Checkbox 
-                                    onChange={() => handleFilterChange(filter)}
-                                        sx={{
-                                        color: 'white',
-                                        '&.Mui-checked': {
-                                          color: '#ABBDFE',
-                                        },
-                                      }} 
-                                      inputProps={{
-                                        'aria-label': 'primary checkbox',
-                                      }}
-                                    />
-                                } 
-                                label={filter} />
-                        ))
-                    }
-                </FormGroup>
-
-                <div className="agentsGridContainer">
-                    <div className="agentsGrid">
-                        {
-                            filteredCards.slice(startIndex, stopIndex).map((card, index) => {
-                                return (
-                                    <Card
-                                        key={index}
-                                        {...card}
-                                    />
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-
-            </div>
-
-          
-
-              <div className="bottomPagination">
-                      <div className="pagination">
-                        <button
-                          className="leftArrow"
-                          disabled={currentPage === 1}
-                          onClick={() => handlePagination('prev')}
-                        >
-                          <FaChevronLeft size="20px" />
-                        </button>
-            
-                        {Array.from({ length: totalPages }, (_, index) => (
-                          <button
-                            key={index}
-                            className={currentPage === index + 1 ? 'active' : ''}
-                            onClick={() => goToPage(index)}
-                          >
-                            {index + 1}
-                          </button>
-                        ))}
-            
-                        <button
-                          className="rightArrow"
-                          disabled={currentPage === totalPages}
-                          onClick={() => handlePagination('next')}
-                        >
-                          <FaChevronRight size="20px" />
-                        </button>
-                      </div>
-                    </div>
-        </div>
+  const handleFilterChange = (filter) => {
+    setSelectedFilters((prevFilters) =>
+      prevFilters.includes(filter)
+        ? prevFilters.filter((item) => item !== filter)
+        : [...prevFilters, filter]
     );
+  };
+
+  const goToPage = (index) => {
+    setCurrentPage(index + 1);
+  };
+
+  const handlePagination = (direction) => {
+    if (direction === 'prev' && currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    } else if (direction === 'next' && currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePageInputChange = () => {
+    if (pageInput.current.value > 0 && pageInput.current.value <= Math.ceil(filters.length / itemsPerPage)) {
+      setStartIndex((pageInput.current.value - 1) * itemsPerPage);
+      setStopIndex((pageInput.current.value) * itemsPerPage);
+    }
+  };
+
+  const search = (searchText) => {
+    let filteredCards = cards.filter((card) => card.title.toLowerCase().includes(searchText.toLowerCase()));
+    setFilteredCards(filteredCards);
+  }
+
+  const filter = () => {
+    let filteredCards = cards.filter((card) => selectedFilters.includes(card.category));
+    setFilteredCards(filteredCards);
+  }
+
+  // useEffect(() => {
+  //     filter();
+  // }, [selectedFilters])
+
+  return (
+    <div className='Marketplace'>
+      <Menu />
+
+      <div className='marketplaceContent'>
+        <div className='header'>
+          <h1>Agent Marketplace</h1>
+          <Button className='pc-menu-connect-btn' variant="filled" endIcon={<ControlPointRoundedIcon />} onClick={() => navigate("/create")}>
+            Create new Agent
+          </Button>
+        </div>
+
+        <div className="inputContainer">
+          <input type="text" placeholder='Search any agent or keyword' onChange={handleSearchChange}
+            value={searchText} />
+          <Button
+            variant='filled'
+            startIcon={<CiFilter />}
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <span className="text">Filter by</span>
+          </Button>
+        </div>
+        <FormGroup className={`inputFilters ${(showFilters) ? 'show' : ''}`}>
+          {
+            filters.map((filter, index) => (
+              <FormControlLabel
+                onChange={() => {
+                  console.log("changed checkbox")
+                  if (selectedFilters.includes(filter)) {
+                    console.log(`Show ${filter}`)
+                    setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+                  } else {
+                    console.log(`Hide ${filter}`)
+                    setSelectedFilters([...selectedFilters, filter]);
+                  }
+                }}
+                className='filter'
+                control={
+                  <Checkbox
+                    onChange={() => handleFilterChange(filter)}
+                    sx={{
+                      color: 'white',
+                      '&.Mui-checked': {
+                        color: '#ABBDFE',
+                      },
+                    }}
+                    inputProps={{
+                      'aria-label': 'primary checkbox',
+                    }}
+                  />
+                }
+                label={filter} />
+            ))
+          }
+        </FormGroup>
+
+        <div className="agentsGridContainer">
+          <div className="agentsGrid">
+            {
+              filteredCards.slice(startIndex, stopIndex).map((card, index) => {
+                return (
+                  <Card
+                    key={index}
+                    {...card}
+                  />
+                )
+              })
+            }
+          </div>
+          {!loading && filteredCards.length === 0 && <div className="empty">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+              <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+            <h2>No agents found!</h2>
+          </div>}
+
+          {loading && <div className="empty">
+            <div className='loader'></div>
+            <h2>Fetching Agents...</h2>
+          </div>}
+
+        </div>
+
+      </div>
+
+
+
+      <div className="bottomPagination">
+        <div className="pagination">
+          <button
+            className="leftArrow"
+            disabled={currentPage === 1}
+            onClick={() => handlePagination('prev')}
+          >
+            <FaChevronLeft size="20px" />
+          </button>
+
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={currentPage === index + 1 ? 'active' : ''}
+              onClick={() => goToPage(index)}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            className="rightArrow"
+            disabled={currentPage === totalPages}
+            onClick={() => handlePagination('next')}
+          >
+            <FaChevronRight size="20px" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Marketplace;

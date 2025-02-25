@@ -243,12 +243,13 @@ const EditAgent = () => {
                             Discard
                         </Button>
                         <Button
-                            className='filled'
+                            className='filled empty'
                             type='submit'
                         // onClick={() => {
                         //     setShowPopup(!showPopup)
                         // }}
                         >
+                            {loading && <div className='loader'></div>}
                             {loading ? "Saving..." : "Save Changes"}
                         </Button>
                     </div>

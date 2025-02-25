@@ -1,21 +1,21 @@
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiProvider } from 'wagmi';
-import { mainnet, arbitrum,holesky, sepolia } from '@reown/appkit/networks';
+import { mainnet, arbitrum, holesky, sepolia } from '@reown/appkit/networks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiAdapter, defineNetwork } from '@reown/appkit-adapter-wagmi';
 
 const queryClient = new QueryClient();
 
-const projectId = '7e66aad70270b80cd2e9135fc7196cfd'; 
+const projectId = '7e66aad70270b80cd2e9135fc7196cfd';
 
 const metadata = {
-  name: 'AppKit Example',
-  description: 'Demo of Reown AppKit',
-  url: 'http://localhost:3000', 
+  name: 'Agentify',
+  description: 'Agentify helps to developers to create production ready agent to interact with smart contracts within 10 mins.',
+  url: 'http://localhost:3000',
   icons: ['https://avatars.githubusercontent.com/u/179229932'],
 };
 
-const networks = [mainnet,arbitrum,holesky,sepolia];
+const networks = [mainnet, arbitrum, holesky, sepolia];
 
 const wagmiAdapter = new WagmiAdapter({
   networks,
@@ -24,7 +24,7 @@ const wagmiAdapter = new WagmiAdapter({
 });
 
 // 7. Initialize AppKit modal
-createAppKit({
+const modal = createAppKit({
   adapters: [wagmiAdapter],
   networks,
   defaultNetwork: sepolia,
@@ -39,6 +39,19 @@ createAppKit({
     swaps: false,
   },
 });
+
+export const customSwitchNetwork = (targetChainId) => {
+  const targetChain = networks.find((chain) => chain.id.toString() === targetChainId);
+
+  if (targetChain) {
+    // Dynamically switch to the target network
+    modal.switchNetwork(targetChain);
+    console.log(`Successfully switched to ${targetChain.name}`);
+  } else {
+    console.warn("Unsupported network selected.");
+    return;
+  }
+}
 
 // 8. Define AppKit Provider Component
 export function AppKitProvider({ children }) {

@@ -37,31 +37,31 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [totalPages, setTotalPages] = useState(1);
-  const { fetchAgents, agents } = useAgentHooks();
+  const { fetchAgents, agents, loading } = useAgentHooks();
   const { user } = useAuth0();
   const fetchData = async () => {
     const response = await fetchAgents({
       search: searchText,
-      tags:selectedFilters,
+      tags: selectedFilters,
       startDate,
       endDate,
       page: currentPage,
       limit: itemsPerPage,
-      creatorId:user.sub
+      creatorId: user.sub
     });
     setCards(response.agents);
     setFilteredCards(response.agents);
     console.log(response.agents);
     console.log(response.page);
-    if(response.page!=0){
+    if (response.page != 0) {
       setTotalPages(response.page);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [searchText, tags,selectedFilters, startDate, endDate, currentPage]);
-  
+  }, [searchText, tags, selectedFilters, startDate, endDate, currentPage]);
+
 
   useEffect(() => {
     console.log("Updating filteredCards:", cards);
@@ -74,8 +74,8 @@ const Dashboard = () => {
       )
     );
   }, [cards, searchText, selectedFilters, currentPage]);
-  
-  
+
+
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value);
@@ -106,7 +106,7 @@ const Dashboard = () => {
       });
     }
   };
-  
+
 
   return (
     <div className="Dashboard">
@@ -126,16 +126,16 @@ const Dashboard = () => {
         </div>
 
         <div className="inputContainer">
-                    <input type="text" placeholder='Search any agent or keyword'  onChange={handleSearchChange}
+          <input type="text" placeholder='Search any agent or keyword' onChange={handleSearchChange}
             value={searchText} />
-                    <Button 
-                        variant='filled' 
-                        startIcon={ <CiFilter/> }
-                        onClick={() => setShowFilters(!showFilters)}
-                    >
-                        <span className="text">Filter by</span>
-                    </Button>
-                </div>
+          <Button
+            variant='filled'
+            startIcon={<CiFilter />}
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <span className="text">Filter by</span>
+          </Button>
+        </div>
 
 
         <FormGroup className={`inputFilters ${showFilters ? 'show' : ''}`}>
@@ -160,11 +160,22 @@ const Dashboard = () => {
 
         <div className="agentsGridContainer">
           <div className="agentsGrid">
-          {filteredCards && filteredCards.map((card, index) => (
-  <Card key={index} {...card} updatedDate={card.updatedDate} createdDate={card.createdDate} refreshAgents={fetchData} />
-))}
+            {filteredCards && filteredCards.map((card, index) => (
+              <Card key={index} {...card} updatedDate={card.updatedDate} createdDate={card.createdDate} refreshAgents={fetchData} />
+            ))}
 
           </div>
+          {!loading && filteredCards.length === 0 && <div className="empty">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+              <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+            <h2>No agents found!</h2>
+          </div>}
+
+          {loading && <div className="empty">
+            <div className='loader'></div>
+            <h2>Fetching Agents...</h2>
+          </div>}
         </div>
 
         <div className="bottomPagination">

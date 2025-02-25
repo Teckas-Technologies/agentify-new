@@ -13,7 +13,7 @@ const useAgentHooks =()=>{
             setLoading(true);
             setError(null);
             const token = await getAccessTokenSilently();
-            const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/agents`,{
+            const response = await fetch(`${constant.NODEJS_SERVER_URL}/api/create-agent`,{
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const useAgentHooks =()=>{
                 // Try to extract JSON error message
                 try {
                     const errorResponse = await response.json();
-                    errorMessage = errorResponse.error || `Error: ${response.statusText}`;
+                    errorMessage = errorResponse.detail || `Error: ${response.statusText}`;
                 } catch (jsonError) {
                     errorMessage = `Error: ${response.statusText}`;
                 }
@@ -143,7 +143,8 @@ const useAgentHooks =()=>{
         endDate = "",
         page = 1,
         limit = 10,
-        creatorId
+        creatorId,
+        isPublished = undefined
       }) => {
         try {
           setLoading(true);
@@ -158,7 +159,8 @@ const useAgentHooks =()=>{
             tags: JSON.stringify(tags),
             startDate,
             endDate,
-            creatorId
+            creatorId,
+            isPublished,
           };
     
           const filteredParams = Object.fromEntries(

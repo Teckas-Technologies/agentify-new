@@ -8,6 +8,18 @@
     width: 100%;
 }
 
+.empty {
+    margin-top: 100px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.empty h2 {
+    font-weight: normal;
+    font-size: 15px;
+}
+
 
 @media screen and (max-width: 800px) {
     .marketplaceContent {

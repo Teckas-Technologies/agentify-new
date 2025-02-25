@@ -66,10 +66,10 @@ export const ContractProvider = ({ children }) => {
                 }
                 const network = await detectedProvider.getNetwork();
                 console.log("Network:", network)
-                if (network.chainId !== constant.chainId) {
-                    // alert("Wrong network detected. Please switch to the correct network.");
-                    return;
-                }
+                // if (network.chainId !== constant.chainId) {
+                //     // alert("Wrong network detected. Please switch to the correct network.");
+                //     return;
+                // }
                 const signer = detectedProvider.getSigner();
                 const contractInstance = new ethers.Contract(contractAddress || MYIDPresaleAddress, abi || MYIDPresaleABI, signer);
                 setProvider(detectedProvider);

@@ -15,6 +15,7 @@ import Card from '../../components/Card/Card.tsx';
 import Menu from "../../components/Menu/Menu";
 import useAgentHooks from '../../Hooks/useAgentHooks.js';
 import { useContract } from '../../contexts/ContractProvider.js';
+import { customSwitchNetwork } from '../../wagmiConfig.js';
 
 const initialCards = [];
 
@@ -76,17 +77,17 @@ function Playground() {
     };
     handleScroll();
     const container = panelRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
       if (container) {
-        container.addEventListener('scroll', handleScroll);
+        container.removeEventListener('scroll', handleScroll);
       }
-  
-      return () => {
-        if (container) {
-          container.removeEventListener('scroll', handleScroll);
-        }
-      };
-  }, [currentPage,totalPages]);
-  
+    };
+  }, [currentPage, totalPages]);
+
 
   useEffect(() => {
     if (currentPage > 1) {
@@ -106,6 +107,7 @@ function Playground() {
     setChangeAgent(!changeAgent);
     setAbi(card?.abi);
     setContractAddress(card?.smartContractAddress);
+    customSwitchNetwork(card?.chain)
     setSelectedCard(card);
     setIsSwitched(false);
     setShowAgentSelectModal(false);
@@ -117,6 +119,7 @@ function Playground() {
     setChangeAgent(!changeAgent);
     setAbi(card?.abi);
     setContractAddress(card?.smartContractAddress);
+    customSwitchNetwork(card?.chain)
   };
 
   const handleSwitch = () => {
