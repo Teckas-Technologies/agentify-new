@@ -165,7 +165,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
               if (!isEnoughBalance) {
                 setMessages((prev) => [...prev, { sender: "bot", text: `Insufficient balance. Please check your wallet and try again.` }]);
                 return;
-              }
+              } 
 
               setMessages((prev) => [...prev, { sender: "bot", text: `Executing swap, don't close the page until get confirmations...` }]);
               setExecuting(true);
