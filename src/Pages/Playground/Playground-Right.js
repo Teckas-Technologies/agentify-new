@@ -22,7 +22,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [isCreating, setIsCreating] = useState(false);
   const [executing, setExecuting] = useState(false);
   const { isLoading, isAuthenticated, user, logout } = useAuth0();
-  const { executeSwap } = useSwapHook();
+  const { executeSwap, validateTokenBalance } = useSwapHook();
 
   // console.log("User:", user)
 
@@ -153,22 +153,30 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
 
             console.log("Quote:", quote)
 
-            if(quote?.error === "Failed to fetch quote.") {
+            if (quote?.error === "Failed to fetch quote.") {
               setMessages((prev) => [...prev, { sender: "bot", text: `Can't fetch the quote at this time. Try again later!` }]);
               return;
             }
 
             if (quote) {
+              const { fromChainId, fromToken, toChainId, toToken, fromAmount } = quote?.action;
+              const isEnoughBalance = await validateTokenBalance(fromChainId, fromToken, fromAmount);
+
+              if (!isEnoughBalance) {
+                setMessages((prev) => [...prev, { sender: "bot", text: `Insufficient balance. Please check your wallet and try again.` }]);
+                return;
+              }
+
               setMessages((prev) => [...prev, { sender: "bot", text: `Executing swap, don't close the page until get confirmations...` }]);
               setExecuting(true);
               const response = await executeSwap({ quote });
               console.log("Res:", response);
               if (response?.txHash) {
-                setMessages((prev) => [...prev, { sender: "bot", text: `${quote?.action?.fromChainId.toString() === quote?.action?.toChainId.toString() ? "Swap" : "Bridge"} executed successfully! [Status](https://etherscan.io/tx/${response?.txHash})` }]);
+                setMessages((prev) => [...prev, { sender: "bot", text: `${fromChainId.toString() === toChainId.toString() ? "Swap" : "Bridge"} executed successfully! [Status](https://etherscan.io/tx/${response?.txHash})` }]);
                 setExecuting(false);
                 return;
               } else {
-                setMessages((prev) => [...prev, { sender: "bot", text: `${quote?.action?.fromChainId.toString() === quote?.action?.toChainId.toString() ? "Swap" : "Bridge"} execution was failed!` }]);
+                setMessages((prev) => [...prev, { sender: "bot", text: `${fromChainId.toString() === toChainId.toString() ? "Swap" : "Bridge"} execution was failed!` }]);
                 setExecuting(false);
                 return;
               }

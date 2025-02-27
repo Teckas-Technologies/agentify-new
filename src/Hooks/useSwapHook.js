@@ -322,7 +322,7 @@ const useSwapHook = () => {
     //     }
     // };
 
-    return { loading, error, executeSwap, fetchQuote, fetchRoutes };
+    return { loading, error, executeSwap, fetchQuote, fetchRoutes, validateTokenBalance };
 };
 
 export default useSwapHook;
