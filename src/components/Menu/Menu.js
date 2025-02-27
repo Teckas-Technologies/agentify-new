@@ -55,9 +55,9 @@ function Menu(){
         <nav className='pc-menu-container' style={{position: isMenuOpen ? "fixed" : "sticky"}}>
             <NavLink to={"/"}>Agentify</NavLink>
             <div className='pc-menu-items'>
-                <NavLink to={'/'}>Dashboard</NavLink>
-                <NavLink to={'/marketplace'}>Marketplace</NavLink>
-                <NavLink to={'/create'}>Create Agent</NavLink>
+                {/* <NavLink to={'/'}>Dashboard</NavLink> */}
+                <NavLink to={'/'}>Marketplace</NavLink> {/** marketplace */}
+                {/* <NavLink to={'/create'}>Create Agent</NavLink> */}
                 <NavLink to={'/playground'}>Playground</NavLink>
                 </div>
             <div className='menu-right'>
@@ -111,9 +111,9 @@ function Menu(){
         {/* Mobile Menu Dropdown */}
         <div className={`mobile-menu ${isMenuOpen ? 'show' : ''}`}>
             <div className='mobile-menu-links'>
-                <NavLink to={'/'} onClick={toggleMenu}>DASHBOARD</NavLink>
-                <NavLink to={'/marketplace'} onClick={toggleMenu}>MARKETPLACE</NavLink>
-                <NavLink to={'/create'} onClick={toggleMenu}>CREATE AN AGENT</NavLink>
+                {/* <NavLink to={'/'} onClick={toggleMenu}>DASHBOARD</NavLink> */}
+                <NavLink to={'/'} onClick={toggleMenu}>MARKETPLACE</NavLink> {/** marketplace */}
+                {/* <NavLink to={'/create'} onClick={toggleMenu}>CREATE AN AGENT</NavLink> */}
                 <NavLink to={'/playground'} onClick={toggleMenu}>PLAYGROUND</NavLink>
             </div>
         </div>

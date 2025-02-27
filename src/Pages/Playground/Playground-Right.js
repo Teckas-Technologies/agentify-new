@@ -8,6 +8,7 @@ import { useGeneric } from '../../Hooks/useGeneric';
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
+import useSwapHook from '../../Hooks/useSwapHook';
 
 function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [messages, setMessages] = useState([]);
@@ -21,6 +22,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   const [isCreating, setIsCreating] = useState(false);
   const [executing, setExecuting] = useState(false);
   const { isLoading, isAuthenticated, user, logout } = useAuth0();
+  const { executeSwap } = useSwapHook();
 
   // console.log("User:", user)
 
@@ -33,8 +35,8 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   }, [messages]);
 
   const fetchHistory = async (selectedCard) => {
-    if (!user || !selectedCard?._id) return;
-    const res = await fetchChatHistory(user?.sub?.split("|")[1], selectedCard?._id)
+    if (!user || !selectedCard) return;
+    const res = await fetchChatHistory(user?.sub?.split("|")[1], selectedCard)
     console.log("History:", res);
     if (res?.success) {
       const formattedMessages = res?.threads
@@ -50,8 +52,8 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   }
 
   const clearChat = async () => {
-    if (!user || !selectedCard?._id) return;
-    const res = await clearHistory(user?.sub?.split("|")[1], selectedCard?._id);
+    if (!user || !selectedCard) return;
+    const res = await clearHistory(user?.sub?.split("|")[1], selectedCard);
     console.log("Cleared History:", res);
     setMessages([]);
   }
@@ -59,7 +61,7 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
   useEffect(() => {
     if (selectedCard) {
       fetchHistory(selectedCard);
-      setThreadId(selectedCard._id);
+      setThreadId(selectedCard);
     }
   }, [selectedCard]);
 
@@ -74,10 +76,10 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
       try {
         const response = await fetchChat({
           message: inputValue,
-          agentName: selectedCard?.agentName,  // selectedCard?.agentName || "Uniswap Agent New",
+          agentName: selectedCard,  // selectedCard?.agentName || "Uniswap Agent New",
           userId: user?.sub?.split("|")[1],
           walletAddress: address,
-          threadId: selectedCard?._id // agent_id replace
+          threadId: selectedCard // agent_id replace
         });
 
         console.log("RES:", response)
@@ -147,66 +149,26 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
           console.log("RES:", response)
           if (response?.tool_response !== "None") {  //  if (response.data.intent === "final_json")
 
-            let metaData;
+            const quote = JSON.parse(response?.tool_response);
 
-            try {
-              metaData = JSON.parse(response?.tool_response); // Parse tool response
-              metaData.params = JSON.parse(metaData.params);  // Parse params separately
+            console.log("Quote:", quote)
 
-              // Convert array to object with dynamic keys (key1, key2, etc.)
-              const paramsObject = metaData.params.reduce((acc, value, index) => {
-                acc[`key${index + 1}`] = value;
-                return acc;
-              }, {});
-
-              console.log("Params:", paramsObject)
-
-              metaData.params = paramsObject;
-            } catch (error) {
-              metaData = response?.tool_response; // If parsing fails, treat it as a normal string
-              setMessages(prevMessages => [...prevMessages, { text: response.ai_message, sender: 'bot' }]);
+            if(quote?.error === "Failed to fetch quote.") {
+              setMessages((prev) => [...prev, { sender: "bot", text: `Can't fetch the quote at this time. Try again later!` }]);
               return;
             }
 
-            // const metaData = JSON.parse(response?.tool_response);
-            // console.log("Metadata:", metaData)
-
-            if (metaData.transactionType === "sign") {
-              const { functionName, gasFees, contractAddress, blockchain, params, gasLimit } = metaData;
-              console.log(functionName, gasFees, contractAddress, blockchain, params, gasLimit)
-
-              if (!address || !isConnected) {
-                setMessages((prev) => [...prev, { sender: "bot", text: `Please connect your wallet to execute ${functionName}` }]);
-                return;
-              }
-
-              if (!address || (address.trim().startsWith("0x") && address.trim().length !== 42)) {
-                return;
-              }
-
-              setMessages((prev) => [...prev, { sender: "bot", text: `Executing function: ${functionName}...` }]);
+            if (quote) {
+              setMessages((prev) => [...prev, { sender: "bot", text: `Executing swap, don't close the page until get confirmations...` }]);
               setExecuting(true);
-
-              // const resposeApprove = await approveCall(response.data.meta_data.parameters.amount)
-              // console.log("RES:", resposeApprove)
-
-              const res = await functionCall(functionName, params, gasFees);
-              console.log(res);
-
-              if (res?.success) {
-                if (res?.isGas) {
-                  const txData = res.data;
-                  // setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! <a href="https://sepolia.etherscan.io/tx/${txData.transactionHash}" target="_blank" class="hash" style="text-decoration:none; color: #fff;">Status</a>` }]);
-                  setMessages((prev) => [...prev, { sender: "bot", text: `Function call executed successfully! [Status](https://sepolia.etherscan.io/tx/${txData.transactionHash})` }]);
-                  setExecuting(false);
-                  return;
-                } else {
-                  setMessages((prev) => [...prev, { sender: "bot", text: String(res?.data) }]);
-                  setExecuting(false);
-                  return;
-                }
+              const response = await executeSwap({ quote });
+              console.log("Res:", response);
+              if (response?.txHash) {
+                setMessages((prev) => [...prev, { sender: "bot", text: `${quote?.action?.fromChainId.toString() === quote?.action?.toChainId.toString() ? "Swap" : "Bridge"} executed successfully! [Status](https://etherscan.io/tx/${response?.txHash})` }]);
+                setExecuting(false);
+                return;
               } else {
-                setMessages((prev) => [...prev, { sender: "bot", text: `Function call execution failed!` }]);
+                setMessages((prev) => [...prev, { sender: "bot", text: `${quote?.action?.fromChainId.toString() === quote?.action?.toChainId.toString() ? "Swap" : "Bridge"} execution was failed!` }]);
                 setExecuting(false);
                 return;
               }
@@ -218,8 +180,20 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
         }
       } catch (err) {
         console.error("Chat error:", err);
+
+        if (err.message?.includes("User denied transaction signature") || err.name === "UserRejectedRequestError") {
+          setMessages((prev) => [...prev, { sender: "bot", text: `The transaction was rejected.` }]);
+        } else if (err.name === "BalanceError" || err.message?.includes("balance is too low")) {
+          setMessages((prev) => [...prev, { sender: "bot", text: `Insufficient balance. Please check your wallet and try again.` }]);
+        } else if (err.name === "TransactionExecutionError") {
+          setMessages((prev) => [...prev, { sender: "bot", text: `Transaction execution failed. Please try again.` }]);
+        } else {
+          setMessages((prev) => [...prev, { sender: "bot", text: `Something went wrong. Try again later!` }]);
+        }
+
       } finally {
         setIsTyping(false);
+        setExecuting(false);
       }
     }
   };
@@ -236,12 +210,12 @@ function PlaygroundRight({ selectedCard, isSwitched, onSwitch }) {
 
   const getCardText = (card) => (
     <>
-      <span style={{ color: "#ffffff" }}> Title: </span> {card?.agentName}
+      <span style={{ color: "#ffffff" }}> Title: </span> {card}
       <br />
-      <span style={{ color: "#ffffff" }}> Description: </span> {card?.agentPurpose}
+      <span style={{ color: "#ffffff" }}> Description: </span> {card === "Swap Agent" ? "This agent will help users to swap their tokens on the same chain." : "This agent will help users to swap/bridge their tokens on the cross chain."}
       <br />
       <br />
-      <span style={{ color: "#ffffff" }}> Code Snippet: <br /> </span>{card?.codeSnippet}
+      <span style={{ color: "#ffffff" }}> Code Snippet: <br /> </span>{card?.codeSnippet || "Null"}
     </>
   );
 

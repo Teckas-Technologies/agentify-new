@@ -13,38 +13,40 @@ import Playground from './Pages/Playground/Playground';
 import NotFound from './Pages/NotFound/NotFound';
 import ProtectedRoute from './components/ProtectedRoute ';
 import { API_AUDIENCE_URL, AUTH0_CLIENT_ID, AUTH0_CLIENT_URL } from './config/constant';
+import TestPage from './Pages/TestPage/TestPage';
 function App() {
   return (
     <div className="App">
       <Auth0Provider
-    domain={AUTH0_CLIENT_URL}
-    clientId={AUTH0_CLIENT_ID}
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-      audience: API_AUDIENCE_URL,
-      scope: "openid profile email"
-    }}
-  >
-      <BrowserRouter>
-      <Routes>
-          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
-          <Route path="/create" element={ <ProtectedRoute>
+        domain={AUTH0_CLIENT_URL}
+        clientId={AUTH0_CLIENT_ID}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: API_AUDIENCE_URL,
+          scope: "openid profile email"
+        }}
+      >
+        <BrowserRouter>
+          <Routes>
+            {/* <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
+            <Route path="/test" element={<ProtectedRoute><TestPage /></ProtectedRoute>} />
+            <Route path="/" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} /> {/** /marketplace */}
+            {/* <Route path="/create" element={ <ProtectedRoute>
                 <CreateAgent />
-              </ProtectedRoute>} />
-          <Route path="/edit-agent" element={ <ProtectedRoute>
+              </ProtectedRoute>} /> */}
+            {/* <Route path="/edit-agent" element={ <ProtectedRoute>
                 <EditAgent />
-              </ProtectedRoute>} />
-          <Route path="/agent-details" element={<ProtectedRoute>
+              </ProtectedRoute>} /> */}
+            {/* <Route path="/agent-details" element={<ProtectedRoute>
                 <AgentDetails />
-              </ProtectedRoute>} />
-          <Route path="/playground" element={<ProtectedRoute>
-                <Playground />
-              </ProtectedRoute>} />
-          <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-    </Auth0Provider>
+              </ProtectedRoute>} /> */}
+            <Route path="/playground" element={<ProtectedRoute>
+              <Playground />
+            </ProtectedRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </Auth0Provider>
     </div>
   );
 }

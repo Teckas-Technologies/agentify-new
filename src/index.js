@@ -6,17 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import { AppKitProvider } from './wagmiConfig';
 import { ContractProvider } from './contexts/ContractProvider';
 import { DeveloperProvider } from './contexts/DeveloperContext';
+import { CustomWagmiProvider } from './wagmiLifiConfig';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const cookies = {};
 root.render(
   <React.StrictMode>
     <AppKitProvider>
+    <CustomWagmiProvider>
       <ContractProvider>
         <DeveloperProvider>
           <App />
         </DeveloperProvider>
       </ContractProvider>
+    </CustomWagmiProvider>
     </AppKitProvider>
   </React.StrictMode>
 );

@@ -6,7 +6,7 @@ import './LeftPanel.css';
 
 import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
 
-function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard, handleSearch, onClick, fetchAgents,searchText }) {
+function LeftPanel({ initialCards,lifiAgents, onCardSelect, onCardSelectMobile, selectedCard, handleSearch, onClick, fetchAgents, selectedLifiAgent, searchText }) {
   const [cards, setCards] = useState(initialCards);
   const [filteredCards, setFilteredCards] = useState(initialCards);
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +16,8 @@ function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard
    const [selectedFilters, setSelectedFilters] = useState([]);
 
    const panelRef = useRef(null);
+
+   console.log("Lifi agents: ", initialCards, selectedCard)
 
   const fetchData = async (isAppending = false) => {
       const response = await fetchAgents({
@@ -37,10 +39,10 @@ function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard
     };
   
     // commented for search close
-    useEffect(() => {
-      setCurrentPage(1);
-      fetchData(false);
-    }, [searchText, selectedFilters]);
+    // useEffect(() => {
+    //   setCurrentPage(1);
+    //   fetchData(false);
+    // }, [searchText, selectedFilters]);
   
     useEffect(() => {
       const handleScroll = () => {
@@ -76,8 +78,8 @@ function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard
   // Automatically select the first card after cards update
   useEffect(() => {
     // onCardSelect(cards[0]);
-    onCardSelectMobile(cards[0])
-  }, [cards]);
+    onCardSelectMobile(lifiAgents[0])
+  }, [lifiAgents]);
 
   return (
     <div className="left-panel">
@@ -87,15 +89,15 @@ function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard
       <div className="left-panel-content">
         <SearchBar onSearch={handleSearch} />
         <div className="cards-container" ref={panelRef}>
-          {filteredCards?.map((card) => (
+          {lifiAgents?.map((card, index) => (
             <div
-              key={card._id}
+              key={index}
               onClick={() => onCardSelect(card)}
-              className={`card-wrapper ${selectedCard?._id === card._id ? 'selected' : ''}`}
+              className={`card-wrapper ${selectedLifiAgent === card ? 'selected' : ''}`}
             >
               <Card
-                agentName={card.agentName}
-                agentPurpose={card.agentPurpose}
+                agentName={card}
+                agentPurpose={card === "Swap Agent" ? "This agent will help users to swap their tokens on the same chain." : "This agent will help users to swap/bridge their tokens on the cross chain."}
               />
             </div>
           ))}
@@ -107,7 +109,7 @@ function LeftPanel({ initialCards,onCardSelect, onCardSelectMobile, selectedCard
               <span className="icon">
                 <img src={decentramizedLogo} alt="logo" />
               </span>
-              <span className="title">{selectedCard?.agentName}</span>
+              <span className="title">{selectedCard}</span>
             </div>
             <div className="right">
               <FaChevronDown />

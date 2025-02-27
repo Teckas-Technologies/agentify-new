@@ -41,7 +41,20 @@ function Playground() {
   const panelRef = useRef(null);
   const { changeAgent, setChangeAgent, setAbi, setContractAddress } = useContract();
 
-  const { fetchAgents, agents } = useAgentHooks();
+  const { fetchAgents, agents, fetchLifiAgents } = useAgentHooks();
+  const [lifiAgents, setLifiAgents] = useState([])
+  const [selectedLifiAgent, setSelectedLifiAgents] = useState(null)
+
+  const getLifiAgents = async () => {
+    const ressponse = await fetchLifiAgents();
+    setLifiAgents(ressponse?.agents);
+  }
+
+
+  useEffect(() => {
+    getLifiAgents();
+  }, [])
+
   const fetchData = async (isAppending = false) => {
     const response = await fetchAgents({
       search: searchText,
@@ -61,10 +74,10 @@ function Playground() {
     setTotalPages(response.page);
   };
 
-  useEffect(() => {
-    setCurrentPage(1);
-    fetchData(false);
-  }, [searchText, selectedFilters]);
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  //   fetchData(false);
+  // }, [searchText, selectedFilters]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,17 +89,17 @@ function Playground() {
     };
     handleScroll();
     const container = panelRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
       if (container) {
-        container.addEventListener('scroll', handleScroll);
+        container.removeEventListener('scroll', handleScroll);
       }
-  
-      return () => {
-        if (container) {
-          container.removeEventListener('scroll', handleScroll);
-        }
-      };
-  }, [currentPage,totalPages]);
-  
+    };
+  }, [currentPage, totalPages]);
+
 
   useEffect(() => {
     if (currentPage > 1) {
@@ -103,6 +116,7 @@ function Playground() {
 
 
   const onCardSelect = async (card) => {
+    setSelectedLifiAgents(card);
     setChangeAgent(!changeAgent);
     setAbi(card?.abi);
     setContractAddress(card?.smartContractAddress);
@@ -112,6 +126,8 @@ function Playground() {
   };
 
   const onCardSelectMobile = async (card) => {
+    console.log("CARD:", card)
+    setSelectedLifiAgents(card)
     setSelectedCard(card);
     setIsSwitched(false);
     setChangeAgent(!changeAgent);
@@ -149,6 +165,20 @@ function Playground() {
               <div className="agent-select-modal-content" ref={panelRef}>
                 <SearchBar className="agent-select-modal-search" onSearch={handleSearch} />
                 <div className="agent-select-modal-cards-container">
+                  {lifiAgents?.map((card, index) => (
+                    <div
+                      key={index}
+                      onClick={() => onCardSelect(card)}
+                      className={`card-wrapper ${selectedLifiAgent === card ? 'selected' : ''}`}
+                    >
+                      <Card
+                        agentName={card}
+                        agentPurpose={card === "Swap Agent" ? "This agent will help users to swap their tokens on the same chain." : "This agent will help users to swap/bridge their tokens on the cross chain."}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* <div className="agent-select-modal-cards-container">
                   {filteredCards?.map(card => (
                     <div
                       key={card._id}
@@ -161,7 +191,7 @@ function Playground() {
                       />
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           </>
@@ -173,12 +203,18 @@ function Playground() {
       </div>
       <main className="main-content">
         <div className="panels-container">
-          <LeftPanel initialCards={filteredCards} onCardSelectMobile={onCardSelectMobile} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearchDesktop} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText} />
+          <LeftPanel initialCards={lifiAgents} lifiAgents={lifiAgents} onCardSelectMobile={onCardSelectMobile} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearchDesktop} onCardSelect={onCardSelect} selectedCard={selectedLifiAgent} fetchAgents={fetchAgents} selectedLifiAgent={selectedLifiAgent} searchText={searchText} />
+          <PlaygroundRight
+            selectedCard={selectedLifiAgent}
+            isSwitched={isSwitched}
+            onSwitch={handleSwitch}
+          />
+          {/* <LeftPanel initialCards={filteredCards} onCardSelectMobile={onCardSelectMobile} onClick={() => setShowAgentSelectModal(true)} handleSearch={handleSearchDesktop} onCardSelect={onCardSelect} selectedCard={selectedCard} fetchAgents={fetchAgents} searchText={searchText} />
           <PlaygroundRight
             selectedCard={selectedCard}
             isSwitched={isSwitched}
             onSwitch={handleSwitch}
-          />
+          /> */}
         </div>
       </main>
     </div>

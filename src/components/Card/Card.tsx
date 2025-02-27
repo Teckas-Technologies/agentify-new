@@ -14,68 +14,77 @@ import { CardProps, MarketplaceCardBadge, DashboardCardBadge } from "../../types
 import decentramizedLogo from "../../assets/cardLogos/decentramind.svg";
 import useAgentHooks from "../../Hooks/useAgentHooks.js";
 import { useAuth0 } from "@auth0/auth0-react";
-export default function Card(props: DashboardCardBadge& { refreshAgents: () => void }) {
+export default function Card(props: DashboardCardBadge & { refreshAgents: () => void, lifiAgents: any }) {
 
-    const {updateAgentStatus} = useAgentHooks();
-    const location = useLocation(); 
+    const { updateAgentStatus } = useAgentHooks();
+    const location = useLocation();
     const { getAccessTokenSilently } = useAuth0();
-    useEffect(()=>{
-        const tokeen =async()=>{
+    useEffect(() => {
+        const tokeen = async () => {
             const token = await getAccessTokenSilently();
             console.log(token);
         }
         tokeen();
-    },[])
+    }, [])
 
 
-    const [button,setButton]=useState({buttons: [
-        { text: !props.isPublished ? "Publish Now" : "Published", onClick: () => console.log("Publish Now"), variant: "outlined" },
-        { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
-    ]})
+    const [button, setButton] = useState({
+        buttons: [
+            { text: !props.isPublished ? "Publish Now" : "Published", onClick: () => console.log("Publish Now"), variant: "outlined" },
+            { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+        ]
+    })
 
     const buttons = [
-        { 
-            text: props.isPublished ? "Published" : "Publish Now", 
+        {
+            text: props.isPublished ? "Published" : "Publish Now",
             onClick: () => {
                 if (!props.isPublished) {
                     updateStatus(props._id);
                 }
             },
-            variant: "outlined" 
+            variant: "outlined"
         },
-        { 
-            text: "Test Agent", 
-            onClick: () => window.location.href = "/playground", 
-            variant: "filled" 
+        {
+            text: "Test Agent",
+            onClick: () => window.location.href = "/playground",
+            variant: "filled"
         }
     ];
-    
 
-    const updateStatus = async(id:any)=>{
+
+    const updateStatus = async (id: any) => {
         await updateAgentStatus(id);
         props.refreshAgents();
-        setButton({buttons: [
-            { text: "Published", onClick: () => console.log("Publish Now"), variant: "outlined" },
-            { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
-        ]})
+        setButton({
+            buttons: [
+                { text: "Published", onClick: () => console.log("Publish Now"), variant: "outlined" },
+                { text: "Test Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+            ]
+        })
     }
 
-const [market,setMarketButton]=useState({buttons: [
-    { text: "Run Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
-]})
+    const [market, setMarketButton] = useState({
+        buttons: [
+            { text: "Run Agent", onClick: () => window.location.href = "/playground", variant: "filled" }
+        ]
+    })
 
-const isDashboard = location.pathname === "/";
-const isMarketplace = location.pathname.includes("/marketplace");
+    const isDashboard = location.pathname === "/dashboard";
+    const isMarketplace = location.pathname.includes("/");
+    const isPlayground = location.pathname.includes("/playground");
 
 
-    const Tag = isDashboard? Link : "div";
+    const Tag = isDashboard ? Link : "div";
+
+    console.log("Props:", props)
 
     return (
-        <Tag to={ (isDashboard && props._id) ? `/agent-details?agentID=${props._id}` : "/"} className={`Card ${isDashboard ? 'dashboard' : 'marketplace'}`} {...props}>
+        <Tag to={(isDashboard && props._id) ? `/agent-details?agentID=${props._id}` : "/"} className={`Card ${isDashboard ? 'dashboard' : 'marketplace'}`} {...props}>
             <div className="headRow">
                 <span className="agentName">
                     <Image src={props.logo || decentramizedLogo} width={20} />
-                    {props.agentName || "Title not given"}
+                    {props.agentName || props.lifiAgents || "Title not given"}
                 </span>
 
                 <span className="info">
@@ -84,15 +93,15 @@ const isMarketplace = location.pathname.includes("/marketplace");
                             {props.agentName || "Blank"}
                         </span>
                     )} */}
-                    
+
                     {
-                        (isMarketplace && props) && (
+                        (isMarketplace && props && !isPlayground) && (
                             <VerifiedBadge color={"green"} />
                         )
                     }
                     {
                         (isDashboard && props.isPublished !== undefined) && (
-                            <VerifiedBadge text={(props.isPublished) ? "Published" : "Private"} color={ (props.isPublished) ? "green" : "red" } />
+                            <VerifiedBadge text={(props.isPublished) ? "Published" : "Private"} color={(props.isPublished) ? "green" : "red"} />
                         )
                     }
                 </span>
@@ -105,12 +114,14 @@ const isMarketplace = location.pathname.includes("/marketplace");
                     </div>
                 )
             }
-            
+
             <div className="descriptionAndEditContainer">
                 <span className="cardDescription">
-                    {
-                        props.agentPurpose || "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, quis?"
-                    }
+                    {props.agentPurpose
+                        ? props.agentPurpose
+                        : props.lifiAgents === "Swap Agent"
+                            ? "This agent will help users to swap their tokens on the same chain."
+                            : "This agent will help users to swap/bridge their tokens on the cross chain."}
                 </span>
                 {
                     (isDashboard) && (
@@ -123,29 +134,29 @@ const isMarketplace = location.pathname.includes("/marketplace");
                 }
             </div>
 
-            {isMarketplace || isDashboard &&(
-                    <div className="stats">
-                        <span className="stat">
-                            <span className="number">{props.totalRequests}</span> Interactions
-                        </span>
-                        <span className="stat">
-                            <span className="number">{props?.availableFunctions?.length}</span> Available Functions
-                        </span>
-                    </div>
-                    )}
+            {isMarketplace || isDashboard && (
+                <div className="stats">
+                    <span className="stat">
+                        <span className="number">{props.totalRequests}</span> Interactions
+                    </span>
+                    <span className="stat">
+                        <span className="number">{props?.availableFunctions?.length}</span> Available Functions
+                    </span>
+                </div>
+            )}
 
             {
                 (isDashboard && buttons) && (
                     <div className="buttons">
                         {
-                            (buttons  || []).map((button, index: number) => {
+                            (buttons || []).map((button, index: number) => {
                                 return (
                                     <Button className={button.variant || "filled"} onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                         if (button.text === "Publish Now") {
-                                                updateStatus(props._id); 
-                                            }
+                                        if (button.text === "Publish Now") {
+                                            updateStatus(props._id);
+                                        }
                                         button.onClick && button.onClick();
                                     }} key={index}>
                                         {button.text}
@@ -157,18 +168,18 @@ const isMarketplace = location.pathname.includes("/marketplace");
                 )
             }
 
-{
-                (isMarketplace && market) && (
+            {
+                (isMarketplace && market && !isPlayground) && (
                     <div className="buttons">
                         {
-                            (market.buttons  || []).map((button, index: number) => {
+                            (market.buttons || []).map((button, index: number) => {
                                 return (
                                     <Button className={button.variant || "filled"} onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                         if (button.text === "Publish Now") {
-                                                updateStatus(props._id); 
-                                            }
+                                        if (button.text === "Publish Now") {
+                                            updateStatus(props._id);
+                                        }
                                         button.onClick && button.onClick();
                                     }} key={index}>
                                         {button.text}
@@ -179,8 +190,8 @@ const isMarketplace = location.pathname.includes("/marketplace");
                     </div>
                 )
             }
-           
+
         </Tag>
-        
+
     )
 }

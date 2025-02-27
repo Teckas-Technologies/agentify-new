@@ -1,6 +1,6 @@
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiProvider } from 'wagmi';
-import { mainnet, arbitrum,holesky, sepolia } from '@reown/appkit/networks';
+import { mainnet, arbitrum,holesky, sepolia, polygon } from '@reown/appkit/networks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiAdapter, defineNetwork } from '@reown/appkit-adapter-wagmi';
 
@@ -15,16 +15,16 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/179229932'],
 };
 
-const networks = [mainnet,arbitrum,holesky,sepolia];
+const networks = [mainnet,arbitrum,holesky,sepolia, polygon, arbitrum];
 
-const wagmiAdapter = new WagmiAdapter({
+export const wagmiAdapter = new WagmiAdapter({
   networks,
   projectId,
   ssr: true,
 });
 
 // 7. Initialize AppKit modal
-createAppKit({
+const modal = createAppKit({
   adapters: [wagmiAdapter],
   networks,
   defaultNetwork: sepolia,
@@ -39,6 +39,19 @@ createAppKit({
     swaps: false,
   },
 });
+
+export const customSwitchNetwork = async (targetChainId) => {
+  const targetChain = networks.find((chain) => chain.id.toString() === targetChainId);
+
+  if (targetChain) {
+    // Dynamically switch to the target network
+    modal.switchNetwork(targetChain);
+    console.log(`Successfully switched to ${targetChain.name}`);
+  } else {
+    console.warn("Unsupported network selected.");
+    return;
+  }
+}
 
 // 8. Define AppKit Provider Component
 export function AppKitProvider({ children }) {
